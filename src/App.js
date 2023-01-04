@@ -1,9 +1,12 @@
-import './App.css';
+import Footer from './components/Footer.jsx';
+import ValidationModal from './components/ValidationModal.jsx';
+import './styles/App.scss';
 
 function App() {
   return (
     <div>
-      <h1>ЗдароваЁ</h1>
+      <ValidationModal/>
+      <Footer/>
     </div>
   );
 }

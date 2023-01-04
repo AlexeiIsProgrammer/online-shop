@@ -35,6 +35,14 @@ module.exports = {
                 test: /\.html$/i,
                 loader: 'html-loader',
             },
+            {
+                test: /\.jsx?$/, // определяем тип файлов
+                exclude: /(node_modules)/,  // исключаем из обработки папку node_modules
+                loader: "babel-loader",   // определяем загрузчик
+                options:{
+                    presets:[ "@babel/preset-react"]    // используемые плагины
+                }
+            },
             {//npm install --save-dev @babel/core @babel/preset-env babel-loader
                 test: /\.js$/,
                 loader: 'babel-loader',
@@ -70,9 +78,9 @@ module.exports = {
             }
         ]
     },
-    resolve: {
-        extensions: ['.tsx', '.ts', '.js'],
-    },
+    // resolve: {
+    //     extensions: ['.tsx', '.ts', '.js', '.jsx'],
+    // },
     plugins: [
         new HtmlWebpackPlugin({
             template: path.resolve(__dirname, 'public', 'index.html'),
