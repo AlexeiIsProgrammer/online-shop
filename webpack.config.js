@@ -6,7 +6,7 @@ const webpack = require('webpack'); //
 const path = require('path'); //правильные пути указывать
 const HtmlWebpackPlugin = require('html-webpack-plugin'); //Плагин для HTLM npm install html-webpack-plugin
 const MiniCssExtractPlugin = require('mini-css-extract-plugin'); //Плагин для CSS
-const CopyPlugin = require("copy-webpack-plugin");
+// const CopyPlugin = require("copy-webpack-plugin");
 const { postcss } = require('autoprefixer');
 const mode = process.env.NODE_ENV || 'development'; //указание среды разработки ()
 
@@ -99,14 +99,14 @@ module.exports = {
         new MiniCssExtractPlugin({
             filename: '[name].[contenthash].css',
         }),
-        new CopyPlugin({
-            patterns: [
-                {
-                    from: path.resolve(__dirname, 'src/img'),
-                    to: path.resolve(__dirname, 'dist/img')
-                }
-                ],
-            }),
+        // new CopyPlugin({
+        //     patterns: [
+        //         {
+        //             from: path.resolve(__dirname, 'src/img'),
+        //             to: path.resolve(__dirname, 'dist/img')
+        //         }
+        //         ],
+        //     }),
     ]
 };
 
