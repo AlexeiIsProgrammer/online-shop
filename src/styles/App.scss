@@ -1,5 +1,12 @@
 @import 'scss-reset/_reset.scss';
 
+.container {
+  max-width: 1200px;
+  padding: 0 15px;
+
+  margin: 0 auto;
+}
+
 .footer {
   content: 'footer';
   height: 100px;
@@ -11,4 +18,42 @@
   height: 50px;
   width: 700px;
   background-color: bisque;
+}
+
+.header {
+  &__container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  &__logo {
+    cursor: pointer;
+    max-width: 150px;
+  }
+  
+  &__sum {
+    
+  }
+  
+  &__value {
+    color: #61dafb;
+  }
+  
+  &__basket {
+    cursor: pointer;
+    position: relative;
+    &-count {
+      position: absolute;
+      top: -10px;
+      right: 0;
+      text-align: center;
+      padding: 5px;
+    }
+    
+    &-image {
+      max-width: 40px;
+    }
+  }
 }

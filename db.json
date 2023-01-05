@@ -28,7 +28,7 @@
             "stock": 10, 
             "brand": "BMW", 
             "category": "Cars", 
-            "thumbnail": "./src/img/main2.jpg", 
+            "thumbnail": "./img/main2.jpg", 
             "images": [
                 "./src/img/BMW_303_02.jpg",
                 "./src/img/bmw_303_03.jpg",

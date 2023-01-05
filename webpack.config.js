@@ -6,6 +6,7 @@ const webpack = require('webpack'); //
 const path = require('path'); //правильные пути указывать
 const HtmlWebpackPlugin = require('html-webpack-plugin'); //Плагин для HTLM npm install html-webpack-plugin
 const MiniCssExtractPlugin = require('mini-css-extract-plugin'); //Плагин для CSS
+const CopyPlugin = require("copy-webpack-plugin");
 const { postcss } = require('autoprefixer');
 const mode = process.env.NODE_ENV || 'development'; //указание среды разработки ()
 
@@ -19,12 +20,14 @@ module.exports = {
     target, // ресурс (web или browserslistrc)
     devtool, // отслеживание ошибок
     devServer: {
+        historyApiFallback: true,
         port: 3000, //Порт
         open: true, //Открывать браузер
         hot: true, //Обновление стилей (бывают сложности)
     },
     entry: ['@babel/polyfill', path.resolve(__dirname, 'src', 'index.js')], //npm install --save @babel/polyfill : для поддержки скриптов из браузеров    
     output: {
+        publicPath: '/',
         path: path.resolve(__dirname, 'dist'),
         clean:true,
         filename: 'index.js', //name - main по умолчанию, contenthash нужен для сборки разных имен, чтобы обновление было из разных файлов
@@ -73,8 +76,16 @@ module.exports = {
                 ],
             },
             {
-                test: /\.(svg|jpg)$/,
+                test: /\.(svg|jpg|png)$/,
                 type: 'asset/resource',
+                // use: [{
+                //     // loader: 'file-loader',
+                //     options: {
+                //         name: '[name].[ext]',
+                //         outputPath: './',
+                //         useRelativePath: true,
+                //     }
+                // }]
             }
         ]
     },
@@ -87,7 +98,15 @@ module.exports = {
         }),
         new MiniCssExtractPlugin({
             filename: '[name].[contenthash].css',
-        })
+        }),
+        new CopyPlugin({
+            patterns: [
+                {
+                    from: path.resolve(__dirname, 'src/img'),
+                    to: path.resolve(__dirname, 'dist/img')
+                }
+                ],
+            }),
     ]
 };
 
