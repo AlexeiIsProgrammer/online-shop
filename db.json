@@ -1,23 +1,402 @@
 {
     "products": [
         {
-            "id": 1, //+1 на каждую запись
-            "model": "Z4", //Модель
-            "description": "Очень крутая тачка", //Описание
-            "price": 250.1,  //Цена
-            "discountPercentage": 12.96, //Скидка на товар
-            "rating": 4.69, //Рейтинг
-            "stock": 94, //На складе
-            "brand": "BMW", //Марка
-            "category": "Cars", //Категория
-            "thumbnail": "https://i.dummyjson.com/data/products/1/thumbnail.jpg", //Главное изображение
-            "images": [ //Слайдер изображений
-            "https://i.dummyjson.com/data/products/1/1.jpg",
-            "https://i.dummyjson.com/data/products/1/2.jpg",
-            "https://i.dummyjson.com/data/products/1/3.jpg",
-            "https://i.dummyjson.com/data/products/1/4.jpg",
-            "https://i.dummyjson.com/data/products/1/thumbnail.jpg"
+            "id": 1, 
+            "model": "Dixi 3/15", 
+            "description": "Первая BMW автомобиль", 
+            "price": 500,  
+            "discountPercentage": 12.96,
+            "rating": 4.69, 
+            "stock": 4, 
+            "brand": "BMW",
+            "category": "Cars", 
+            "thumbnail": "./src/img/main1.jpg",
+            "images": [ 
+                "./src/img/3-15bmw.jpg",
+                "./src/img/dixi15-03.jpg",
+                "./src/img/bmw_dixi.jpg",
+                "./src/img/BMW-Dixi.jpg"
             ] 
         },
+        {
+            "id": 2, 
+            "model": "303", 
+            "description": "Начало брендовой решетки", 
+            "price": 250.1,  
+            "discountPercentage": 12.96, 
+            "rating": 4.39, 
+            "stock": 10, 
+            "brand": "BMW", 
+            "category": "Cars", 
+            "thumbnail": "./src/img/main2.jpg", 
+            "images": [
+                "./src/img/BMW_303_02.jpg",
+                "./src/img/bmw_303_03.jpg",
+                "./src/img/bmw_303_04.jpg",
+                "./src/img/bmw_303_05.jpg"
+            ] 
+        },
+        {
+            "id": 3, 
+            "model": "503", 
+            "description": "Начало роскоши", 
+            "price": 850,  
+            "discountPercentage": 12, 
+            "rating": 4.89, 
+            "stock": 20, 
+            "brand": "BMW", 
+            "category": "Cars", 
+            "thumbnail": "./src/img/main3.jpg", 
+            "images": [
+                "./src/img/bmw_503_01.jpg",
+                "./src/img/bmw_503_02.jpg",
+                "./src/img/bmw_503_03.jpg",
+                "./src/img/bmw_503_04.jpg"
+            ] 
+        },
+        {
+            "id": 4, 
+            "model": "507", 
+            "description": "Одна из самых красивых машин в мире", 
+            "price": 9999,  
+            "discountPercentage": 0, 
+            "rating": 5, 
+            "stock": 1, 
+            "brand": "BMW", 
+            "category": "Cars", 
+            "thumbnail": "./src/img/main4.jpg", 
+            "images": [
+                "./src/img/507-1.jpg",
+                "./src/img/507-2.jpg",
+                "./src/img/507-3.jpg",
+                "./src/img/507-4.jpg"
+            ] 
+        },
+        {
+            "id": 5, 
+            "model": "E9", 
+            "description": "Отец шестерки", 
+            "price": 850.1,  
+            "discountPercentage": 6, 
+            "rating": 4.49, 
+            "stock": 14, 
+            "brand": "BMW", 
+            "category": "Cars", 
+            "thumbnail": "./src/img/main5.jpg", 
+            "images": [
+                "./src/img/bmw_e9_1.jpg",
+                "./src/img/bmw_e9_2.jpg",
+                "./src/img/bmw_e9_3.jpg",
+                "./src/img/bmw_e9_4.jpg"
+            ] 
+        },
+        {
+            "id": 6, 
+            "model": "e24", 
+            "description": "Гроза автобанов", 
+            "price": 3000,  
+            "discountPercentage": 96, 
+            "rating": 4.89, 
+            "stock": 3, 
+            "brand": "BMW", 
+            "category": "Cars", 
+            "thumbnail": "./src/img/main6.jpg", 
+            "images": [
+                "./src/img/bmw_e24_01.jpg",
+                "./src/img/bmw_e24_02.jpg",
+                "./src/img/bmw_e24_03.jpg",
+                "./src/img/bmw_e24_04.jpg"
+            ] 
+        },
+        {
+            "id": 7, 
+            "model": "M1", 
+            "description": "спортивный автомобиль", 
+            "price": 3500,  
+            "discountPercentage": 0, 
+            "rating": 4.69, 
+            "stock": 30, 
+            "brand": "BMW", 
+            "category": "Cars", 
+            "thumbnail": "./src/img/main7.jpg", 
+            "images": [
+                "./src/img/bmw_m1_01.jpg",
+                "./src/img/bmw_m1_02.jpg",
+                "./src/img/bmw_m1_03.jpg",
+                "./src/img/bmw_m1_04.jpg"
+            ] 
+        },
+        {
+            "id": 8, 
+            "model": "E28", 
+            "description": "Брендовая пятерка", 
+            "price": 400,  
+            "discountPercentage": 12, 
+            "rating": 4, 
+            "stock": 100, 
+            "brand": "BMW", 
+            "category": "Cars", 
+            "thumbnail": "./src/img/main8.jpg", 
+            "images": [
+                "./src/img/bmw_e28_01.jpg",
+                "./src/img/bmw_e28_02.jpg",
+                "./src/img/bmw_e28_03.jpg",
+                "./src/img/bmw_e28_04.jpg"
+            ] 
+        },
+        {
+            "id": 9, 
+            "model": "E30", 
+            "description": "Первая культовая трешка", 
+            "price": 150,  
+            "discountPercentage": 20, 
+            "rating": 3.8, 
+            "stock": 70, 
+            "brand": "BMW", 
+            "category": "Cars", 
+            "thumbnail": "./src/img/main9.jpg", 
+            "images": [
+                "./src/img/bmw_e30_01.jpg",
+                "./src/img/bmw_e30_02.jpg",
+                "./src/img/bmw_e30_03.jpg",
+                "./src/img/bmw_e30_04.jpg"
+            ] 
+        },
+        {
+            "id": 10, 
+            "model": "E34", 
+            "description": "Культовая пятерка", 
+            "price": 50,  
+            "discountPercentage": 10, 
+            "rating": 4.1, 
+            "stock": 200, 
+            "brand": "BMW", 
+            "category": "Cars", 
+            "thumbnail": "./src/img/main10.jpg", 
+            "images": [
+                "./src/img/bmw_e34_01.jpg",
+                "./src/img/bmw_e34_02.jpg",
+                "./src/img/bmw_e34_03.jpg",
+                "./src/img/bmw_e34_04.jpg"
+            ] 
+        },
+        {
+            "id": 11, 
+            "model": "E31", 
+            "description": "Восьмерка", 
+            "price": 800,  
+            "discountPercentage": 12, 
+            "rating": 4.29, 
+            "stock": 13, 
+            "brand": "BMW", 
+            "category": "Cars", 
+            "thumbnail": "./src/img/main11.jpg", 
+            "images": [
+                "./src/img/bmw_e31_01.jpg",
+                "./src/img/bmw_e31_02.jpg",
+                "./src/img/bmw_e31_03.jpg",
+                "./src/img/bmw_e31_04.jpg"
+            ] 
+        },
+        {
+            "id": 12, 
+            "model": "E36", 
+            "description": "Трешка", 
+            "price": 100,  
+            "discountPercentage": 12, 
+            "rating": 3.69, 
+            "stock": 203, 
+            "brand": "BMW", 
+            "category": "Cars", 
+            "thumbnail": "./src/img/main12.jpg", 
+            "images": [
+                "./src/img/bmw_e36_01.jpg",
+                "./src/img/bmw_e36_02.jpg",
+                "./src/img/bmw_e36_03.jpg",
+                "./src/img/bmw_e36_04.jpg"
+            ] 
+        },
+        {
+            "id": 13, 
+            "model": "E38", 
+            "description": "Семерка", 
+            "price": 300,  
+            "discountPercentage": 12, 
+            "rating": 4, 
+            "stock": 93, 
+            "brand": "BMW", 
+            "category": "Cars", 
+            "thumbnail": "./src/img/main13.jpg", 
+            "images": [
+                "./src/img/bmw_e38_01.jpg",
+                "./src/img/bmw_e38_02.jpg",
+                "./src/img/bmw_e38_03.jpg",
+                "./src/img/bmw_e38_04.jpg"
+            ] 
+        },
+        {
+            "id": 14, 
+            "model": "E39", 
+            "description": "Девятка", 
+            "price": 300,  
+            "discountPercentage": 120, 
+            "rating": 4.29, 
+            "stock": 130, 
+            "brand": "BMW", 
+            "category": "Cars", 
+            "thumbnail": "./src/img/main14.jpg", 
+            "images": [
+                "./src/img/bmw_e39_01.jpg",
+                "./src/img/bmw_e39_02.jpg",
+                "./src/img/bmw_e39_03.jpg",
+                "./src/img/bmw_e39_04.jpg"
+            ] 
+        },
+        {
+            "id": 15, 
+            "model": "E53", 
+            "description": "X5", 
+            "price": 400,  
+            "discountPercentage": 12, 
+            "rating": 3.5, 
+            "stock": 90, 
+            "brand": "BMW", 
+            "category": "Cars", 
+            "thumbnail": "./src/img/main15.jpg", 
+            "images": [
+                "./src/img/bmw_e53_01.jpg",
+                "./src/img/bmw_e53_02.jpg",
+                "./src/img/bmw_e53_03.jpg",
+                "./src/img/bmw_e53_04.jpg"
+            ] 
+        },
+        {
+            "id": 16, 
+            "model": "Z8", 
+            "description": "James Bont", 
+            "price": 2000,  
+            "discountPercentage": 0, 
+            "rating": 4, 
+            "stock": 20, 
+            "brand": "BMW", 
+            "category": "Cars", 
+            "thumbnail": "./src/img/main16.jpg", 
+            "images": [
+                "./src/img/bmw_z8_01.jpg",
+                "./src/img/bmw_z8_02.jpg",
+                "./src/img/bmw_z8_03.jpg",
+                "./src/img/bmw_z8_04.jpg"
+            ] 
+        },
+        {
+            "id": 17, 
+            "model": "E60", 
+            "description": "M5", 
+            "price": 600,  
+            "discountPercentage": 12, 
+            "rating": 4.29, 
+            "stock": 13, 
+            "brand": "BMW", 
+            "category": "Cars", 
+            "thumbnail": "./src/img/main17.jpg", 
+            "images": [
+                "./src/img/bmw_e60_01.jpg",
+                "./src/img/bmw_e60_02.jpg",
+                "./src/img/bmw_e60_03.jpg",
+                "./src/img/bmw_e60_04.jpg"
+            ] 
+        },
+        {
+            "id": 18, 
+            "model": "F90", 
+            "description": "M5", 
+            "price": 1200,  
+            "discountPercentage": 12, 
+            "rating": 5, 
+            "stock": 30, 
+            "brand": "BMW", 
+            "category": "Cars", 
+            "thumbnail": "./src/img/main18.jpg", 
+            "images": [
+                "./src/img/bmw_f90_01.jpg",
+                "./src/img/bmw_f90_02.jpg",
+                "./src/img/bmw_f90_03.jpg",
+                "./src/img/bmw_f90_04.jpg"
+            ] 
+        },
+        {
+            "id": 19, 
+            "model": "R1200R", 
+            "description": "bike", 
+            "price": 600,  
+            "discountPercentage": 12, 
+            "rating": 4.29, 
+            "stock": 13, 
+            "brand": "BMW", 
+            "category": "Motorcycle", 
+            "thumbnail": "./src/img/main19.jpg", 
+            "images": [
+                "./src/img/bmw_r1200r_01.jpg",
+                "./src/img/bmw_r1200r_02.jpg",
+                "./src/img/bmw_r1200r_03.jpg",
+                "./src/img/bmw_r1200r_04.jpg"
+            ] 
+        },
+        {
+            "id": 20, 
+            "model": "s1000r", 
+            "description": "bike", 
+            "price": 600,  
+            "discountPercentage": 12, 
+            "rating": 4.29, 
+            "stock": 13, 
+            "brand": "BMW", 
+            "category": "Motorcycle", 
+            "thumbnail": "./src/img/main20.jpg", 
+            "images": [
+                "./src/img/bmw_s1000r_01.jpg",
+                "./src/img/bmw_s1000r_02.jpg",
+                "./src/img/bmw_s1000r_03.jpg",
+                "./src/img/bmw_s1000r_04.jpg"
+            ] 
+        }
+        ,
+        {
+            "id": 21, 
+            "model": "W140", 
+            "description": "Kaban", 
+            "price": 1600,  
+            "discountPercentage": 0, 
+            "rating": 4.9, 
+            "stock": 3, 
+            "brand": "Mercedes", 
+            "category": "Cars", 
+            "thumbnail": "./src/img/main21.jpg", 
+            "images": [
+                "./src/img/mercedes_w140_01.jpg",
+                "./src/img/mercedes_w140_02.jpg",
+                "./src/img/mercedes_w140_03.jpg",
+                "./src/img/mercedes_w140_04.jpg"
+            ] 
+        },
+        {
+            "id": 22, 
+            "model": "D2", 
+            "description": "S8 d2", 
+            "price": 900,  
+            "discountPercentage": 12, 
+            "rating": 4.29, 
+            "stock": 13, 
+            "brand": "AUDI", 
+            "category": "Cars", 
+            "thumbnail": "./src/img/main22.jpg", 
+            "images": [
+                "./src/img/audi_d2_01.jpg",
+                "./src/img/audi_d2_02.jpg",
+                "./src/img/audi_d2_03.jpg",
+                "./src/img/audi_d2_04.jpg"
+            ] 
+        }
+        
     ]
 }
