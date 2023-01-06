@@ -1,5 +1,5 @@
 @import 'scss-reset/_reset.scss';
-
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@1,500&display=swap');
 *::-webkit-scrollbar {
   width: 8px;
 }
@@ -10,7 +10,14 @@
   background-color: rgb(140, 140, 255);
   border-radius: 20px;
 }
-
+.element-footer{
+  list-style-type: none;
+  // float: left;
+  margin: 0 50px;
+  margin-top: 15px;
+  // background-color:brown;
+  display: inline-block;
+}
 .main {
   &__container {
     display: grid;
@@ -28,11 +35,34 @@
 
 .footer {
   content: 'footer';
-  height: 100px;
-  width: 300px;
-  background-color: #61dafb;
+  height: 150px;
+  width: 100%;
+  // background-color: #61dafb;
 }
-
+.footer__container{
+  font-family: 'DM Sans', sans-serif;
+  display: flex;
+  flex-direction:row;
+  align-items: flex-start;
+  justify-content: center;
+  // float: left;
+  // margin: 0 100px;
+  font-size: 30px;
+// background-color:antiquewhite;
+  width: 100%;
+  // margin-top: 25%;
+  margin-top: 50px;
+  // height: auto;
+  // width: 500px;
+  // margin: 0 auto;
+  // position: relative;
+  // display:grid;
+  // grid-template-columns: repeat(3,1fr);
+  // gap: 20px;
+  // padding: 15px;
+  // flex-direction:row;
+  // justify-content:center;
+}
 .validation-modal {
   height: 50px;
   width: 700px;
