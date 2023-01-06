@@ -1,17 +1,15 @@
 import React from 'react'
+import CheckBox from './CheckBox.jsx'
 import cl from './Filter.module.scss'
 
-function Category() {
+function Category({props}) {
   return (
     <ul>
-      <li>
-        <input type="checkbox" name='category'/>      
-        Cars
-      </li>
-      <li>
-        <input type="checkbox" name='category'/>
-        Motorcycles
-      </li>
+      {
+        props.map((item, ind) =>
+          <CheckBox key={ind} name={item} type={'category'}/>  
+        )
+      }
     </ul>
   )
 }

@@ -17,9 +17,8 @@ function ItemCard(props) {
         setIsLoading(true)
     }, [])
 
-    function saveToBasket() {
-        
-    }
+    const [controlledSwiperFirst, setControlledSwiperFirst] = useState(null)
+    const [controlledSwiperSecond, setControlledSwiperSecond] = useState(null)
 
     return (
         <div className="card">
@@ -28,8 +27,8 @@ function ItemCard(props) {
             <div className="container">
                 <div className="card__container">
                     <div className="card__sliders">
-                        <SubSlider imageArray={item.images} />
-                        <MainSlider imageArray={item.images} />
+                        <SubSlider imageArray={item.images} controlSwiper={controlledSwiperSecond} onSwiperControl={setControlledSwiperFirst}/>
+                        <MainSlider imageArray={item.images} controlSwiper={controlledSwiperFirst} onSwiperControl={setControlledSwiperSecond}/>
                     </div>
                     <div className='card__info info'>
                         <div className='info__container'>

@@ -1,20 +1,14 @@
 import React from 'react'
+import CheckBox from './CheckBox.jsx'
 
-function Model() {
+function Model({props}) {
   return (
     <ul>
-      <li>
-        <input type="checkbox" name='category'/>      
-        Bmw
-      </li>
-      <li>
-        <input type="checkbox" name='category'/>
-        Audi
-      </li>
-      <li>
-        <input type="checkbox" name='category'/>
-        Mercedes
-      </li>
+      {
+        props.map((item, ind) =>
+          <CheckBox key={ind} name={item} type={'model'}/>  
+        )
+      }
     </ul>
   )
 }
