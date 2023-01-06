@@ -396,6 +396,330 @@
                 "audi_d2_03.jpg",
                 "audi_d2_04.jpg"
             ] 
+        },
+        {
+            "id": 23, 
+            "model": "Quattro S1", 
+            "description": "legend all-whell drive", 
+            "price": 900,  
+            "discountPercentage": 12, 
+            "rating": 4.29, 
+            "stock": 13, 
+            "brand": "AUDI", 
+            "category": "Cars", 
+            "thumbnail": "main23.jpg", 
+            "images": [
+                "audi_Qs1_01.jpg",
+                "audi_Qs1_02.jpg",
+                "audi_Qs1_03.jpg",
+                "audi_Qs1_04.jpg"
+            ] 
+        },
+        {
+            "id": 24, 
+            "model": "TTRS", 
+            "description": "Lovely car of Mikhail", 
+            "price": 900,  
+            "discountPercentage": 12, 
+            "rating": 4.29, 
+            "stock": 13, 
+            "brand": "AUDI", 
+            "category": "Cars", 
+            "thumbnail": "main24.jpg", 
+            "images": [
+                "audi_tt_01.jpg",
+                "audi_tt_02.jpg",
+                "audi_tt_03.jpg",
+                "audi_tt_04.jpg"
+            ] 
+        },
+        {
+            "id": 25, 
+            "model": "XC90", 
+            "description": "1 generation rest", 
+            "price": 900,  
+            "discountPercentage": 0, 
+            "rating": 5, 
+            "stock": 80, 
+            "brand": "Volvo", 
+            "category": "Cars", 
+            "thumbnail": "main25.jpg", 
+            "images": [
+                "volvo_xc90_01.jpg",
+                "volvo_xc90_02.jpg",
+                "volvo_xc90_03.jpg",
+                "volvo_xc90_04.jpg"
+            ] 
+        },
+        {
+            "id": 26, 
+            "model": "911 Turbo S", 
+            "description": "lovely car of girls", 
+            "price": 1900,  
+            "discountPercentage": 12, 
+            "rating": 4.29, 
+            "stock": 13, 
+            "brand": "Porsche", 
+            "category": "Cars", 
+            "thumbnail": "main26.jpg", 
+            "images": [
+                "porsche_911_01.jpg",
+                "porsche_911_02.jpg",
+                "porsche_911_03.jpg",
+                "porsche_911_04.jpg"
+            ] 
+        },
+        {
+            "id": 27, 
+            "model": "S60", 
+            "description": "2005y", 
+            "price": 900,  
+            "discountPercentage": 12, 
+            "rating": 4.29, 
+            "stock": 13, 
+            "brand": "Volvo", 
+            "category": "Cars", 
+            "thumbnail": "main27.jpg", 
+            "images": [
+                "volvo_s60_01.jpg",
+                "volvo_s60_02.jpg",
+                "volvo_s60_03.jpg",
+                "volvo_s60_04.jpg"
+            ] 
+        },
+        {
+            "id": 28, 
+            "model": "405", 
+            "description": "father of taxi", 
+            "price": 900,  
+            "discountPercentage": 12, 
+            "rating": 4.29, 
+            "stock": 13, 
+            "brand": "Peugeot", 
+            "category": "Cars", 
+            "thumbnail": "main28.jpg", 
+            "images": [
+                "peugeot_405_01.jpg",
+                "peugeot_405_02.jpg",
+                "peugeot_405_03.jpg",
+                "peugeot_405_04.jpg"
+            ] 
+        },
+        {
+            "id": 29, 
+            "model": "406", 
+            "description": "legend from taxi", 
+            "price": 900,  
+            "discountPercentage": 12, 
+            "rating": 4.29, 
+            "stock": 13, 
+            "brand": "Peugeot", 
+            "category": "Cars", 
+            "thumbnail": "main29.jpg", 
+            "images": [
+                "peugeot_406_01.jpg",
+                "peugeot_406_02.jpg",
+                "peugeot_406_03.jpg",
+                "peugeot_406_04.jpg"
+            ] 
+        },
+        {
+            "id": 30, 
+            "model": "Civic 5", 
+            "description": "Japanese", 
+            "price": 500,  
+            "discountPercentage": 12, 
+            "rating": 4.89, 
+            "stock": 13, 
+            "brand": "HONDA", 
+            "category": "Cars", 
+            "thumbnail": "main30.jpg", 
+            "images": [
+                "honda_civic_01.jpg",
+                "honda_civic_02.jpg",
+                "honda_civic_03.jpg",
+                "honda_civic_04.jpg"
+            ] 
+        },
+        {
+            "id": 31, 
+            "model": "2107", 
+            "description": "Лягэнда беларуских зимних дорог", 
+            "price": 1,  
+            "discountPercentage": 0, 
+            "rating": 5.0, 
+            "stock": 999, 
+            "brand": "Жэгулі", 
+            "category": "Cars", 
+            "thumbnail": "main31.jpg", 
+            "images": [
+                "zhiguli_07_01.jpg",
+                "zhiguli_07_02.jpg",
+                "zhiguli_07_03.jpg",
+                "zhiguli_07_04.jpg"
+            ] 
+        },
+        {
+            "id": 32, 
+            "model": "Sport", 
+            "description": "daddy of sto", 
+            "price": 5900,  
+            "discountPercentage": 0, 
+            "rating": 4.29, 
+            "stock": 25, 
+            "brand": "Range Rover", 
+            "category": "Cars", 
+            "thumbnail": "main32.jpg", 
+            "images": [
+                "range_sport_01.jpg",
+                "range_sport_02.jpg",
+                "range_sport_03.jpg",
+                "range_sport_04.jpg"
+            ] 
+        },
+        {
+            "id": 33, 
+            "model": "CBR1100xx", 
+            "description": "meat", 
+            "price": 900,  
+            "discountPercentage": 12, 
+            "rating": 4.29, 
+            "stock": 13, 
+            "brand": "Honda", 
+            "category": "Motorcycle", 
+            "thumbnail": "main33.jpg", 
+            "images": [
+                "honda_CBR_01.jpg",
+                "honda_CBR_02.jpg",
+                "honda_CBR_03.jpg",
+                "honda_CBR_04.jpg"
+            ] 
+        },
+        {
+            "id": 34, 
+            "model": "Boulevard", 
+            "description": "meat", 
+            "price": 900,  
+            "discountPercentage": 12, 
+            "rating": 4.29, 
+            "stock": 13, 
+            "brand": "Suzuki", 
+            "category": "Motorcycle", 
+            "thumbnail": "main34.jpg", 
+            "images": [
+                "suzuki_boulevard_01.jpg",
+                "suzuki_boulevard_02.jpg",
+                "suzuki_boulevard_03.jpg",
+                "suzuki_boulevard_04.jpg"
+            ] 
+        },
+        {
+            "id": 35, 
+            "model": "YZF-R125", 
+            "description": "meat", 
+            "price": 900,  
+            "discountPercentage": 12, 
+            "rating": 4.29, 
+            "stock": 13, 
+            "brand": "Yamaha", 
+            "category": "Motorcycle", 
+            "thumbnail": "main35.jpg", 
+            "images": [
+                "yamaha_yzf_01.jpg",
+                "yamaha_yzf_02.jpg",
+                "yamaha_yzf_03.jpg",
+                "yamaha_yzf_04.jpg"
+            ] 
+        },
+        {
+            "id": 36, 
+            "model": "LS-218", 
+            "description": "meat", 
+            "price": 900,  
+            "discountPercentage": 12, 
+            "rating": 4.29, 
+            "stock": 13, 
+            "brand": "Lightning", 
+            "category": "Motorcycle", 
+            "thumbnail": "main36.jpg", 
+            "images": [
+                "lightning_ls_01.jpg",
+                "lightning_ls_02.jpg",
+                "lightning_ls_03.jpg",
+                "lightning_ls_04.jpg"
+            ] 
+        },
+        {
+            "id": 37, 
+            "model": "Raptor 1000", 
+            "description": "meat", 
+            "price": 900,  
+            "discountPercentage": 12, 
+            "rating": 4.29, 
+            "stock": 13, 
+            "brand": "Cagiva", 
+            "category": "Motorcycle", 
+            "thumbnail": "main37.jpg", 
+            "images": [
+                "cagiva_raptor_01.jpg",
+                "cagiva_raptor_02.jpg",
+                "cagiva_raptor_03.jpg",
+                "cagiva_raptor_04.jpg"
+            ] 
+        },
+        {
+            "id": 38, 
+            "model": "150 TAP", 
+            "description": "millitary", 
+            "price": 900,  
+            "discountPercentage": 12, 
+            "rating": 4.29, 
+            "stock": 13, 
+            "brand": "Vespa", 
+            "category": "Motorcycle", 
+            "thumbnail": "main38.jpg", 
+            "images": [
+                "vespa_tap_01.jpg",
+                "vespa_tap_02.jpg",
+                "vespa_tap_03.jpg",
+                "vespa_tap_04.jpg"
+            ] 
+        },
+        {
+            "id": 39, 
+            "model": "А-750", 
+            "description": "soveit", 
+            "price": 900,  
+            "discountPercentage": 12, 
+            "rating": 4.29, 
+            "stock": 13, 
+            "brand": "ПМЗ", 
+            "category": "Motorcycle", 
+            "thumbnail": "main39.jpg", 
+            "images": [
+                "pmz_a750_01.jpg",
+                "pmz_a750_02.jpg",
+                "pmz_a750_03.jpg",
+                "pmz_a750_04.jpg"
+            ] 
+        },
+        {
+            "id": 40, 
+            "model": "82", 
+            "description": "Гордость наших полей", 
+            "price": 8900,  
+            "discountPercentage": 12, 
+            "rating": 4.29, 
+            "stock": 100, 
+            "brand": "Трахтар Беларус", 
+            "category": "Monster", 
+            "thumbnail": "main40.jpg", 
+            "images": [
+                "mtz_bel_01.jpg",
+                "mtz_bel_02.jpg",
+                "mtz_bel_03.jpg",
+                "mtz_bel_04.jpg"
+            ] 
         }
         
     ]
