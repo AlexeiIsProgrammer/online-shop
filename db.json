@@ -10,12 +10,12 @@
             "stock": 4, 
             "brand": "BMW",
             "category": "Cars", 
-            "thumbnail": "./src/img/main1.jpg",
+            "thumbnail": "main1.jpg",
             "images": [ 
-                "./src/img/3-15bmw.jpg",
-                "./src/img/dixi15-03.jpg",
-                "./src/img/bmw_dixi.jpg",
-                "./src/img/BMW-Dixi.jpg"
+                "3-15bmw.jpg",
+                "dixi15-03.jpg",
+                "bmw_dixi.jpg",
+                "BMW-Dixi.jpg"
             ] 
         },
         {
@@ -28,12 +28,12 @@
             "stock": 10, 
             "brand": "BMW", 
             "category": "Cars", 
-            "thumbnail": "./img/main2.jpg", 
+            "thumbnail": "main2.jpg", 
             "images": [
-                "./src/img/BMW_303_02.jpg",
-                "./src/img/bmw_303_03.jpg",
-                "./src/img/bmw_303_04.jpg",
-                "./src/img/bmw_303_05.jpg"
+                "BMW_303_02.jpg",
+                "bmw_303_03.jpg",
+                "bmw_303_04.jpg",
+                "bmw_303_05.jpg"
             ] 
         },
         {
@@ -46,12 +46,12 @@
             "stock": 20, 
             "brand": "BMW", 
             "category": "Cars", 
-            "thumbnail": "./src/img/main3.jpg", 
+            "thumbnail": "main3.jpg", 
             "images": [
-                "./src/img/bmw_503_01.jpg",
-                "./src/img/bmw_503_02.jpg",
-                "./src/img/bmw_503_03.jpg",
-                "./src/img/bmw_503_04.jpg"
+                "bmw_503_01.jpg",
+                "bmw_503_02.jpg",
+                "bmw_503_03.jpg",
+                "bmw_503_04.jpg"
             ] 
         },
         {
@@ -64,12 +64,12 @@
             "stock": 1, 
             "brand": "BMW", 
             "category": "Cars", 
-            "thumbnail": "./src/img/main4.jpg", 
+            "thumbnail": "main4.jpg", 
             "images": [
-                "./src/img/507-1.jpg",
-                "./src/img/507-2.jpg",
-                "./src/img/507-3.jpg",
-                "./src/img/507-4.jpg"
+                "507-1.jpg",
+                "507-2.jpg",
+                "507-3.jpg",
+                "507-4.jpg"
             ] 
         },
         {
@@ -82,12 +82,12 @@
             "stock": 14, 
             "brand": "BMW", 
             "category": "Cars", 
-            "thumbnail": "./src/img/main5.jpg", 
+            "thumbnail": "main5.jpg", 
             "images": [
-                "./src/img/bmw_e9_1.jpg",
-                "./src/img/bmw_e9_2.jpg",
-                "./src/img/bmw_e9_3.jpg",
-                "./src/img/bmw_e9_4.jpg"
+                "bmw_e9_1.jpg",
+                "bmw_e9_2.jpg",
+                "bmw_e9_3.jpg",
+                "bmw_e9_4.jpg"
             ] 
         },
         {
@@ -100,12 +100,12 @@
             "stock": 3, 
             "brand": "BMW", 
             "category": "Cars", 
-            "thumbnail": "./src/img/main6.jpg", 
+            "thumbnail": "main6.jpg", 
             "images": [
-                "./src/img/bmw_e24_01.jpg",
-                "./src/img/bmw_e24_02.jpg",
-                "./src/img/bmw_e24_03.jpg",
-                "./src/img/bmw_e24_04.jpg"
+                "bmw_e24_01.jpg",
+                "bmw_e24_02.jpg",
+                "bmw_e24_03.jpg",
+                "bmw_e24_04.jpg"
             ] 
         },
         {
@@ -118,12 +118,12 @@
             "stock": 30, 
             "brand": "BMW", 
             "category": "Cars", 
-            "thumbnail": "./src/img/main7.jpg", 
+            "thumbnail": "main7.jpg", 
             "images": [
-                "./src/img/bmw_m1_01.jpg",
-                "./src/img/bmw_m1_02.jpg",
-                "./src/img/bmw_m1_03.jpg",
-                "./src/img/bmw_m1_04.jpg"
+                "bmw_m1_01.jpg",
+                "bmw_m1_02.jpg",
+                "bmw_m1_03.jpg",
+                "bmw_m1_04.jpg"
             ] 
         },
         {
@@ -136,12 +136,12 @@
             "stock": 100, 
             "brand": "BMW", 
             "category": "Cars", 
-            "thumbnail": "./src/img/main8.jpg", 
+            "thumbnail": "main8.jpg", 
             "images": [
-                "./src/img/bmw_e28_01.jpg",
-                "./src/img/bmw_e28_02.jpg",
-                "./src/img/bmw_e28_03.jpg",
-                "./src/img/bmw_e28_04.jpg"
+                "bmw_e28_01.jpg",
+                "bmw_e28_02.jpg",
+                "bmw_e28_03.jpg",
+                "bmw_e28_04.jpg"
             ] 
         },
         {
@@ -154,12 +154,12 @@
             "stock": 70, 
             "brand": "BMW", 
             "category": "Cars", 
-            "thumbnail": "./src/img/main9.jpg", 
+            "thumbnail": "main9.jpg", 
             "images": [
-                "./src/img/bmw_e30_01.jpg",
-                "./src/img/bmw_e30_02.jpg",
-                "./src/img/bmw_e30_03.jpg",
-                "./src/img/bmw_e30_04.jpg"
+                "bmw_e30_01.jpg",
+                "bmw_e30_02.jpg",
+                "bmw_e30_03.jpg",
+                "bmw_e30_04.jpg"
             ] 
         },
         {
@@ -172,12 +172,12 @@
             "stock": 200, 
             "brand": "BMW", 
             "category": "Cars", 
-            "thumbnail": "./src/img/main10.jpg", 
+            "thumbnail": "main10.jpg", 
             "images": [
-                "./src/img/bmw_e34_01.jpg",
-                "./src/img/bmw_e34_02.jpg",
-                "./src/img/bmw_e34_03.jpg",
-                "./src/img/bmw_e34_04.jpg"
+                "bmw_e34_01.jpg",
+                "bmw_e34_02.jpg",
+                "bmw_e34_03.jpg",
+                "bmw_e34_04.jpg"
             ] 
         },
         {
@@ -190,12 +190,12 @@
             "stock": 13, 
             "brand": "BMW", 
             "category": "Cars", 
-            "thumbnail": "./src/img/main11.jpg", 
+            "thumbnail": "main11.jpg", 
             "images": [
-                "./src/img/bmw_e31_01.jpg",
-                "./src/img/bmw_e31_02.jpg",
-                "./src/img/bmw_e31_03.jpg",
-                "./src/img/bmw_e31_04.jpg"
+                "bmw_e31_01.jpg",
+                "bmw_e31_02.jpg",
+                "bmw_e31_03.jpg",
+                "bmw_e31_04.jpg"
             ] 
         },
         {
@@ -208,12 +208,12 @@
             "stock": 203, 
             "brand": "BMW", 
             "category": "Cars", 
-            "thumbnail": "./src/img/main12.jpg", 
+            "thumbnail": "main12.jpg", 
             "images": [
-                "./src/img/bmw_e36_01.jpg",
-                "./src/img/bmw_e36_02.jpg",
-                "./src/img/bmw_e36_03.jpg",
-                "./src/img/bmw_e36_04.jpg"
+                "bmw_e36_01.jpg",
+                "bmw_e36_02.jpg",
+                "bmw_e36_03.jpg",
+                "bmw_e36_04.jpg"
             ] 
         },
         {
@@ -226,12 +226,12 @@
             "stock": 93, 
             "brand": "BMW", 
             "category": "Cars", 
-            "thumbnail": "./src/img/main13.jpg", 
+            "thumbnail": "main13.jpg", 
             "images": [
-                "./src/img/bmw_e38_01.jpg",
-                "./src/img/bmw_e38_02.jpg",
-                "./src/img/bmw_e38_03.jpg",
-                "./src/img/bmw_e38_04.jpg"
+                "bmw_e38_01.jpg",
+                "bmw_e38_02.jpg",
+                "bmw_e38_03.jpg",
+                "bmw_e38_04.jpg"
             ] 
         },
         {
@@ -244,12 +244,12 @@
             "stock": 130, 
             "brand": "BMW", 
             "category": "Cars", 
-            "thumbnail": "./src/img/main14.jpg", 
+            "thumbnail": "main14.jpg", 
             "images": [
-                "./src/img/bmw_e39_01.jpg",
-                "./src/img/bmw_e39_02.jpg",
-                "./src/img/bmw_e39_03.jpg",
-                "./src/img/bmw_e39_04.jpg"
+                "bmw_e39_01.jpg",
+                "bmw_e39_02.jpg",
+                "bmw_e39_03.jpg",
+                "bmw_e39_04.jpg"
             ] 
         },
         {
@@ -262,12 +262,12 @@
             "stock": 90, 
             "brand": "BMW", 
             "category": "Cars", 
-            "thumbnail": "./src/img/main15.jpg", 
+            "thumbnail": "main15.jpg", 
             "images": [
-                "./src/img/bmw_e53_01.jpg",
-                "./src/img/bmw_e53_02.jpg",
-                "./src/img/bmw_e53_03.jpg",
-                "./src/img/bmw_e53_04.jpg"
+                "bmw_e53_01.jpg",
+                "bmw_e53_02.jpg",
+                "bmw_e53_03.jpg",
+                "bmw_e53_04.jpg"
             ] 
         },
         {
@@ -280,12 +280,12 @@
             "stock": 20, 
             "brand": "BMW", 
             "category": "Cars", 
-            "thumbnail": "./src/img/main16.jpg", 
+            "thumbnail": "main16.jpg", 
             "images": [
-                "./src/img/bmw_z8_01.jpg",
-                "./src/img/bmw_z8_02.jpg",
-                "./src/img/bmw_z8_03.jpg",
-                "./src/img/bmw_z8_04.jpg"
+                "bmw_z8_01.jpg",
+                "bmw_z8_02.jpg",
+                "bmw_z8_03.jpg",
+                "bmw_z8_04.jpg"
             ] 
         },
         {
@@ -298,12 +298,12 @@
             "stock": 13, 
             "brand": "BMW", 
             "category": "Cars", 
-            "thumbnail": "./src/img/main17.jpg", 
+            "thumbnail": "main17.jpg", 
             "images": [
-                "./src/img/bmw_e60_01.jpg",
-                "./src/img/bmw_e60_02.jpg",
-                "./src/img/bmw_e60_03.jpg",
-                "./src/img/bmw_e60_04.jpg"
+                "bmw_e60_01.jpg",
+                "bmw_e60_02.jpg",
+                "bmw_e60_03.jpg",
+                "bmw_e60_04.jpg"
             ] 
         },
         {
@@ -316,12 +316,12 @@
             "stock": 30, 
             "brand": "BMW", 
             "category": "Cars", 
-            "thumbnail": "./src/img/main18.jpg", 
+            "thumbnail": "main18.jpg", 
             "images": [
-                "./src/img/bmw_f90_01.jpg",
-                "./src/img/bmw_f90_02.jpg",
-                "./src/img/bmw_f90_03.jpg",
-                "./src/img/bmw_f90_04.jpg"
+                "bmw_f90_01.jpg",
+                "bmw_f90_02.jpg",
+                "bmw_f90_03.jpg",
+                "bmw_f90_04.jpg"
             ] 
         },
         {
@@ -334,12 +334,12 @@
             "stock": 13, 
             "brand": "BMW", 
             "category": "Motorcycle", 
-            "thumbnail": "./src/img/main19.jpg", 
+            "thumbnail": "main19.jpg", 
             "images": [
-                "./src/img/bmw_r1200r_01.jpg",
-                "./src/img/bmw_r1200r_02.jpg",
-                "./src/img/bmw_r1200r_03.jpg",
-                "./src/img/bmw_r1200r_04.jpg"
+                "bmw_r1200r_01.jpg",
+                "bmw_r1200r_02.jpg",
+                "bmw_r1200r_03.jpg",
+                "bmw_r1200r_04.jpg"
             ] 
         },
         {
@@ -352,12 +352,12 @@
             "stock": 13, 
             "brand": "BMW", 
             "category": "Motorcycle", 
-            "thumbnail": "./src/img/main20.jpg", 
+            "thumbnail": "main20.jpg", 
             "images": [
-                "./src/img/bmw_s1000r_01.jpg",
-                "./src/img/bmw_s1000r_02.jpg",
-                "./src/img/bmw_s1000r_03.jpg",
-                "./src/img/bmw_s1000r_04.jpg"
+                "bmw_s1000r_01.jpg",
+                "bmw_s1000r_02.jpg",
+                "bmw_s1000r_03.jpg",
+                "bmw_s1000r_04.jpg"
             ] 
         }
         ,
@@ -371,12 +371,12 @@
             "stock": 3, 
             "brand": "Mercedes", 
             "category": "Cars", 
-            "thumbnail": "./src/img/main21.jpg", 
+            "thumbnail": "main21.jpg", 
             "images": [
-                "./src/img/mercedes_w140_01.jpg",
-                "./src/img/mercedes_w140_02.jpg",
-                "./src/img/mercedes_w140_03.jpg",
-                "./src/img/mercedes_w140_04.jpg"
+                "mercedes_w140_01.jpg",
+                "mercedes_w140_02.jpg",
+                "mercedes_w140_03.jpg",
+                "mercedes_w140_04.jpg"
             ] 
         },
         {
@@ -389,12 +389,12 @@
             "stock": 13, 
             "brand": "AUDI", 
             "category": "Cars", 
-            "thumbnail": "./src/img/main22.jpg", 
+            "thumbnail": "main22.jpg", 
             "images": [
-                "./src/img/audi_d2_01.jpg",
-                "./src/img/audi_d2_02.jpg",
-                "./src/img/audi_d2_03.jpg",
-                "./src/img/audi_d2_04.jpg"
+                "audi_d2_01.jpg",
+                "audi_d2_02.jpg",
+                "audi_d2_03.jpg",
+                "audi_d2_04.jpg"
             ] 
         }
         

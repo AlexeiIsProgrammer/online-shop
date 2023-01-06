@@ -1,0 +1,21 @@
+.filter__item {
+    & .filter__header {
+        border-radius: 10px 10px 0px 0px;   
+        background-color: aliceblue;
+        padding: 5px;
+        text-align: center;
+    }
+    
+    & .filter__body {
+        padding: 10px;
+        border: 1px solid rgb(0, 145, 150);
+        max-height: 400px;
+        overflow-y: auto;
+        border-radius: 0px 0px 10px 10px;
+        background-color: rgb(157, 255, 255);
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}

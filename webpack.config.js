@@ -41,7 +41,7 @@ module.exports = {
             {
                 test: /\.jsx?$/, // определяем тип файлов
                 exclude: /(node_modules)/,  // исключаем из обработки папку node_modules
-                loader: "babel-loader",   // определяем загрузчик
+                loader: "babel-loader",   // опред  еляем загрузчик
                 options:{
                     presets:[ "@babel/preset-react"]    // используемые плагины
                 }

@@ -1,9 +1,10 @@
-import Main from "../components/pages/Main.jsx"
-import Error from "../components/pages/Error.jsx"
-import Basket from "../components/pages/Basket.jsx"
-import MainItem from "../components/pages/ItemCard.jsx"
+import Main from "../pages/Main.jsx"
+import Error from "../pages/Error.jsx"
+import Basket from "../pages/Basket.jsx"
+import MainItem from "../pages/ItemCard.jsx"
 
 export const routesArray = [
+    {path: '/', element: Main},
     {path: '/main', element: Main},
     {path: '/basket', element: Basket},
     {path: '/main/:id', element: MainItem},
