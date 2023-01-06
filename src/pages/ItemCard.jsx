@@ -17,6 +17,10 @@ function ItemCard(props) {
         setIsLoading(true)
     }, [])
 
+    function saveToBasket(id) {
+        console.log(id)
+    }
+
     const [controlledSwiperFirst, setControlledSwiperFirst] = useState(null)
     const [controlledSwiperSecond, setControlledSwiperSecond] = useState(null)
 
@@ -40,7 +44,7 @@ function ItemCard(props) {
                             <CardPattern name={"Марка"} description={item.brand}/>
                         </div>
                         <div className='info__btns'>
-                            <MyButton onClick={saveToBasket}>Добавить в корзину</MyButton>
+                            <MyButton onClick={() => saveToBasket(item.id)}>Добавить в корзину</MyButton>
                             <MyButton onClick={() => alert("Открытие формы с валидацией!")}>Купить прямо сейчас!</MyButton>
                         </div>
                     </div>

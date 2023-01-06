@@ -10,7 +10,6 @@ function Basket() {
       setItems(gettingJSON.getItems())
       if(localStorage.getItem('basket')) {
         setBasketItems(JSON.parse(localStorage.getItem('basket')))
-        console.log(JSON.parse(localStorage.getItem('basket')))
       }
       setisLoading(true)
   }, [])
@@ -21,8 +20,8 @@ function Basket() {
       {
         isLoading
         ?
-        basketItems.map(item => 
-          <p>
+        basketItems.map((item, ind) => 
+          <p key={ind}>
             {items[item - 1].description}
           </p>
         )

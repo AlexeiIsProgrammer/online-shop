@@ -1,5 +1,5 @@
 @import 'scss-reset/_reset.scss';
-
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@1,500&display=swap');
 *::-webkit-scrollbar {
   width: 8px;
 }
@@ -10,7 +10,12 @@
   background-color: rgb(140, 140, 255);
   border-radius: 20px;
 }
-
+.element-footer{
+  list-style-type: none;
+  margin: 0 50px;
+  margin-top: 15px;
+  display: inline-block;
+}
 .main {
   &__container {
     display: grid;
@@ -28,11 +33,19 @@
 
 .footer {
   content: 'footer';
-  height: 100px;
-  width: 300px;
-  background-color: #61dafb;
+  height: 150px;
+  width: 100%;
 }
-
+.footer__container{
+  font-family: 'DM Sans', sans-serif;
+  display: flex;
+  flex-direction:row;
+  align-items: flex-start;
+  justify-content: center;
+  font-size: 30px;
+  width: 100%;
+  margin-top: 50px;
+}
 .validation-modal {
   height: 50px;
   width: 700px;
