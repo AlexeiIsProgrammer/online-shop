@@ -2,7 +2,7 @@ import React from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { routesArray } from "../router/index.js" 
 
-function AppRouter() {
+function AppRouter({sumOfBasket}) {
     return (
         <Routes>
             {

@@ -5,17 +5,24 @@ import MyButton from './UI/Button/MyButton.jsx'
 
 function MainItem({props, basket, setBasket}) {
     const router = useNavigate()
-    const [isAdded, setIsAdded] = useState() //Добавлено / не добавлено
 
     function addToBasket(id) {
-        console.log(id)
-        setBasket([...basket, id])
-        localStorage.setItem('basket', JSON.stringify(basket))
+
+        if(!basket.includes(id)) {
+            const newBasket = [...basket, id]
+            setBasket(newBasket)
+            localStorage.setItem('basket', JSON.stringify(newBasket))
+        }
+        else {
+            const newBasket = [...basket.slice(0, basket.indexOf(id)), ...basket.slice(basket.indexOf(id) + 1)]
+            setBasket(newBasket)
+            localStorage.setItem('basket', JSON.stringify(newBasket))
+        }
     }
 
     return (
         <li className='catalog__item product' style={{backgroundImage: `url(${require(`../img/${props.thumbnail}`)})`}}>
-            <p className='product__header'>
+            <p className={`${!basket.includes(props.id) ? 'product__header' : 'product__header_active'}`} >
                 {props.brand} {props.model}
             </p>
             <div className='product__body'>
@@ -37,7 +44,13 @@ function MainItem({props, basket, setBasket}) {
                     </p>
                 </div>
                 <div className='product__btns'>
-                    <MyButton onClick={() => addToBasket(props.id)}>Добавить в корзину</MyButton>
+                    <MyButton onClick={() => addToBasket(props.id)}>{
+                        !basket.includes(props.id)
+                        ?
+                        'Добавить в корзину'
+                        :
+                        'Удалить из корзины'
+                    }</MyButton>
                     <MyButton onClick={() => router(`/main/${props.id - 1}`)}>Подробнее</MyButton>
                 </div>
             </div>

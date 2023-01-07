@@ -7,12 +7,16 @@ import './styles/App.scss';
 
 function App() {
   return (
-    <BrowserRouter>
-      <ValidationModal/>
-      <Header/>
-      <AppRouter/>
-      <Footer/>
-    </BrowserRouter>
+    <div className='app'>
+      <BrowserRouter>
+        <ValidationModal/>
+        <Header/>
+        <div className='body'>
+          <AppRouter/>
+        </div>
+        <Footer/>
+      </BrowserRouter>
+    </div>
   );
 }
 

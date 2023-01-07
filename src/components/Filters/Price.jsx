@@ -1,10 +1,14 @@
 import React from 'react'
-import '../../multirange.js';
-import '../../multirange.css';
+
 
 function Price({...props}) {
+  // var ReactDualRangeSlider = require('react-dual-range-slider');
   return (
-    <input {...props} />
+    <input type="text" />
+    // <ReactDualRangeSlider
+    //   limits={[0, 10]}
+    //   values={[2, 5]}
+    // />
   )
 }
 

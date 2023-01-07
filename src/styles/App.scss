@@ -16,6 +16,29 @@
   margin-top: 15px;
   display: inline-block;
 }
+
+html {
+  height: 100%;
+}
+
+body {
+  height: 100%;
+}
+
+#root {
+  height: 100%;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.body {
+  flex: 1 0 auto;
+}
+
 .main {
   &__container {
     display: grid;
@@ -87,6 +110,12 @@
     &-image {
       max-width: 40px;
     }
+
+    &__main-container {
+      display: flex;
+      flex-direction: row;
+      gap: 20px;
+    }
   }
 }
 
@@ -135,8 +164,13 @@
 
 .product {
   &__header {
-    background-color: #61dafb55;
+    background-color: #61dafb;
     text-align: center;
+    
+    &_active {
+      background-color: #f84200;
+      text-align: center;
+    }
   }
 
   &__body {
