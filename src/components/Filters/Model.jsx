@@ -1,12 +1,12 @@
 import React from 'react'
 import CheckBox from './CheckBox.jsx'
 
-function Model({props}) {
+function Model({filter, setFilter, props, name}) {
   return (
     <ul>
       {
         props.map((item, ind) =>
-          <CheckBox key={ind} name={item} type={'model'}/>  
+          <CheckBox filter={filter} setFilter={setFilter} key={ind} iName={item} value={item} name={name} />  
         )
       }
     </ul>

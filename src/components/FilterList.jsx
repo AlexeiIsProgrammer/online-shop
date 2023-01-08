@@ -7,7 +7,7 @@ import Price from './Filters/Price.jsx'
 import Stock from './Filters/Stock.jsx'
 import MyButton from './UI/Button/MyButton.jsx'
 
-function FilterList({props}) {
+function FilterList({filter, setFilter, props}) {
 
     const categorySet = new Set(props.map(item => item.category))
     const modelSet = new Set(props.map(item => item.brand))
@@ -15,15 +15,15 @@ function FilterList({props}) {
     return (
         <div className='filter'>
             <div className='filter__btns'>
-                <MyButton>Очистить фильтры</MyButton>
-                <MyButton>Копировать ссылку</MyButton>
+                <MyButton onClick={() => setFilter({sort: "", query: "", brand: [], category: []})}>Очистить фильтры</MyButton>
+                <MyButton onClick={() => {navigator.clipboard.writeText(window.location.href)}}>Копировать ссылку</MyButton>
             </div>
             <div className="filter__container">
                 <FiltersPattern name='Category'>
-                    <Category props={[...categorySet]}/>    
+                    <Category filter={filter} setFilter={setFilter} name='category' props={[...categorySet]}/>    
                 </FiltersPattern>
-                <FiltersPattern name='Model'>
-                    <Model props={[...modelSet]}/>
+                <FiltersPattern name='Brand'>
+                    <Model filter={filter} setFilter={setFilter} name='brand' props={[...modelSet]}/>
                 </FiltersPattern>
                 <FiltersPattern name='Price'>
                     <Price type="range" multiple/>

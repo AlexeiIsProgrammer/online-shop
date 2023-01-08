@@ -110,13 +110,13 @@ body {
     &-image {
       max-width: 40px;
     }
-
-    &__main-container {
-      display: flex;
-      flex-direction: row;
-      gap: 20px;
-    }
   }
+}
+
+.basket__main-container {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
 }
 
 .error {
@@ -148,17 +148,30 @@ body {
   }
   
   &__list {
-    display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 20px;
+    display: grid;
+    
+    &_other {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 40px;
+    }
   }
-  
+
+
   &__item {
     border: 1px solid rgb(212, 235, 255);
     border-radius: 5px;
     background-color: aliceblue;
     background-size: cover;
     background-position: center;
+  }
+
+  &__header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
   }
 }
 

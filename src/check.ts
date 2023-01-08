@@ -1,6 +1,5 @@
 
-let cha = '12';
+const type: string = 'Typescript';
+const script : string = ' is Here!'
 
-cha += 'sd';
-
-console.log(cha);
+console.log(type + script);

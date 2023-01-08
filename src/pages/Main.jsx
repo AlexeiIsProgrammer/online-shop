@@ -9,9 +9,7 @@ function Main() {
     const [isLoading, setisLoading] = useState(false)
     const [basketItems, setBasketItems] = useState([])
 
-    const search = window.location.search;
-    const params = new URLSearchParams(search);
-    params.append('query', 'aboba');
+    const [filter, setFilter] = useState({ sort: "", query: "", brand: [], category: []})
 
     // console.log(params.toString())
     // console.log(params.get('query'))
@@ -28,11 +26,11 @@ function Main() {
         <div className='main'>
             <div className="container">
                 <div className="main__container">
-                    <FilterList props={items}/>
+                    <FilterList filter={filter} setFilter={setFilter} props={items}/>
                     {
                         isLoading
                         ?
-                        <ShowFullItems items={items} basket={basketItems} setBasket={setBasketItems}/>
+                        <ShowFullItems items={items} basket={basketItems} setBasket={setBasketItems} filter={filter} setFilter={setFilter}/>
                         :
                         <h1>Подгрузка товаров...</h1>
                     }

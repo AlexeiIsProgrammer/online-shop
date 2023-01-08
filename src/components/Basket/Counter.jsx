@@ -2,23 +2,24 @@ import React, { useState } from 'react'
 import ItemCard from '../../pages/ItemCard.jsx'
 import './Basket.scss'
 
-function Counter({stock, price, id, deleteItem, returnPrice}) {
-    const [count, setCount] = useState(1)
+function Counter({itemCount, stock, price, id, deleteItem, getCount}) {
+    const [count, setCount] = useState(itemCount)
 
     function increment() {
         if(count < stock) {
             setCount(count + 1)
-            returnPrice(price * (count + 1))
+            getCount(id, count + 1)
         }
     }
     
     function decrement () {
         if (count > 1) {
             setCount(count - 1)
-            returnPrice(price * (count - 1))
+            getCount(id, count - 1)
         }
         else {
             deleteItem(id)
+            getCount(id, count - 1)
         }
     }
     

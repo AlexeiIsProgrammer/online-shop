@@ -28,15 +28,15 @@ function ItemCard() {
         setIsLoading(true)
     }, [])
 
-    function addToBasket(id) {
+    function addToBasket(ind) {
 
-        if(!basket.includes(id)) {
-            const newBasket = [...basket, id]
+        if(!basket.some(el => ind.id === el.id)) {
+            const newBasket = [...basket, ind]
             setBasket(newBasket)
             localStorage.setItem('basket', JSON.stringify(newBasket))
         }
         else {
-            const newBasket = [...basket.slice(0, basket.indexOf(id)), ...basket.slice(basket.indexOf(id) + 1)]
+            const newBasket = [...basket.slice(0, basket.findIndex(el => ind.id === el.id)), ...basket.slice(basket.findIndex(el => ind.id === el.id) + 1)]
             setBasket(newBasket)
             localStorage.setItem('basket', JSON.stringify(newBasket))
         }
@@ -73,9 +73,9 @@ function ItemCard() {
                             <CardPattern name={"Марка"} description={item.brand}/>
                         </div>
                         <div className='info__btns'>
-                            <MyButton onClick={() => addToBasket(item.id)}>
+                            <MyButton onClick={() => addToBasket({id: item.id, count: 1, price: item.price})}>
                             {
-                                !basket.includes(item.id)
+                                !basket.some(el => item.id === el.id)
                                 ?
                                 'Добавить в корзину'
                                 :

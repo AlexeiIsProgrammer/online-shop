@@ -10,7 +10,8 @@
             "stock": 4, 
             "brand": "BMW",
             "category": "Cars", 
-            "thumbnail": "main1.jpg",
+            "count": 0,
+"thumbnail": "main1.jpg",
             "images": [ 
                 "3-15bmw.jpg",
                 "dixi15-03.jpg",
@@ -28,7 +29,8 @@
             "stock": 10, 
             "brand": "BMW", 
             "category": "Cars", 
-            "thumbnail": "main2.jpg", 
+            "count": 0,
+"thumbnail": "main2.jpg", 
             "images": [
                 "BMW_303_02.jpg",
                 "bmw_303_03.jpg",
@@ -46,7 +48,8 @@
             "stock": 20, 
             "brand": "BMW", 
             "category": "Cars", 
-            "thumbnail": "main3.jpg", 
+            "count": 0,
+"thumbnail": "main3.jpg", 
             "images": [
                 "bmw_503_01.jpg",
                 "bmw_503_02.jpg",
@@ -64,7 +67,8 @@
             "stock": 1, 
             "brand": "BMW", 
             "category": "Cars", 
-            "thumbnail": "main4.jpg", 
+            "count": 0,
+"thumbnail": "main4.jpg", 
             "images": [
                 "507-1.jpg",
                 "507-2.jpg",
@@ -82,7 +86,8 @@
             "stock": 14, 
             "brand": "BMW", 
             "category": "Cars", 
-            "thumbnail": "main5.jpg", 
+            "count": 0,
+"thumbnail": "main5.jpg", 
             "images": [
                 "bmw_e9_1.jpg",
                 "bmw_e9_2.jpg",
@@ -100,7 +105,8 @@
             "stock": 3, 
             "brand": "BMW", 
             "category": "Cars", 
-            "thumbnail": "main6.jpg", 
+            "count": 0,
+"thumbnail": "main6.jpg", 
             "images": [
                 "bmw_e24_01.jpg",
                 "bmw_e24_02.jpg",
@@ -118,7 +124,8 @@
             "stock": 30, 
             "brand": "BMW", 
             "category": "Cars", 
-            "thumbnail": "main7.jpg", 
+            "count": 0,
+"thumbnail": "main7.jpg", 
             "images": [
                 "bmw_m1_01.jpg",
                 "bmw_m1_02.jpg",
@@ -136,7 +143,8 @@
             "stock": 100, 
             "brand": "BMW", 
             "category": "Cars", 
-            "thumbnail": "main8.jpg", 
+            "count": 0,
+"thumbnail": "main8.jpg", 
             "images": [
                 "bmw_e28_01.jpg",
                 "bmw_e28_02.jpg",
@@ -154,7 +162,8 @@
             "stock": 70, 
             "brand": "BMW", 
             "category": "Cars", 
-            "thumbnail": "main9.jpg", 
+            "count": 0,
+"thumbnail": "main9.jpg", 
             "images": [
                 "bmw_e30_01.jpg",
                 "bmw_e30_02.jpg",
@@ -172,7 +181,8 @@
             "stock": 200, 
             "brand": "BMW", 
             "category": "Cars", 
-            "thumbnail": "main10.jpg", 
+            "count": 0,
+"thumbnail": "main10.jpg", 
             "images": [
                 "bmw_e34_01.jpg",
                 "bmw_e34_02.jpg",
@@ -190,7 +200,8 @@
             "stock": 13, 
             "brand": "BMW", 
             "category": "Cars", 
-            "thumbnail": "main11.jpg", 
+            "count": 0,
+"thumbnail": "main11.jpg", 
             "images": [
                 "bmw_e31_01.jpg",
                 "bmw_e31_02.jpg",
@@ -208,7 +219,8 @@
             "stock": 203, 
             "brand": "BMW", 
             "category": "Cars", 
-            "thumbnail": "main12.jpg", 
+            "count": 0,
+"thumbnail": "main12.jpg", 
             "images": [
                 "bmw_e36_01.jpg",
                 "bmw_e36_02.jpg",
@@ -226,7 +238,8 @@
             "stock": 93, 
             "brand": "BMW", 
             "category": "Cars", 
-            "thumbnail": "main13.jpg", 
+            "count": 0,
+"thumbnail": "main13.jpg", 
             "images": [
                 "bmw_e38_01.jpg",
                 "bmw_e38_02.jpg",
@@ -244,7 +257,8 @@
             "stock": 130, 
             "brand": "BMW", 
             "category": "Cars", 
-            "thumbnail": "main14.jpg", 
+            "count": 0,
+"thumbnail": "main14.jpg", 
             "images": [
                 "bmw_e39_01.jpg",
                 "bmw_e39_02.jpg",
@@ -262,7 +276,8 @@
             "stock": 90, 
             "brand": "BMW", 
             "category": "Cars", 
-            "thumbnail": "main15.jpg", 
+            "count": 0,
+"thumbnail": "main15.jpg", 
             "images": [
                 "bmw_e53_01.jpg",
                 "bmw_e53_02.jpg",
@@ -280,7 +295,8 @@
             "stock": 20, 
             "brand": "BMW", 
             "category": "Cars", 
-            "thumbnail": "main16.jpg", 
+            "count": 0,
+"thumbnail": "main16.jpg", 
             "images": [
                 "bmw_z8_01.jpg",
                 "bmw_z8_02.jpg",
@@ -298,7 +314,8 @@
             "stock": 13, 
             "brand": "BMW", 
             "category": "Cars", 
-            "thumbnail": "main17.jpg", 
+            "count": 0,
+"thumbnail": "main17.jpg", 
             "images": [
                 "bmw_e60_01.jpg",
                 "bmw_e60_02.jpg",
@@ -316,7 +333,8 @@
             "stock": 30, 
             "brand": "BMW", 
             "category": "Cars", 
-            "thumbnail": "main18.jpg", 
+            "count": 0,
+"thumbnail": "main18.jpg", 
             "images": [
                 "bmw_f90_01.jpg",
                 "bmw_f90_02.jpg",
@@ -334,7 +352,8 @@
             "stock": 13, 
             "brand": "BMW", 
             "category": "Motorcycle", 
-            "thumbnail": "main19.jpg", 
+            "count": 0,
+"thumbnail": "main19.jpg", 
             "images": [
                 "bmw_r1200r_01.jpg",
                 "bmw_r1200r_02.jpg",
@@ -352,7 +371,8 @@
             "stock": 13, 
             "brand": "BMW", 
             "category": "Motorcycle", 
-            "thumbnail": "main20.jpg", 
+            "count": 0,
+"thumbnail": "main20.jpg", 
             "images": [
                 "bmw_s1000r_01.jpg",
                 "bmw_s1000r_02.jpg",
@@ -371,7 +391,8 @@
             "stock": 3, 
             "brand": "Mercedes", 
             "category": "Cars", 
-            "thumbnail": "main21.jpg", 
+            "count": 0,
+"thumbnail": "main21.jpg", 
             "images": [
                 "mercedes_w140_01.jpg",
                 "mercedes_w140_02.jpg",
@@ -389,7 +410,8 @@
             "stock": 13, 
             "brand": "AUDI", 
             "category": "Cars", 
-            "thumbnail": "main22.jpg", 
+            "count": 0,
+"thumbnail": "main22.jpg", 
             "images": [
                 "audi_d2_01.jpg",
                 "audi_d2_02.jpg",
@@ -407,7 +429,8 @@
             "stock": 13, 
             "brand": "AUDI", 
             "category": "Cars", 
-            "thumbnail": "main23.jpg", 
+            "count": 0,
+"thumbnail": "main23.jpg", 
             "images": [
                 "audi_Qs1_01.jpg",
                 "audi_Qs1_02.jpg",
@@ -425,7 +448,8 @@
             "stock": 13, 
             "brand": "AUDI", 
             "category": "Cars", 
-            "thumbnail": "main24.jpg", 
+            "count": 0,
+"thumbnail": "main24.jpg", 
             "images": [
                 "audi_tt_01.jpg",
                 "audi_tt_02.jpg",
@@ -443,7 +467,8 @@
             "stock": 80, 
             "brand": "Volvo", 
             "category": "Cars", 
-            "thumbnail": "main25.jpg", 
+            "count": 0,
+"thumbnail": "main25.jpg", 
             "images": [
                 "volvo_xc90_01.jpg",
                 "volvo_xc90_02.jpg",
@@ -461,7 +486,8 @@
             "stock": 13, 
             "brand": "Porsche", 
             "category": "Cars", 
-            "thumbnail": "main26.jpg", 
+            "count": 0,
+"thumbnail": "main26.jpg", 
             "images": [
                 "porsche_911_01.jpg",
                 "porsche_911_02.jpg",
@@ -479,7 +505,8 @@
             "stock": 13, 
             "brand": "Volvo", 
             "category": "Cars", 
-            "thumbnail": "main27.jpg", 
+            "count": 0,
+"thumbnail": "main27.jpg", 
             "images": [
                 "volvo_s60_01.jpg",
                 "volvo_s60_02.jpg",
@@ -497,7 +524,8 @@
             "stock": 13, 
             "brand": "Peugeot", 
             "category": "Cars", 
-            "thumbnail": "main28.jpg", 
+            "count": 0,
+"thumbnail": "main28.jpg", 
             "images": [
                 "peugeot_405_01.jpg",
                 "peugeot_405_02.jpg",
@@ -515,7 +543,8 @@
             "stock": 13, 
             "brand": "Peugeot", 
             "category": "Cars", 
-            "thumbnail": "main29.jpg", 
+            "count": 0,
+"thumbnail": "main29.jpg", 
             "images": [
                 "peugeot_406_01.jpg",
                 "peugeot_406_02.jpg",
@@ -533,7 +562,8 @@
             "stock": 13, 
             "brand": "HONDA", 
             "category": "Cars", 
-            "thumbnail": "main30.jpg", 
+            "count": 0,
+"thumbnail": "main30.jpg", 
             "images": [
                 "honda_civic_01.jpg",
                 "honda_civic_02.jpg",
@@ -551,7 +581,8 @@
             "stock": 999, 
             "brand": "Жэгулі", 
             "category": "Cars", 
-            "thumbnail": "main31.jpg", 
+            "count": 0,
+"thumbnail": "main31.jpg", 
             "images": [
                 "zhiguli_07_01.jpg",
                 "zhiguli_07_02.jpg",
@@ -569,7 +600,8 @@
             "stock": 25, 
             "brand": "Range Rover", 
             "category": "Cars", 
-            "thumbnail": "main32.jpg", 
+            "count": 0,
+"thumbnail": "main32.jpg", 
             "images": [
                 "range_sport_01.jpg",
                 "range_sport_02.jpg",
@@ -587,7 +619,8 @@
             "stock": 13, 
             "brand": "Honda", 
             "category": "Motorcycle", 
-            "thumbnail": "main33.jpg", 
+            "count": 0,
+"thumbnail": "main33.jpg", 
             "images": [
                 "honda_CBR_01.jpg",
                 "honda_CBR_02.jpg",
@@ -605,7 +638,8 @@
             "stock": 13, 
             "brand": "Suzuki", 
             "category": "Motorcycle", 
-            "thumbnail": "main34.jpg", 
+            "count": 0,
+"thumbnail": "main34.jpg", 
             "images": [
                 "suzuki_boulevard_01.jpg",
                 "suzuki_boulevard_02.jpg",
@@ -623,7 +657,8 @@
             "stock": 13, 
             "brand": "Yamaha", 
             "category": "Motorcycle", 
-            "thumbnail": "main35.jpg", 
+            "count": 0,
+"thumbnail": "main35.jpg", 
             "images": [
                 "yamaha_yzf_01.jpg",
                 "yamaha_yzf_02.jpg",
@@ -641,7 +676,8 @@
             "stock": 13, 
             "brand": "Lightning", 
             "category": "Motorcycle", 
-            "thumbnail": "main36.jpg", 
+            "count": 0,
+"thumbnail": "main36.jpg", 
             "images": [
                 "lightning_ls_01.jpg",
                 "lightning_ls_02.jpg",
@@ -659,7 +695,8 @@
             "stock": 13, 
             "brand": "Cagiva", 
             "category": "Motorcycle", 
-            "thumbnail": "main37.jpg", 
+            "count": 0,
+"thumbnail": "main37.jpg", 
             "images": [
                 "cagiva_raptor_01.jpg",
                 "cagiva_raptor_02.jpg",
@@ -677,7 +714,8 @@
             "stock": 13, 
             "brand": "Vespa", 
             "category": "Motorcycle", 
-            "thumbnail": "main38.jpg", 
+            "count": 0,
+"thumbnail": "main38.jpg", 
             "images": [
                 "vespa_tap_01.jpg",
                 "vespa_tap_02.jpg",
@@ -695,7 +733,8 @@
             "stock": 13, 
             "brand": "ПМЗ", 
             "category": "Motorcycle", 
-            "thumbnail": "main39.jpg", 
+            "count": 0,
+"thumbnail": "main39.jpg", 
             "images": [
                 "pmz_a750_01.jpg",
                 "pmz_a750_02.jpg",
@@ -713,7 +752,8 @@
             "stock": 100, 
             "brand": "Трахтар Беларус", 
             "category": "Monster", 
-            "thumbnail": "main40.jpg", 
+            "count": 0,
+"thumbnail": "main40.jpg", 
             "images": [
                 "mtz_bel_01.jpg",
                 "mtz_bel_02.jpg",

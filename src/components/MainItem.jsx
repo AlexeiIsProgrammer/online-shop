@@ -6,15 +6,15 @@ import MyButton from './UI/Button/MyButton.jsx'
 function MainItem({props, basket, setBasket}) {
     const router = useNavigate()
 
-    function addToBasket(id) {
+    function addToBasket(ind) {
 
-        if(!basket.includes(id)) {
-            const newBasket = [...basket, id]
+        if(!basket.some(el => ind.id === el.id)) {
+            const newBasket = [...basket, ind]
             setBasket(newBasket)
             localStorage.setItem('basket', JSON.stringify(newBasket))
         }
         else {
-            const newBasket = [...basket.slice(0, basket.indexOf(id)), ...basket.slice(basket.indexOf(id) + 1)]
+            const newBasket = [...basket.slice(0, basket.findIndex(el => ind.id === el.id)), ...basket.slice(basket.findIndex(el => ind.id === el.id) + 1)]
             setBasket(newBasket)
             localStorage.setItem('basket', JSON.stringify(newBasket))
         }
@@ -22,13 +22,13 @@ function MainItem({props, basket, setBasket}) {
 
     return (
         <li className='catalog__item product' style={{backgroundImage: `url(${require(`../img/${props.thumbnail}`)})`}}>
-            <p className={`${!basket.includes(props.id) ? 'product__header' : 'product__header_active'}`} >
+            <p className={`${!basket.some(el => el.id === props.id) ? 'product__header' : 'product__header_active'}`} >
                 {props.brand} {props.model}
             </p>
             <div className='product__body'>
                 <div className='product__description'>
                     <p>Price:
-                        <span>{props.price}</span>
+                        <span>{props.price.toFixed(1)}</span>
                     </p>
                     <p>Discount:
                         <span>{props.discountPercentage}</span>
@@ -44,8 +44,8 @@ function MainItem({props, basket, setBasket}) {
                     </p>
                 </div>
                 <div className='product__btns'>
-                    <MyButton onClick={() => addToBasket(props.id)}>{
-                        !basket.includes(props.id)
+                    <MyButton onClick={() => addToBasket({id : props.id, count: 1, price: props.price})}>{
+                        !basket.some(el => el.id === props.id)
                         ?
                         'Добавить в корзину'
                         :
