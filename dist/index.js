@@ -12878,6 +12878,66 @@ function App() {
 
 /***/ }),
 
+/***/ "./src/hooks/useItems.js":
+/*!*******************************!*\
+  !*** ./src/hooks/useItems.js ***!
+  \*******************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "useBrandItems": () => (/* binding */ useBrandItems),
+/* harmony export */   "useCategoryItems": () => (/* binding */ useCategoryItems),
+/* harmony export */   "useItems": () => (/* binding */ useItems),
+/* harmony export */   "useSortedItems": () => (/* binding */ useSortedItems)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+const useCategoryItems = (posts, category) => {
+  const categoryPosts = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(() => {
+    if (category.length) {
+      return posts.filter(post => category.includes(post.category));
+    }
+    return posts;
+  }, [category, posts]);
+  return categoryPosts;
+};
+const useBrandItems = (posts, brand, category) => {
+  const categoryPosts = useCategoryItems(posts, category);
+  const brandPosts = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(() => {
+    if (brand.length) {
+      return categoryPosts.filter(post => brand.includes(post.brand));
+    }
+    return categoryPosts;
+  }, [brand, categoryPosts]);
+  return brandPosts;
+};
+const useSortedItems = (posts, sort, brand, category) => {
+  const brandPosts = useBrandItems(posts, brand, category);
+  const sortedPosts = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(() => {
+    if (sort) {
+      if (!sort.includes('-low')) {
+        return [...brandPosts].sort((a, b) => b[sort] - a[sort]);
+      } else {
+        return [...brandPosts].sort((a, b) => a[sort.slice(0, -4)] - b[sort.slice(0, -4)]);
+      }
+    }
+    return brandPosts;
+  }, [sort, brandPosts]);
+  return sortedPosts;
+};
+const useItems = (posts, sort, query, brand, category) => {
+  const sortedPosts = useSortedItems(posts, sort, brand, category);
+  const sortedAndSearchedPosts = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(() => {
+    return sortedPosts.filter(post => `${post.rating.toString().toLowerCase()}${post.stock.toString().toLowerCase()}${post.model.toLowerCase()}${post.brand.toLowerCase()}${post.category.toLowerCase()}${post.model.toLowerCase()}`.includes(query.toLowerCase()));
+  }, [query, sortedPosts]);
+  return sortedAndSearchedPosts;
+};
+
+/***/ }),
+
 /***/ "./src/router/index.js":
 /*!*****************************!*\
   !*** ./src/router/index.js ***!
@@ -13014,7 +13074,7 @@ function BasketItem(_ref) {
     item,
     ind,
     deleteItem,
-    returnPrice
+    getCount
   } = _ref;
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", {
     className: "basket__item"
@@ -13022,21 +13082,22 @@ function BasketItem(_ref) {
     className: "basket__id"
   }, ind + 1), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("img", {
     className: "basket__image",
-    src: __webpack_require__("./src/img sync recursive ^\\.\\/.*$")(`./${item.thumbnail}`)
+    src: __webpack_require__("./src/img sync recursive ^\\.\\/.*$")(`./${item.info.thumbnail}`)
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "basket__info"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
     className: "basket__name"
-  }, item.brand, item.model), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
+  }, item.info.brand, " ", item.info.model), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
     className: "basket__description"
-  }, item.description), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+  }, item.info.description), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "basket__raount"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Rating: ", item.rating), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Discount: ", item.discountPercentage))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Counter_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
-    stock: item.stock,
-    price: item.price,
-    id: item.id,
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Rating: ", item.info.rating), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Discount: ", item.info.discountPercentage))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Counter_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    itemCount: item.count,
+    stock: item.info.stock,
+    price: item.info.price,
+    id: item.info.id,
     deleteItem: deleteItem,
-    returnPrice: returnPrice
+    getCount: getCount
   }));
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (BasketItem);
@@ -13065,19 +13126,21 @@ function BasketList(_ref) {
   let {
     props,
     deleteItem,
-    returnPrice
+    getCount
   } = _ref;
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "basket"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("ul", {
     className: "basket__container"
-  }, props.map((item, ind) => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_BasketItem_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
-    key: ind,
-    ind: ind,
-    item: item,
-    deleteItem: deleteItem,
-    returnPrice: returnPrice
-  }))));
+  }, props.map((item, ind) => {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_BasketItem_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
+      key: ind,
+      item: item,
+      ind: ind,
+      deleteItem: deleteItem,
+      getCount: getCount
+    });
+  })));
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (BasketList);
 
@@ -13103,25 +13166,27 @@ __webpack_require__.r(__webpack_exports__);
 
 function Counter(_ref) {
   let {
+    itemCount,
     stock,
     price,
     id,
     deleteItem,
-    returnPrice
+    getCount
   } = _ref;
-  const [count, setCount] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(1);
+  const [count, setCount] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(itemCount);
   function increment() {
     if (count < stock) {
       setCount(count + 1);
-      returnPrice(price * (count + 1));
+      getCount(id, count + 1);
     }
   }
   function decrement() {
     if (count > 1) {
       setCount(count - 1);
-      returnPrice(price * (count - 1));
+      getCount(id, count - 1);
     } else {
       deleteItem(id);
+      getCount(id, count - 1);
     }
   }
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
@@ -13209,6 +13274,8 @@ __webpack_require__.r(__webpack_exports__);
 
 function FilterList(_ref) {
   let {
+    filter,
+    setFilter,
     props
   } = _ref;
   const categorySet = new Set(props.map(item => item.category));
@@ -13217,15 +13284,32 @@ function FilterList(_ref) {
     className: "filter"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "filter__btns"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_UI_Button_MyButton_jsx__WEBPACK_IMPORTED_MODULE_7__["default"], null, "\u041E\u0447\u0438\u0441\u0442\u0438\u0442\u044C \u0444\u0438\u043B\u044C\u0442\u0440\u044B"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_UI_Button_MyButton_jsx__WEBPACK_IMPORTED_MODULE_7__["default"], null, "\u041A\u043E\u043F\u0438\u0440\u043E\u0432\u0430\u0442\u044C \u0441\u0441\u044B\u043B\u043A\u0443")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_UI_Button_MyButton_jsx__WEBPACK_IMPORTED_MODULE_7__["default"], {
+    onClick: () => setFilter({
+      sort: "",
+      query: "",
+      brand: [],
+      category: []
+    })
+  }, "\u041E\u0447\u0438\u0441\u0442\u0438\u0442\u044C \u0444\u0438\u043B\u044C\u0442\u0440\u044B"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_UI_Button_MyButton_jsx__WEBPACK_IMPORTED_MODULE_7__["default"], {
+    onClick: () => {
+      navigator.clipboard.writeText(window.location.href);
+    }
+  }, "\u041A\u043E\u043F\u0438\u0440\u043E\u0432\u0430\u0442\u044C \u0441\u0441\u044B\u043B\u043A\u0443")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "filter__container"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Filters_FiltersPattern_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
     name: "Category"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Filters_Category_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    filter: filter,
+    setFilter: setFilter,
+    name: "category",
     props: [...categorySet]
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Filters_FiltersPattern_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
-    name: "Model"
+    name: "Brand"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Filters_Model_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    filter: filter,
+    setFilter: setFilter,
+    name: "brand",
     props: [...modelSet]
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Filters_FiltersPattern_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
     name: "Price"
@@ -13263,12 +13347,18 @@ __webpack_require__.r(__webpack_exports__);
 
 function Category(_ref) {
   let {
+    filter,
+    setFilter,
+    name,
     props
   } = _ref;
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("ul", null, props.map((item, ind) => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_CheckBox_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    filter: filter,
+    setFilter: setFilter,
     key: ind,
-    name: item,
-    type: 'category'
+    value: item,
+    iName: item,
+    name: name
   })));
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Category);
@@ -13288,16 +13378,32 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
 function CheckBox(_ref) {
   let {
-    name,
-    type
+    filter,
+    setFilter,
+    iName,
+    ...props
   } = _ref;
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
+  function onChangeState(e) {
+    if (e.target.checked) {
+      setFilter({
+        ...filter,
+        [`${e.target.name}`]: [...filter[`${e.target.name}`], iName]
+      });
+    } else {
+      setFilter({
+        ...filter,
+        [`${e.target.name}`]: [...filter[`${e.target.name}`].slice(0, filter[`${e.target.name}`].indexOf(iName)), ...filter[`${e.target.name}`].slice(filter[`${e.target.name}`].indexOf(iName) + 1)]
+      });
+    }
+  }
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", _extends({
     type: "checkbox",
-    name: type
-  }), name);
+    onChange: e => onChangeState(e)
+  }, props)), iName);
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (CheckBox);
 
@@ -13354,12 +13460,18 @@ __webpack_require__.r(__webpack_exports__);
 
 function Model(_ref) {
   let {
-    props
+    filter,
+    setFilter,
+    props,
+    name
   } = _ref;
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("ul", null, props.map((item, ind) => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_CheckBox_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    filter: filter,
+    setFilter: setFilter,
     key: ind,
-    name: item,
-    type: 'model'
+    iName: item,
+    value: item,
+    name: name
   })));
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Model);
@@ -13386,7 +13498,7 @@ function Price(_ref) {
   } = _ref;
   // var ReactDualRangeSlider = require('react-dual-range-slider');
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
-    type: "text"
+    type: "range"
   })
   // <ReactDualRangeSlider
   //   limits={[0, 10]}
@@ -13412,12 +13524,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
 function Stock(_ref) {
   let {
     ...props
   } = _ref;
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", props);
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", _extends({
+    type: "range"
+  }, props));
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Stock);
 
@@ -13488,10 +13603,21 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-function Header(_ref) {
-  let {
-    sumOfBasket
-  } = _ref;
+function Header() {
+  const [sumOfBasket, setSumOfBasket] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(0);
+  const [countOfBasket, setCountOfBasket] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(0);
+  setInterval(() => {
+    //I had no time guys, just relax! :DDDDD
+    setSumOfBasket(JSON.parse(localStorage.getItem('basket')).reduce((prev, curr) => prev + curr.price * curr.count, 0));
+    setCountOfBasket(JSON.parse(localStorage.getItem('basket')).reduce((prev, curr) => prev + curr.count, 0));
+  }, 1000);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    if (localStorage.getItem('basket')) {
+      const arrayOfItems = JSON.parse(localStorage.getItem('basket'));
+      setSumOfBasket(arrayOfItems.reduce((prev, curr) => prev + curr.price * curr.count, 0));
+      setCountOfBasket(arrayOfItems.reduce((prev, curr) => prev + curr.count, 0));
+    }
+  }, [setSumOfBasket, countOfBasket]);
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("header", {
     className: "header"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
@@ -13506,15 +13632,15 @@ function Header(_ref) {
     alt: "Logotype"
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
     className: "header__sum"
-  }, "\u0421\u0443\u043C\u043C\u0430 \u043A\u043E\u0440\u0437\u0438\u043D\u044B: ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+  }, "Sum of the basket: ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
     className: "header__value"
-  }, sumOfBasket), "$"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Link, {
+  }, sumOfBasket.toFixed(1)), "$"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Link, {
     to: "/basket"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "header__basket"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
     className: "header__basket-count"
-  }, "0"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("img", {
+  }, countOfBasket), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("img", {
     className: "header__basket-image",
     src: __webpack_require__(/*! ../img/basket.png */ "./src/img/basket.png"),
     alt: "Basket"
@@ -13551,13 +13677,13 @@ function MainItem(_ref) {
     setBasket
   } = _ref;
   const router = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_3__.useNavigate)();
-  function addToBasket(id) {
-    if (!basket.includes(id)) {
-      const newBasket = [...basket, id];
+  function addToBasket(ind) {
+    if (!basket.some(el => ind.id === el.id)) {
+      const newBasket = [...basket, ind];
       setBasket(newBasket);
       localStorage.setItem('basket', JSON.stringify(newBasket));
     } else {
-      const newBasket = [...basket.slice(0, basket.indexOf(id)), ...basket.slice(basket.indexOf(id) + 1)];
+      const newBasket = [...basket.slice(0, basket.findIndex(el => ind.id === el.id)), ...basket.slice(basket.findIndex(el => ind.id === el.id) + 1)];
       setBasket(newBasket);
       localStorage.setItem('basket', JSON.stringify(newBasket));
     }
@@ -13568,16 +13694,20 @@ function MainItem(_ref) {
       backgroundImage: `url(${__webpack_require__("./src/img sync recursive ^\\.\\/.*$")(`./${props.thumbnail}`)})`
     }
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
-    className: `${!basket.includes(props.id) ? 'product__header' : 'product__header_active'}`
+    className: `${!basket.some(el => el.id === props.id) ? 'product__header' : 'product__header_active'}`
   }, props.brand, " ", props.model), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "product__body"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "product__description"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Price:", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", null, props.price)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Discount:", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", null, props.discountPercentage)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Rating:", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", null, props.rating)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Stock:", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", null, props.stock)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Category:", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", null, props.category))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Price:", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", null, props.price.toFixed(1))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Discount:", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", null, props.discountPercentage)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Rating:", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", null, props.rating)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Stock:", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", null, props.stock)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Category:", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", null, props.category))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "product__btns"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_UI_Button_MyButton_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
-    onClick: () => addToBasket(props.id)
-  }, !basket.includes(props.id) ? 'Добавить в корзину' : 'Удалить из корзины'), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_UI_Button_MyButton_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    onClick: () => addToBasket({
+      id: props.id,
+      count: 1,
+      price: props.price
+    })
+  }, !basket.some(el => el.id === props.id) ? 'Добавить в корзину' : 'Удалить из корзины'), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_UI_Button_MyButton_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
     onClick: () => router(`/main/${props.id - 1}`)
   }, "\u041F\u043E\u0434\u0440\u043E\u0431\u043D\u0435\u0435"))));
 }
@@ -13600,6 +13730,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _UI_Button_MyButton_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../UI/Button/MyButton.jsx */ "./src/components/UI/Button/MyButton.jsx");
 /* harmony import */ var _UI_Input_MyInput_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../UI/Input/MyInput.jsx */ "./src/components/UI/Input/MyInput.jsx");
+/* harmony import */ var _SaleItem_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./SaleItem.jsx */ "./src/components/Sale/SaleItem.jsx");
+
+
 
 
 
@@ -13608,6 +13741,19 @@ function Sale(_ref) {
     countProducts,
     totalPrice
   } = _ref;
+  const [promo, setPromo] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('');
+  const saleArray = [
+  //No anyone knows about this instead of me!
+  {
+    'name': 'ABOBA',
+    'description': 'Good sale!!!',
+    'sale': 10
+  }, {
+    'name': 'MONEY',
+    'description': 'MONEY MONEY MONEY',
+    'sale': 25
+  }];
+  function addToSales() {}
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "sale"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
@@ -13616,18 +13762,46 @@ function Sale(_ref) {
     className: "sale__header"
   }, "Summary"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "sale__body"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
-    className: "sale__products"
-  }, "Items: ", countProducts), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
-    className: "sale__total"
-  }, "Total: ", totalPrice, "$"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_UI_Input_MyInput_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
-    type: "text",
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_UI_Input_MyInput_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    value: promo,
+    onChange: e => setPromo(e.target.value),
     placeholder: "Enter promo..."
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
+  }), saleArray.filter(item => item.name === promo).map(item => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_SaleItem_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    key: item.name,
+    item: item
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
     className: "sale__promo-example"
-  }, "Test promo: 'ABOBA' or 'MONEY'"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_UI_Button_MyButton_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], null, "Click to buy"))));
+  }, "Test promo: 'ABOBA' or 'MONEY'"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_UI_Button_MyButton_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    onClick: () => addToSales
+  }, "Click to buy"))));
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Sale);
+
+/***/ }),
+
+/***/ "./src/components/Sale/SaleItem.jsx":
+/*!******************************************!*\
+  !*** ./src/components/Sale/SaleItem.jsx ***!
+  \******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _UI_Button_MyButton_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../UI/Button/MyButton.jsx */ "./src/components/UI/Button/MyButton.jsx");
+
+
+function SaleItem(_ref) {
+  let {
+    item
+  } = _ref;
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, item.description, " - ", item.sale, "%", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_UI_Button_MyButton_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], null, "Add")));
+}
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SaleItem);
 
 /***/ }),
 
@@ -13646,6 +13820,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _styles_App_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../styles/App.scss */ "./src/styles/App.scss");
 /* harmony import */ var _MainItem_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./MainItem.jsx */ "./src/components/MainItem.jsx");
+/* harmony import */ var _UI_Button_MyButton_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./UI/Button/MyButton.jsx */ "./src/components/UI/Button/MyButton.jsx");
+/* harmony import */ var _UI_Input_MyInput_jsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./UI/Input/MyInput.jsx */ "./src/components/UI/Input/MyInput.jsx");
+/* harmony import */ var _UI_Select_MySelect_jsx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./UI/Select/MySelect.jsx */ "./src/components/UI/Select/MySelect.jsx");
+/* harmony import */ var _hooks_useItems__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../hooks/useItems */ "./src/hooks/useItems.js");
+
+
+
+
 
 
 
@@ -13653,15 +13835,57 @@ function ShowFullItems(_ref) {
   let {
     items,
     basket,
-    setBasket
+    setBasket,
+    filter,
+    setFilter
   } = _ref;
+  const [isOtherBlock, setIsOtherBlock] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
+  const sortedAndSearchedPosts = (0,_hooks_useItems__WEBPACK_IMPORTED_MODULE_6__.useItems)(items, filter.sort, filter.query, filter.brand, filter.category);
+  const changeBlock = () => isOtherBlock ? setIsOtherBlock(false) : setIsOtherBlock(true);
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "catalog"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "catalog__container"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("ul", {
-    className: "catalog__list"
-  }, items.map(item => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_MainItem_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "catalog__header"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_UI_Select_MySelect_jsx__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    value: filter.sort,
+    onChange: selectedSort => setFilter({
+      ...filter,
+      sort: selectedSort
+    }),
+    defaultValue: "\u0421\u043E\u0440\u0442\u0438\u0440\u043E\u0432\u043E\u0447\u043A\u0430",
+    options: [{
+      value: 'price',
+      name: 'Сначала дорогие'
+    }, {
+      value: 'price-low',
+      name: 'Сначала дешевые'
+    }, {
+      value: 'rating',
+      name: 'Более рейтинговые'
+    }, {
+      value: 'rating-low',
+      name: 'Менее рейтинговые'
+    }, {
+      value: 'stock',
+      name: 'Больше всего на складе'
+    }, {
+      value: 'stock-low',
+      name: 'Меньше всего на складе'
+    }]
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Founded: ", sortedAndSearchedPosts.length), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_UI_Input_MyInput_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    value: filter.query,
+    onChange: e => setFilter({
+      ...filter,
+      query: e.target.value
+    }),
+    placeholder: "\u041D\u0430\u0439\u0434\u0438\u0442\u0435 \u0442\u043E\u0432\u0430\u0440..."
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_UI_Button_MyButton_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    onClick: changeBlock
+  }, "\u0418\u0437\u043C\u0435\u043D\u0438\u0442\u044C \u043E\u0442\u043E\u0431\u0440\u0430\u0436\u0435\u043D\u0438\u0435")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("ul", {
+    className: isOtherBlock ? "catalog__list_other" : "catalog__list"
+  }, sortedAndSearchedPosts.map(item => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_MainItem_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
     key: item.id,
     props: item,
     basket: basket,
@@ -13865,6 +14089,44 @@ const MyInput = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().forwar
 
 /***/ }),
 
+/***/ "./src/components/UI/Select/MySelect.jsx":
+/*!***********************************************!*\
+  !*** ./src/components/UI/Select/MySelect.jsx ***!
+  \***********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+const MySelect = _ref => {
+  let {
+    options,
+    defaultValue,
+    value,
+    onChange
+  } = _ref;
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("select", {
+    name: "",
+    id: "",
+    value: value,
+    onChange: event => onChange(event.target.value)
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("option", {
+    disabled: true,
+    value: ""
+  }, defaultValue), options.map(option => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("option", {
+    key: option.value,
+    value: option.value
+  }, option.name)));
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (MySelect);
+
+/***/ }),
+
 /***/ "./src/components/ValidationModal.jsx":
 /*!********************************************!*\
   !*** ./src/components/ValidationModal.jsx ***!
@@ -13917,19 +14179,19 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function Basket() {
-  const BasketContext = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.createContext)({
-    count: 0,
-    price: 0
-  });
   const [items, setItems] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
   const [isLoading, setisLoading] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
   const [basketItems, setBasketItems] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
-  const deleteItem = id => {
-    const newBasket = [...basketItems.slice(0, basketItems.indexOf(id)), ...basketItems.slice(basketItems.indexOf(id) + 1)];
+  const [propes, setPropes] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
+  const deleteItem = ind => {
+    const newBasket = [...basketItems.slice(0, basketItems.findIndex(el => el.id === ind)), ...basketItems.slice(basketItems.findIndex(el => el.id === ind) + 1)];
+    console.log(newBasket);
     setBasketItems(newBasket);
     localStorage.setItem('basket', JSON.stringify(newBasket));
   };
-  const returnPrice = value => value;
+
+  // const returnPrice = (value) => value
+
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
     setItems(_API_getJSON__WEBPACK_IMPORTED_MODULE_1__["default"].getItems());
     if (localStorage.getItem('basket')) {
@@ -13937,20 +14199,45 @@ function Basket() {
     }
     setisLoading(true);
   }, []);
+  const getCount = (ind, count) => {
+    const newItem = props.find(el => el.info.id === ind);
+    newItem.count = count;
+    let newBasket = [];
+    if (newItem.count <= 0) {
+      newBasket = [...props.slice(0, props.findIndex(el => el.info.id === ind)), ...props.slice(props.findIndex(el => el.info.id === ind) + 1)];
+    } else {
+      newBasket = [...props.slice(0, props.findIndex(el => el.info.id === ind)), newItem, ...props.slice(props.findIndex(el => el.info.id === ind) + 1)];
+    }
+    localStorage.setItem('basket', JSON.stringify(newBasket.map(item => {
+      return {
+        id: item.info.id,
+        count: count,
+        price: item.info.price
+      };
+    })));
+    setCountt(newBasket.reduce((prev, cur) => prev + cur.count, 0));
+    setSum(newBasket.reduce((prev, cur) => prev + cur.count * cur.info.price, 0).toFixed(3));
+  };
+  const [countt, setCountt] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(props.reduce((prev, cur) => prev + cur.count, 0)); //изменить имя
+  const [sum, setSum] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(props.reduce((prev, cur) => prev + cur.count * cur.info.price, 0));
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, isLoading && basketItems.length ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "basket__main"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "container"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "basket__main-container"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(BasketContext.Provider, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Basket_BasketHeader_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Basket_BasketList_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
-    props: basketItems.map(item => items[item - 1]),
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h1", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Items in basket: ", countt), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Basket_BasketHeader_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Basket_BasketList_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    props: basketItems.map(item => {
+      return {
+        info: items[item.id - 1],
+        count: item.count
+      };
+    }),
     deleteItem: deleteItem,
-    returnPrice: returnPrice
+    getCount: getCount
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Sale_Sale_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], {
-    countProducts: basketItems.length,
-    totalPrice: returnPrice
-  }))))) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h1", null, "\u041F\u0443\u0441\u0442\u043E!"));
+    countProducts: basketItems.length
+  })))) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h1", null, "\u041F\u0443\u0441\u0442\u043E!"));
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Basket);
 
@@ -14038,13 +14325,13 @@ function ItemCard() {
     }
     setIsLoading(true);
   }, []);
-  function addToBasket(id) {
-    if (!basket.includes(id)) {
-      const newBasket = [...basket, id];
+  function addToBasket(ind) {
+    if (!basket.some(el => ind.id === el.id)) {
+      const newBasket = [...basket, ind];
       setBasket(newBasket);
       localStorage.setItem('basket', JSON.stringify(newBasket));
     } else {
-      const newBasket = [...basket.slice(0, basket.indexOf(id)), ...basket.slice(basket.indexOf(id) + 1)];
+      const newBasket = [...basket.slice(0, basket.findIndex(el => ind.id === el.id)), ...basket.slice(basket.findIndex(el => ind.id === el.id) + 1)];
       setBasket(newBasket);
       localStorage.setItem('basket', JSON.stringify(newBasket));
     }
@@ -14094,8 +14381,12 @@ function ItemCard() {
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "info__btns"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_UI_Button_MyButton_jsx__WEBPACK_IMPORTED_MODULE_9__["default"], {
-    onClick: () => addToBasket(item.id)
-  }, !basket.includes(item.id) ? 'Добавить в корзину' : 'Удалить из корзины'), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_UI_Button_MyButton_jsx__WEBPACK_IMPORTED_MODULE_9__["default"], {
+    onClick: () => addToBasket({
+      id: item.id,
+      count: 1,
+      price: item.price
+    })
+  }, !basket.some(el => item.id === el.id) ? 'Добавить в корзину' : 'Удалить из корзины'), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_UI_Button_MyButton_jsx__WEBPACK_IMPORTED_MODULE_9__["default"], {
     onClick: () => alert("Открытие формы с валидацией!")
   }, "\u041A\u0443\u043F\u0438\u0442\u044C \u043F\u0440\u044F\u043C\u043E \u0441\u0435\u0439\u0447\u0430\u0441!"))))) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, "\u0417\u0430\u0433\u0440\u0443\u0437\u043A\u0430 \u0442\u043E\u0432\u0430\u0440\u0430..."));
 }
@@ -14129,9 +14420,12 @@ function Main() {
   const [items, setItems] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
   const [isLoading, setisLoading] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
   const [basketItems, setBasketItems] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
-  const search = window.location.search;
-  const params = new URLSearchParams(search);
-  params.append('query', 'aboba');
+  const [filter, setFilter] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({
+    sort: "",
+    query: "",
+    brand: [],
+    category: []
+  });
 
   // console.log(params.toString())
   // console.log(params.get('query'))
@@ -14150,11 +14444,15 @@ function Main() {
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "main__container"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_FilterList_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    filter: filter,
+    setFilter: setFilter,
     props: items
   }), isLoading ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_ShowFullItems_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
     items: items,
     basket: basketItems,
-    setBasket: setBasketItems
+    setBasket: setBasketItems,
+    filter: filter,
+    setFilter: setFilter
   }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h1", null, "\u041F\u043E\u0434\u0433\u0440\u0443\u0437\u043A\u0430 \u0442\u043E\u0432\u0430\u0440\u043E\u0432..."))));
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Main);
@@ -14392,7 +14690,7 @@ __webpack_require__.r(__webpack_exports__);
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 ___CSS_LOADER_EXPORT___.push([module.id, "@import url(https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@1,500&display=swap);"]);
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "/**\n * Reset Mixing\n * ================================================== */\n/**\n * Disable Animation\n */\n/**\n * Disable animation depends on Browser or Operation System configuration\n */\n/**\n * Accessability. Black and White Mode\n */\n/**\n * Accessability. Inverse Mode\n */\n/**\n * Meter reset\n */\n/**\n * Modern CSS Reset Tweaks\n * ================================================== */\nhtml {\n  -webkit-text-size-adjust: 100%;\n}\nhtml[focus-within] {\n  scroll-behavior: smooth;\n}\nhtml:focus-within {\n  scroll-behavior: smooth;\n}\n\nbody {\n  -webkit-text-size-adjust: 100%;\n     -moz-text-size-adjust: 100%;\n          text-size-adjust: 100%;\n  position: relative;\n  width: 100%;\n  min-height: 100vh;\n  -moz-osx-font-smoothing: grayscale;\n  -webkit-font-smoothing: antialiased;\n  text-rendering: optimizeSpeed;\n}\n\n/* Box sizing normalization */\n*,\n::after,\n::before {\n  box-sizing: border-box;\n}\n\n/* Elements that don't have a class get default styles */\na:not([class]) {\n  -webkit-text-decoration-skip: ink;\n          text-decoration-skip-ink: auto;\n}\n\n/**\n * CSS Reset Tweaks\n *\n * http://meyerweb.com/eric/tools/css/reset/\n * v2.0-modified | 20110126\n * License: none (public domain)\n */\nhtml,\nbody,\ndiv,\nspan,\napplet,\nobject,\niframe,\nh1,\nh2,\nh3,\nh4,\nh5,\nh6,\np,\nblockquote,\npre,\na,\nabbr,\nacronym,\naddress,\nbig,\ncite,\ncode,\ndel,\ndfn,\nem,\nimg,\nins,\nkbd,\nq,\ns,\nsamp,\nsmall,\nstrike,\nstrong,\nsub,\nsup,\ntt,\nvar,\nb,\nu,\ni,\ncenter,\ndl,\ndt,\ndd,\nol,\nul,\nli,\nfieldset,\nform,\nlabel,\nlegend,\ntable,\ncaption,\ntbody,\ntfoot,\nthead,\ntr,\nth,\ntd,\narticle,\naside,\ncanvas,\ndetails,\nembed,\nfigure,\nfigcaption,\nfooter,\nheader,\nhgroup,\nmenu,\nnav,\noutput,\nruby,\nsection,\nsummary,\ntime,\nmark,\naudio,\nvideo {\n  font-size: 100%;\n  font: inherit;\n  margin: 0;\n  padding: 0;\n  border: 0;\n  vertical-align: baseline;\n}\n\n/* make sure to set some focus styles for accessibility */\n:focus {\n  outline: 0;\n}\n\n/* HTML5 display-role reset for older browsers */\nmain,\narticle,\naside,\ndetails,\nfigcaption,\nfigure,\nfooter,\nheader,\nhgroup,\nmenu,\nnav,\nsection {\n  display: block;\n}\n\nol,\nul {\n  list-style: none;\n}\n\nblockquote,\nq {\n  quotes: none;\n}\nblockquote:before, blockquote:after,\nq:before,\nq:after {\n  content: \"\";\n  content: none;\n}\n\n/**\n * Input Reset\n */\ninput:required,\ninput {\n  box-shadow: none;\n}\n\ninput:-webkit-autofill,\ninput:-webkit-autofill:hover,\ninput:-webkit-autofill:focus,\ninput:-webkit-autofill:active {\n  -webkit-box-shadow: 0 0 0 30px white inset;\n}\n\ninput[type=search]::-webkit-search-cancel-button,\ninput[type=search]::-webkit-search-decoration,\ninput[type=search]::-webkit-search-results-button,\ninput[type=search]::-webkit-search-results-decoration {\n  -webkit-appearance: none;\n  -moz-appearance: none;\n}\n\ninput[type=search] {\n  -webkit-appearance: none;\n  -moz-appearance: none;\n  box-sizing: content-box;\n}\n\ntextarea {\n  overflow: auto;\n  vertical-align: top;\n  resize: vertical;\n}\n\ninput:focus {\n  outline: none;\n}\n\n/**\n * Correct `inline-block` display not defined in IE 6/7/8/9 and Firefox 3.\n */\naudio,\ncanvas,\nvideo {\n  display: inline-block;\n  max-width: 100%;\n}\n\n/**\n * Prevent modern browsers from displaying `audio` without controls.\n * Remove excess height in iOS 5 devices.\n */\naudio:not([controls]) {\n  display: none;\n  height: 0;\n}\n\n/**\n * Address styling not present in IE 7/8/9, Firefox 3, and Safari 4.\n */\n[hidden] {\n  display: none;\n}\n\n/**\n * Improve readability when focused and also mouse hovered in all browsers.\n */\na:active,\na:hover {\n  outline: none;\n}\n\n/* Make images easier to work with */\nimg {\n  max-width: 100%;\n  display: inline-block;\n  vertical-align: middle;\n  height: auto;\n}\n\n/* Make pictures easier to work with */\npicture {\n  display: inline-block;\n}\n\n/**\n * Address Firefox 3+ setting `line-height` on `input` using `!important` in\n * the UA stylesheet.\n */\nbutton,\ninput {\n  line-height: normal;\n}\n\n/**\n * Address inconsistent `text-transform` inheritance for `button` and `select`.\n * All other form control elements do not inherit `text-transform` values.\n * Correct `button` style inheritance in Chrome, Safari 5+, and IE 6+.\n * Correct `select` style inheritance in Firefox 4+ and Opera.\n */\nbutton,\nselect {\n  text-transform: none;\n}\n\nbutton,\nhtml input[type=button],\ninput[type=reset],\ninput[type=submit] {\n  -webkit-appearance: button;\n  cursor: pointer;\n  border: 0;\n  background: transparent;\n}\n\n/**\n * Re-set default cursor for disabled elements.\n */\nbutton[disabled],\nhtml input[disabled] {\n  cursor: default;\n}\n\n[disabled] {\n  pointer-events: none;\n}\n\n/**\n * 1. Address box sizing set to content-box in IE 8/9.\n */\ninput[type=checkbox],\ninput[type=radio] {\n  padding: 0;\n}\n\n/**\n * 1. Address `appearance` set to `searchfield` in Safari 5 and Chrome.\n * 2. Address `box-sizing` set to `border-box` in Safari 5 and Chrome\n *    (include `-moz` to future-proof).\n */\ninput[type=search] {\n  -webkit-appearance: textfield;\n  box-sizing: content-box;\n}\n\n/**\n * Remove inner padding and search cancel button in Safari 5 and Chrome\n * on OS X.\n */\ninput[type=search]::-webkit-search-cancel-button,\ninput[type=search]::-webkit-search-decoration {\n  -webkit-appearance: none;\n}\n\n/**\n * Remove inner padding and border in Firefox 3+.\n */\nbutton::-moz-focus-inner,\ninput::-moz-focus-inner {\n  border: 0;\n  padding: 0;\n}\n\nbutton {\n  border: 0;\n  background: transparent;\n}\n\ntextarea {\n  overflow: auto;\n  vertical-align: top;\n  resize: vertical;\n}\n\n/**\n * Remove most spacing between table cells.\n */\ntable {\n  border-collapse: collapse;\n  border-spacing: 0;\n  text-indent: 0;\n}\n\n/**\n * Based on normalize.css v8.0.1\n * github.com/necolas/normalize.css\n */\nhr {\n  box-sizing: content-box;\n  overflow: visible;\n  background: #000;\n  border: 0;\n  height: 1px;\n  line-height: 0;\n  margin: 0;\n  padding: 0;\n  page-break-after: always;\n  width: 100%;\n}\n\n/**\n * 1. Correct the inheritance and scaling of font size in all browsers.\n */\npre {\n  font-family: monospace, monospace;\n  font-size: 100%;\n}\n\n/**\n * Remove the gray background on active links in IE 10.\n */\na {\n  background-color: transparent;\n}\n\n/**\n * 1. Remove the bottom border in Chrome 57-\n * 2. Add the correct text decoration in Chrome, Edge, IE, Opera, and Safari.\n */\nabbr[title] {\n  border-bottom: none;\n  text-decoration: none;\n}\n\ncode,\nkbd,\npre,\nsamp {\n  font-family: monospace, monospace;\n}\n\n/**\n  * Add the correct font size in all browsers.\n  */\nsmall {\n  font-size: 75%;\n}\n\n/**\n * Prevent `sub` and `sup` elements from affecting the line height in\n * all browsers.\n */\nsub,\nsup {\n  font-size: 75%;\n  line-height: 0;\n  position: relative;\n  vertical-align: baseline;\n}\n\nsub {\n  bottom: -5px;\n}\n\nsup {\n  top: -5px;\n}\n\n/**\n * 1. Change the font styles in all browsers.\n * 2. Remove the margin in Firefox and Safari.\n */\nbutton,\ninput,\noptgroup,\nselect,\ntextarea {\n  font-family: inherit;\n  font-size: 100%;\n  line-height: 1;\n  margin: 0;\n  padding: 0;\n}\n\n/**\n * Show the overflow in IE.\n * 1. Show the overflow in Edge.\n */\nbutton,\ninput {\n  /* 1 */\n  overflow: visible;\n}\n\n/**\n * Remove the inheritance of text transform in Edge, Firefox, and IE.\n * 1. Remove the inheritance of text transform in Firefox.\n */\nbutton,\nselect {\n  /* 1 */\n  text-transform: none;\n}\n\n/**\n * Correct the inability to style clickable types in iOS and Safari.\n */\nbutton,\n[type=button],\n[type=reset],\n[type=submit] {\n  -webkit-appearance: button;\n}\n\n/**\n * Remove the inner border and padding in Firefox.\n */\nbutton::-moz-focus-inner,\n[type=button]::-moz-focus-inner,\n[type=reset]::-moz-focus-inner,\n[type=submit]::-moz-focus-inner {\n  border-style: none;\n  padding: 0;\n  outline: 0;\n}\n\nlegend {\n  color: inherit;\n  white-space: normal;\n  display: block;\n  border: 0;\n  max-width: 100%;\n  width: 100%;\n}\n\nfieldset {\n  min-width: 0;\n}\n\nbody:not(:-moz-handler-blocked) fieldset {\n  display: block;\n}\n\n/**\n * Add the correct vertical alignment in Chrome, Firefox, and Opera.\n */\nprogress {\n  vertical-align: baseline;\n}\n\n/**\n * Correct the cursor style of increment and decrement buttons in Chrome.\n */\n[type=number]::-webkit-inner-spin-button,\n[type=number]::-webkit-outer-spin-button {\n  height: auto;\n}\n\n/**\n * 1. Correct the odd appearance in Chrome and Safari.\n * 2. Correct the outline style in Safari.\n */\n[type=search] {\n  -webkit-appearance: textfield;\n  /* 1 */\n  outline-offset: -2px;\n  /* 2 */\n}\n\n/**\n * Remove the inner padding in Chrome and Safari on macOS.\n */\n[type=search]::-webkit-search-decoration {\n  -webkit-appearance: none;\n}\n\n/**\n * 1. Correct the inability to style clickable types in iOS and Safari.\n * 2. Change font properties to `inherit` in Safari.\n */\n::-webkit-file-upload-button {\n  -webkit-appearance: button;\n  /* 1 */\n  font: inherit;\n  /* 2 */\n}\n\n/* Interactive\n   ========================================================================== */\n/*\n * Add the correct display in all browsers.\n */\nsummary {\n  display: list-item;\n}\n\n/*\n * Misc\n * ========================================================================== */\n/**\n * Add the correct display in IE 10+.\n */\ntemplate {\n  display: none;\n}\n\n*::-webkit-scrollbar {\n  width: 8px;\n}\n\n*::-webkit-scrollbar-track {\n  background: rgb(203, 231, 255);\n}\n\n*::-webkit-scrollbar-thumb {\n  background-color: rgb(140, 140, 255);\n  border-radius: 20px;\n}\n\n.element-footer {\n  list-style-type: none;\n  margin: 0 50px;\n  margin-top: 15px;\n  display: inline-block;\n}\n\nhtml {\n  height: 100%;\n}\n\nbody {\n  height: 100%;\n}\n\n#root {\n  height: 100%;\n}\n\n.app {\n  display: flex;\n  flex-direction: column;\n  height: 100%;\n}\n\n.body {\n  flex: 1 0 auto;\n}\n\n.main__container {\n  display: grid;\n  grid-template-columns: 1fr 3fr;\n  grid-gap: 20px;\n  gap: 20px;\n}\n\n.container {\n  max-width: 1200px;\n  padding: 0 15px;\n  margin: 0 auto;\n}\n\n.footer {\n  content: \"footer\";\n  height: 150px;\n  width: 100%;\n}\n\n.footer__container {\n  font-family: \"DM Sans\", sans-serif;\n  display: flex;\n  flex-direction: row;\n  align-items: flex-start;\n  justify-content: center;\n  font-size: 30px;\n  width: 100%;\n  margin-top: 50px;\n}\n\n.validation-modal {\n  height: 50px;\n  width: 700px;\n  background-color: bisque;\n}\n\n.header__container {\n  display: flex;\n  flex-direction: row;\n  align-items: center;\n  justify-content: space-between;\n}\n.header__logo {\n  cursor: pointer;\n  max-width: 150px;\n}\n.header__value {\n  color: #61dafb;\n}\n.header__basket {\n  cursor: pointer;\n  position: relative;\n}\n.header__basket-count {\n  position: absolute;\n  top: -10px;\n  right: 0;\n  text-align: center;\n  padding: 5px;\n}\n.header__basket-image {\n  max-width: 40px;\n}\n.header__basket__main-container {\n  display: flex;\n  flex-direction: row;\n  gap: 20px;\n}\n\n.error {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n  margin: 0 auto;\n  text-align: center;\n  color: red;\n  text-transform: uppercase;\n}\n.error__name {\n  font-size: 60px;\n}\n.error__type {\n  font-size: 100px;\n}\n\n/*catalog*/\n.catalog__list {\n  display: grid;\n  grid-template-columns: repeat(4, 1fr);\n  grid-gap: 20px;\n  gap: 20px;\n}\n.catalog__item {\n  border: 1px solid rgb(212, 235, 255);\n  border-radius: 5px;\n  background-color: aliceblue;\n  background-size: cover;\n  background-position: center;\n}\n\n.product__header {\n  background-color: #61dafb;\n  text-align: center;\n}\n.product__header_active {\n  background-color: #f84200;\n  text-align: center;\n}\n.product__btns {\n  display: flex;\n  flex-direction: row;\n  align-items: center;\n  justify-content: center;\n  gap: 10px;\n}\n.product__description {\n  background-color: rgba(255, 255, 255, 0.76);\n  display: inline-block;\n  padding: 5px;\n}\n.product__description p {\n  font-size: 14px;\n  font-weight: 500;\n  color: rgb(89, 0, 255);\n}\n.product__description span {\n  font-size: 12px;\n  font-weight: 400;\n  color: rgb(0, 0, 0);\n}\n\n/*filter*/\n.filter__btns {\n  display: flex;\n  flex-direction: row;\n  justify-content: center;\n  align-items: center;\n}\n.filter__container {\n  display: flex;\n  flex-direction: column;\n  gap: 20px;\n}\n\n/*card*/\n.card__container {\n  display: grid;\n  grid-template-columns: 1fr 1fr;\n  grid-gap: 0;\n  gap: 0;\n  align-items: center;\n}\n.card__sliders {\n  display: flex;\n  flex-direction: row;\n  max-height: 400px;\n  overflow: hidden;\n}\n.card__info {\n  width: 100%;\n}\n\n.info__btns {\n  display: flex;\n  flex-direction: row;\n  justify-content: space-around;\n  gap: 20px;\n}", "",{"version":3,"sources":["webpack://./node_modules/scss-reset/_reset.scss","webpack://./src/styles/App.scss"],"names":[],"mappings":"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","sourcesContent":["/**\n * Reset Mixing\n * ================================================== */\n\n/**\n * Disable Animation\n */\n@mixin disableAnimation {\n  transform: none !important;\n\n  transition: none !important;\n  transition-property: none !important;\n  transition-duration: 0s !important;\n  transition-delay: 0s !important;\n\n  animation: none !important;\n  animation-duration: 0s !important;\n  animation-delay: 0s !important;\n  animation-iteration-count: 1 !important;\n\n  scroll-behavior: auto !important;\n}\n\n/**\n * Disable animation depends on Browser or Operation System configuration\n */\n@mixin acDisableAnimation {\n  @media (prefers-reduced-motion: reduce) {\n    @include disableAnimation;\n  }\n}\n\n/**\n * Accessability. Black and White Mode\n */\n@mixin acModeBW {\n  filter: grayscale(100%);\n}\n\n/**\n * Accessability. Inverse Mode\n */\n@mixin acModeContrast {\n  filter: invert(100%);\n  background-color: $white !important;\n}\n\n/**\n * Meter reset\n */\n@mixin meterReset {\n  meter {\n    background: none;\n    -webkit-appearance: none;\n  }\n\n  ::-moz-meter-bar {\n    -moz-appearance: none\n  }\n\n  :-moz-meter-optimum::-moz-meter-bar,\n  :-moz-meter-sub-optimum::-moz-meter-bar,\n  :-moz-meter-sub-sub-optimum::-moz-meter-bar {\n    background: none\n  }\n\n\n  meter::-webkit-meter-bar,\n  meter::-webkit-meter-optimum-value,\n  meter::-webkit-meter-suboptimum-value,\n  meter::-webkit-meter-even-less-good-value,\n  meter::-webkit-meter-inner-element {\n    background: none;\n  }\n}\n\n@mixin progressReset {\n\n  /**\n   * Progress Bar Reset\n   *\n   */\n  progress,\n  progress[role] {\n    display: block;\n\n    overflow: hidden;\n\n    width: 100%;\n    height: 40px;\n    margin: 0;\n\n    /* Reset Defaults */\n    appearance: none;\n    border: none;\n\n    /* Needs to be in here for Safari polyfill so background images work as expected. */\n    background-size: auto;\n  }\n\n  /* Polyfill */\n  progress[role]:after {\n    background-image: none;\n    /* removes default background from polyfill */\n  }\n\n  /* Ensure fallback text doesn't appear in polyfill */\n  progress[role] strong {\n    display: none;\n  }\n}\n\n\n/**\n * Modern CSS Reset Tweaks\n * ================================================== */\n\nhtml {\n  -webkit-text-size-adjust: 100%;\n\n  &:focus-within {\n    scroll-behavior: smooth;\n  }\n}\n\nbody {\n  text-size-adjust: 100%;\n  position: relative;\n\n  width: 100%;\n  min-height: 100vh;\n\n  -moz-osx-font-smoothing: grayscale;\n  -webkit-font-smoothing: antialiased;\n  text-rendering: optimizeSpeed;\n}\n\n\n/* Box sizing normalization */\n*,\n::after,\n::before {\n  box-sizing: border-box;\n}\n\n\n/* Elements that don't have a class get default styles */\na:not([class]) {\n  text-decoration-skip-ink: auto;\n}\n\n\n/**\n * CSS Reset Tweaks\n *\n * http://meyerweb.com/eric/tools/css/reset/\n * v2.0-modified | 20110126\n * License: none (public domain)\n */\n\nhtml,\nbody,\ndiv,\nspan,\napplet,\nobject,\niframe,\nh1,\nh2,\nh3,\nh4,\nh5,\nh6,\np,\nblockquote,\npre,\na,\nabbr,\nacronym,\naddress,\nbig,\ncite,\ncode,\ndel,\ndfn,\nem,\nimg,\nins,\nkbd,\nq,\ns,\nsamp,\nsmall,\nstrike,\nstrong,\nsub,\nsup,\ntt,\nvar,\nb,\nu,\ni,\ncenter,\ndl,\ndt,\ndd,\nol,\nul,\nli,\nfieldset,\nform,\nlabel,\nlegend,\ntable,\ncaption,\ntbody,\ntfoot,\nthead,\ntr,\nth,\ntd,\narticle,\naside,\ncanvas,\ndetails,\nembed,\nfigure,\nfigcaption,\nfooter,\nheader,\nhgroup,\nmenu,\nnav,\noutput,\nruby,\nsection,\nsummary,\ntime,\nmark,\naudio,\nvideo {\n  font-size: 100%;\n  font: inherit;\n  margin: 0;\n  padding: 0;\n  border: 0;\n  vertical-align: baseline;\n}\n\n/* make sure to set some focus styles for accessibility */\n:focus {\n  outline: 0;\n}\n\n/* HTML5 display-role reset for older browsers */\nmain,\narticle,\naside,\ndetails,\nfigcaption,\nfigure,\nfooter,\nheader,\nhgroup,\nmenu,\nnav,\nsection {\n  display: block;\n}\n\nol,\nul {\n  list-style: none;\n}\n\nblockquote,\nq {\n  quotes: none;\n\n  &:before,\n  &:after {\n    content: '';\n    content: none;\n  }\n}\n\n/**\n * Input Reset\n */\ninput:required,\ninput {\n  box-shadow: none;\n}\n\ninput:-webkit-autofill,\ninput:-webkit-autofill:hover,\ninput:-webkit-autofill:focus,\ninput:-webkit-autofill:active {\n  -webkit-box-shadow: 0 0 0 30px white inset;\n}\n\ninput[type=search]::-webkit-search-cancel-button,\ninput[type=search]::-webkit-search-decoration,\ninput[type=search]::-webkit-search-results-button,\ninput[type=search]::-webkit-search-results-decoration {\n  -webkit-appearance: none;\n  -moz-appearance: none;\n}\n\ninput[type=search] {\n  -webkit-appearance: none;\n  -moz-appearance: none;\n  -webkit-box-sizing: content-box;\n  -moz-box-sizing: content-box;\n  box-sizing: content-box;\n}\n\ntextarea {\n  overflow: auto;\n  vertical-align: top;\n  resize: vertical;\n}\n\ninput {\n  &:focus {\n    outline: none;\n  }\n}\n\n/**\n * Correct `inline-block` display not defined in IE 6/7/8/9 and Firefox 3.\n */\naudio,\ncanvas,\nvideo {\n  display: inline-block;\n  max-width: 100%;\n}\n\n/**\n * Prevent modern browsers from displaying `audio` without controls.\n * Remove excess height in iOS 5 devices.\n */\n\naudio:not([controls]) {\n  display: none;\n  height: 0;\n}\n\n/**\n * Address styling not present in IE 7/8/9, Firefox 3, and Safari 4.\n */\n\n[hidden] {\n  display: none;\n}\n\n/**\n * Improve readability when focused and also mouse hovered in all browsers.\n */\na:active,\na:hover {\n  outline: none;\n}\n\n/* Make images easier to work with */\nimg {\n  max-width: 100%;\n  display: inline-block;\n  vertical-align: middle;\n  height: auto;\n}\n\n/* Make pictures easier to work with */\npicture {\n  display: inline-block;\n}\n\n/**\n * Address Firefox 3+ setting `line-height` on `input` using `!important` in\n * the UA stylesheet.\n */\n\nbutton,\ninput {\n  line-height: normal;\n}\n\n/**\n * Address inconsistent `text-transform` inheritance for `button` and `select`.\n * All other form control elements do not inherit `text-transform` values.\n * Correct `button` style inheritance in Chrome, Safari 5+, and IE 6+.\n * Correct `select` style inheritance in Firefox 4+ and Opera.\n */\n\nbutton,\nselect {\n  text-transform: none;\n}\n\nbutton,\nhtml input[type=\"button\"],\ninput[type=\"reset\"],\ninput[type=\"submit\"] {\n  -webkit-appearance: button;\n  cursor: pointer;\n  border: 0;\n  background: transparent;\n}\n\n/**\n * Re-set default cursor for disabled elements.\n */\n\nbutton[disabled],\nhtml input[disabled] {\n  cursor: default;\n}\n\n[disabled] {\n  pointer-events: none;\n}\n\n/**\n * 1. Address box sizing set to content-box in IE 8/9.\n */\ninput[type=\"checkbox\"],\ninput[type=\"radio\"] {\n  padding: 0;\n}\n\n/**\n * 1. Address `appearance` set to `searchfield` in Safari 5 and Chrome.\n * 2. Address `box-sizing` set to `border-box` in Safari 5 and Chrome\n *    (include `-moz` to future-proof).\n */\n\ninput[type=\"search\"] {\n  -webkit-appearance: textfield;\n  -moz-box-sizing: content-box;\n  -webkit-box-sizing: content-box;\n  box-sizing: content-box;\n}\n\n/**\n * Remove inner padding and search cancel button in Safari 5 and Chrome\n * on OS X.\n */\n\ninput[type=\"search\"]::-webkit-search-cancel-button,\ninput[type=\"search\"]::-webkit-search-decoration {\n  -webkit-appearance: none;\n}\n\n/**\n * Remove inner padding and border in Firefox 3+.\n */\n\nbutton::-moz-focus-inner,\ninput::-moz-focus-inner {\n  border: 0;\n  padding: 0;\n}\n\nbutton {\n  border: 0;\n  background: transparent;\n}\n\ntextarea {\n  overflow: auto;\n  vertical-align: top;\n  resize: vertical;\n}\n\n/**\n * Remove most spacing between table cells.\n */\ntable {\n  border-collapse: collapse;\n  border-spacing: 0;\n  text-indent: 0;\n}\n\n\n/**\n * Based on normalize.css v8.0.1\n * github.com/necolas/normalize.css\n */\nhr {\n  box-sizing: content-box;\n  overflow: visible;\n  background: #000;\n  border: 0;\n  height: 1px;\n  line-height: 0;\n  margin: 0;\n  padding: 0;\n  page-break-after: always;\n  width: 100%;\n}\n\n/**\n * 1. Correct the inheritance and scaling of font size in all browsers.\n */\npre {\n  font-family: monospace, monospace;\n  font-size: 100%;\n}\n\n/**\n * Remove the gray background on active links in IE 10.\n */\na {\n  background-color: transparent;\n}\n\n/**\n * 1. Remove the bottom border in Chrome 57-\n * 2. Add the correct text decoration in Chrome, Edge, IE, Opera, and Safari.\n */\nabbr[title] {\n  border-bottom: none;\n  text-decoration: none;\n}\n\ncode,\nkbd,\npre,\nsamp {\n  font-family: monospace, monospace;\n}\n\n/**\n  * Add the correct font size in all browsers.\n  */\nsmall {\n  font-size: 75%;\n}\n\n/**\n * Prevent `sub` and `sup` elements from affecting the line height in\n * all browsers.\n */\nsub,\nsup {\n  font-size: 75%;\n  line-height: 0;\n  position: relative;\n  vertical-align: baseline;\n}\n\nsub {\n  bottom: -5px;\n}\n\nsup {\n  top: -5px;\n}\n\n/**\n * 1. Change the font styles in all browsers.\n * 2. Remove the margin in Firefox and Safari.\n */\nbutton,\ninput,\noptgroup,\nselect,\ntextarea {\n  font-family: inherit;\n  font-size: 100%;\n  line-height: 1;\n  margin: 0;\n  padding: 0;\n}\n\n/**\n * Show the overflow in IE.\n * 1. Show the overflow in Edge.\n */\nbutton,\ninput {\n  /* 1 */\n  overflow: visible;\n}\n\n/**\n * Remove the inheritance of text transform in Edge, Firefox, and IE.\n * 1. Remove the inheritance of text transform in Firefox.\n */\n\nbutton,\nselect {\n  /* 1 */\n  text-transform: none;\n}\n\n/**\n * Correct the inability to style clickable types in iOS and Safari.\n */\n\nbutton,\n[type=\"button\"],\n[type=\"reset\"],\n[type=\"submit\"] {\n  -webkit-appearance: button;\n}\n\n/**\n * Remove the inner border and padding in Firefox.\n */\n\nbutton::-moz-focus-inner,\n[type=\"button\"]::-moz-focus-inner,\n[type=\"reset\"]::-moz-focus-inner,\n[type=\"submit\"]::-moz-focus-inner {\n  border-style: none;\n  padding: 0;\n  outline: 0;\n}\n\n\nlegend {\n  color: inherit;\n  white-space: normal;\n\n  display: block;\n  border: 0;\n  max-width: 100%;\n  width: 100%;\n}\n\nfieldset {\n  min-width: 0;\n}\n\nbody:not(:-moz-handler-blocked) fieldset {\n  display: block;\n}\n\n\n/**\n * Add the correct vertical alignment in Chrome, Firefox, and Opera.\n */\nprogress {\n  vertical-align: baseline;\n}\n\n\n/**\n * Correct the cursor style of increment and decrement buttons in Chrome.\n */\n[type=\"number\"]::-webkit-inner-spin-button,\n[type=\"number\"]::-webkit-outer-spin-button {\n  height: auto;\n}\n\n\n/**\n * 1. Correct the odd appearance in Chrome and Safari.\n * 2. Correct the outline style in Safari.\n */\n[type=\"search\"] {\n  -webkit-appearance: textfield;\n  /* 1 */\n  outline-offset: -2px;\n  /* 2 */\n}\n\n/**\n * Remove the inner padding in Chrome and Safari on macOS.\n */\n[type=\"search\"]::-webkit-search-decoration {\n  -webkit-appearance: none;\n}\n\n/**\n * 1. Correct the inability to style clickable types in iOS and Safari.\n * 2. Change font properties to `inherit` in Safari.\n */\n::-webkit-file-upload-button {\n  -webkit-appearance: button;\n  /* 1 */\n  font: inherit;\n  /* 2 */\n}\n\n/* Interactive\n   ========================================================================== */\n\n/*\n * Add the correct display in all browsers.\n */\nsummary {\n  display: list-item;\n}\n\n/*\n * Misc\n * ========================================================================== */\n\n/**\n * Add the correct display in IE 10+.\n */\ntemplate {\n  display: none;\n}\n","@import 'scss-reset/_reset.scss';\r\n@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@1,500&display=swap');\r\n*::-webkit-scrollbar {\r\n  width: 8px;\r\n}\r\n*::-webkit-scrollbar-track {\r\n  background: rgb(203, 231, 255);\r\n}\r\n*::-webkit-scrollbar-thumb {\r\n  background-color: rgb(140, 140, 255);\r\n  border-radius: 20px;\r\n}\r\n.element-footer{\r\n  list-style-type: none;\r\n  margin: 0 50px;\r\n  margin-top: 15px;\r\n  display: inline-block;\r\n}\r\n\r\nhtml {\r\n  height: 100%;\r\n}\r\n\r\nbody {\r\n  height: 100%;\r\n}\r\n\r\n#root {\r\n  height: 100%;\r\n}\r\n\r\n.app {\r\n  display: flex;\r\n  flex-direction: column;\r\n  height: 100%;\r\n}\r\n\r\n.body {\r\n  flex: 1 0 auto;\r\n}\r\n\r\n.main {\r\n  &__container {\r\n    display: grid;\r\n    grid-template-columns: 1fr 3fr;\r\n    gap: 20px;\r\n  }\r\n}\r\n\r\n.container {\r\n  max-width: 1200px;\r\n  padding: 0 15px;\r\n\r\n  margin: 0 auto;\r\n}\r\n\r\n.footer {\r\n  content: 'footer';\r\n  height: 150px;\r\n  width: 100%;\r\n}\r\n.footer__container{\r\n  font-family: 'DM Sans', sans-serif;\r\n  display: flex;\r\n  flex-direction:row;\r\n  align-items: flex-start;\r\n  justify-content: center;\r\n  font-size: 30px;\r\n  width: 100%;\r\n  margin-top: 50px;\r\n}\r\n.validation-modal {\r\n  height: 50px;\r\n  width: 700px;\r\n  background-color: bisque;\r\n}\r\n\r\n.header {\r\n  &__container {\r\n    display: flex;\r\n    flex-direction: row;\r\n    align-items: center;\r\n    justify-content: space-between;\r\n  }\r\n  \r\n  &__logo {\r\n    cursor: pointer;\r\n    max-width: 150px;\r\n  }\r\n  \r\n  &__sum {\r\n    \r\n  }\r\n  \r\n  &__value {\r\n    color: #61dafb;\r\n  }\r\n  \r\n  &__basket {\r\n    cursor: pointer;\r\n    position: relative;\r\n    &-count {\r\n      position: absolute;\r\n      top: -10px;\r\n      right: 0;\r\n      text-align: center;\r\n      padding: 5px;\r\n    }\r\n    \r\n    &-image {\r\n      max-width: 40px;\r\n    }\r\n\r\n    &__main-container {\r\n      display: flex;\r\n      flex-direction: row;\r\n      gap: 20px;\r\n    }\r\n  }\r\n}\r\n\r\n.error {\r\n  display: flex;\r\n  flex-direction: column;\r\n  align-items: center;\r\n  justify-content: center;\r\n  \r\n  margin: 0 auto;\r\n\r\n  text-align: center;\r\n  color: red;\r\n  text-transform: uppercase;\r\n\r\n  &__name {\r\n    font-size: 60px;  \r\n  }\r\n  \r\n  &__type {\r\n    font-size: 100px;  \r\n  }\r\n}\r\n\r\n/*catalog*/\r\n\r\n.catalog {\r\n  &__container {\r\n\r\n  }\r\n  \r\n  &__list {\r\n    display: grid;\r\n    grid-template-columns: repeat(4, 1fr);\r\n    gap: 20px;\r\n  }\r\n  \r\n  &__item {\r\n    border: 1px solid rgb(212, 235, 255);\r\n    border-radius: 5px;\r\n    background-color: aliceblue;\r\n    background-size: cover;\r\n    background-position: center;\r\n  }\r\n}\r\n\r\n.product {\r\n  &__header {\r\n    background-color: #61dafb;\r\n    text-align: center;\r\n    \r\n    &_active {\r\n      background-color: #f84200;\r\n      text-align: center;\r\n    }\r\n  }\r\n\r\n  &__body {\r\n\r\n  }\r\n\r\n  &__btns {\r\n    display: flex;\r\n    flex-direction: row;\r\n    align-items: center;\r\n    justify-content: center;\r\n    gap: 10px;\r\n  }\r\n\r\n  &__description {\r\n    background-color: rgba(255, 255, 255, 0.76);\r\n    display: inline-block;\r\n    padding: 5px;\r\n    & p {\r\n      font-size: 14px;\r\n      font-weight: 500;\r\n      color: rgb(89, 0, 255);\r\n    }\r\n    \r\n    & span {\r\n      font-size: 12px;\r\n      font-weight: 400;\r\n      color: rgb(0, 0, 0);\r\n    }\r\n  }\r\n}\r\n\r\n/*filter*/\r\n\r\n.filter {\r\n  &__btns {\r\n    display: flex;\r\n    flex-direction: row;\r\n    justify-content: center;\r\n    align-items: center;\r\n  }\r\n\r\n  &__container {\r\n    display: flex;\r\n    flex-direction: column;\r\n    gap: 20px;\r\n  }\r\n}\r\n\r\n/*card*/\r\n\r\n.card {\r\n  &__container {\r\n    display: grid;\r\n    grid-template-columns: 1fr 1fr;\r\n    gap: 0;\r\n    align-items: center;\r\n  }\r\n\r\n  &__sliders {\r\n    display: flex;\r\n    flex-direction: row;\r\n    max-height: 400px;\r\n    overflow: hidden;\r\n  }\r\n  &__info {\r\n    width: 100%;\r\n  }\r\n}\r\n\r\n.info {\r\n  &__btns {\r\n    display: flex;\r\n    flex-direction: row;\r\n    justify-content: space-around;\r\n    gap: 20px;\r\n  }\r\n}\r\n\r\n"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, "/**\n * Reset Mixing\n * ================================================== */\n/**\n * Disable Animation\n */\n/**\n * Disable animation depends on Browser or Operation System configuration\n */\n/**\n * Accessability. Black and White Mode\n */\n/**\n * Accessability. Inverse Mode\n */\n/**\n * Meter reset\n */\n/**\n * Modern CSS Reset Tweaks\n * ================================================== */\nhtml {\n  -webkit-text-size-adjust: 100%;\n}\nhtml[focus-within] {\n  scroll-behavior: smooth;\n}\nhtml:focus-within {\n  scroll-behavior: smooth;\n}\n\nbody {\n  -webkit-text-size-adjust: 100%;\n     -moz-text-size-adjust: 100%;\n          text-size-adjust: 100%;\n  position: relative;\n  width: 100%;\n  min-height: 100vh;\n  -moz-osx-font-smoothing: grayscale;\n  -webkit-font-smoothing: antialiased;\n  text-rendering: optimizeSpeed;\n}\n\n/* Box sizing normalization */\n*,\n::after,\n::before {\n  box-sizing: border-box;\n}\n\n/* Elements that don't have a class get default styles */\na:not([class]) {\n  -webkit-text-decoration-skip: ink;\n          text-decoration-skip-ink: auto;\n}\n\n/**\n * CSS Reset Tweaks\n *\n * http://meyerweb.com/eric/tools/css/reset/\n * v2.0-modified | 20110126\n * License: none (public domain)\n */\nhtml,\nbody,\ndiv,\nspan,\napplet,\nobject,\niframe,\nh1,\nh2,\nh3,\nh4,\nh5,\nh6,\np,\nblockquote,\npre,\na,\nabbr,\nacronym,\naddress,\nbig,\ncite,\ncode,\ndel,\ndfn,\nem,\nimg,\nins,\nkbd,\nq,\ns,\nsamp,\nsmall,\nstrike,\nstrong,\nsub,\nsup,\ntt,\nvar,\nb,\nu,\ni,\ncenter,\ndl,\ndt,\ndd,\nol,\nul,\nli,\nfieldset,\nform,\nlabel,\nlegend,\ntable,\ncaption,\ntbody,\ntfoot,\nthead,\ntr,\nth,\ntd,\narticle,\naside,\ncanvas,\ndetails,\nembed,\nfigure,\nfigcaption,\nfooter,\nheader,\nhgroup,\nmenu,\nnav,\noutput,\nruby,\nsection,\nsummary,\ntime,\nmark,\naudio,\nvideo {\n  font-size: 100%;\n  font: inherit;\n  margin: 0;\n  padding: 0;\n  border: 0;\n  vertical-align: baseline;\n}\n\n/* make sure to set some focus styles for accessibility */\n:focus {\n  outline: 0;\n}\n\n/* HTML5 display-role reset for older browsers */\nmain,\narticle,\naside,\ndetails,\nfigcaption,\nfigure,\nfooter,\nheader,\nhgroup,\nmenu,\nnav,\nsection {\n  display: block;\n}\n\nol,\nul {\n  list-style: none;\n}\n\nblockquote,\nq {\n  quotes: none;\n}\nblockquote:before, blockquote:after,\nq:before,\nq:after {\n  content: \"\";\n  content: none;\n}\n\n/**\n * Input Reset\n */\ninput:required,\ninput {\n  box-shadow: none;\n}\n\ninput:-webkit-autofill,\ninput:-webkit-autofill:hover,\ninput:-webkit-autofill:focus,\ninput:-webkit-autofill:active {\n  -webkit-box-shadow: 0 0 0 30px white inset;\n}\n\ninput[type=search]::-webkit-search-cancel-button,\ninput[type=search]::-webkit-search-decoration,\ninput[type=search]::-webkit-search-results-button,\ninput[type=search]::-webkit-search-results-decoration {\n  -webkit-appearance: none;\n  -moz-appearance: none;\n}\n\ninput[type=search] {\n  -webkit-appearance: none;\n  -moz-appearance: none;\n  box-sizing: content-box;\n}\n\ntextarea {\n  overflow: auto;\n  vertical-align: top;\n  resize: vertical;\n}\n\ninput:focus {\n  outline: none;\n}\n\n/**\n * Correct `inline-block` display not defined in IE 6/7/8/9 and Firefox 3.\n */\naudio,\ncanvas,\nvideo {\n  display: inline-block;\n  max-width: 100%;\n}\n\n/**\n * Prevent modern browsers from displaying `audio` without controls.\n * Remove excess height in iOS 5 devices.\n */\naudio:not([controls]) {\n  display: none;\n  height: 0;\n}\n\n/**\n * Address styling not present in IE 7/8/9, Firefox 3, and Safari 4.\n */\n[hidden] {\n  display: none;\n}\n\n/**\n * Improve readability when focused and also mouse hovered in all browsers.\n */\na:active,\na:hover {\n  outline: none;\n}\n\n/* Make images easier to work with */\nimg {\n  max-width: 100%;\n  display: inline-block;\n  vertical-align: middle;\n  height: auto;\n}\n\n/* Make pictures easier to work with */\npicture {\n  display: inline-block;\n}\n\n/**\n * Address Firefox 3+ setting `line-height` on `input` using `!important` in\n * the UA stylesheet.\n */\nbutton,\ninput {\n  line-height: normal;\n}\n\n/**\n * Address inconsistent `text-transform` inheritance for `button` and `select`.\n * All other form control elements do not inherit `text-transform` values.\n * Correct `button` style inheritance in Chrome, Safari 5+, and IE 6+.\n * Correct `select` style inheritance in Firefox 4+ and Opera.\n */\nbutton,\nselect {\n  text-transform: none;\n}\n\nbutton,\nhtml input[type=button],\ninput[type=reset],\ninput[type=submit] {\n  -webkit-appearance: button;\n  cursor: pointer;\n  border: 0;\n  background: transparent;\n}\n\n/**\n * Re-set default cursor for disabled elements.\n */\nbutton[disabled],\nhtml input[disabled] {\n  cursor: default;\n}\n\n[disabled] {\n  pointer-events: none;\n}\n\n/**\n * 1. Address box sizing set to content-box in IE 8/9.\n */\ninput[type=checkbox],\ninput[type=radio] {\n  padding: 0;\n}\n\n/**\n * 1. Address `appearance` set to `searchfield` in Safari 5 and Chrome.\n * 2. Address `box-sizing` set to `border-box` in Safari 5 and Chrome\n *    (include `-moz` to future-proof).\n */\ninput[type=search] {\n  -webkit-appearance: textfield;\n  box-sizing: content-box;\n}\n\n/**\n * Remove inner padding and search cancel button in Safari 5 and Chrome\n * on OS X.\n */\ninput[type=search]::-webkit-search-cancel-button,\ninput[type=search]::-webkit-search-decoration {\n  -webkit-appearance: none;\n}\n\n/**\n * Remove inner padding and border in Firefox 3+.\n */\nbutton::-moz-focus-inner,\ninput::-moz-focus-inner {\n  border: 0;\n  padding: 0;\n}\n\nbutton {\n  border: 0;\n  background: transparent;\n}\n\ntextarea {\n  overflow: auto;\n  vertical-align: top;\n  resize: vertical;\n}\n\n/**\n * Remove most spacing between table cells.\n */\ntable {\n  border-collapse: collapse;\n  border-spacing: 0;\n  text-indent: 0;\n}\n\n/**\n * Based on normalize.css v8.0.1\n * github.com/necolas/normalize.css\n */\nhr {\n  box-sizing: content-box;\n  overflow: visible;\n  background: #000;\n  border: 0;\n  height: 1px;\n  line-height: 0;\n  margin: 0;\n  padding: 0;\n  page-break-after: always;\n  width: 100%;\n}\n\n/**\n * 1. Correct the inheritance and scaling of font size in all browsers.\n */\npre {\n  font-family: monospace, monospace;\n  font-size: 100%;\n}\n\n/**\n * Remove the gray background on active links in IE 10.\n */\na {\n  background-color: transparent;\n}\n\n/**\n * 1. Remove the bottom border in Chrome 57-\n * 2. Add the correct text decoration in Chrome, Edge, IE, Opera, and Safari.\n */\nabbr[title] {\n  border-bottom: none;\n  text-decoration: none;\n}\n\ncode,\nkbd,\npre,\nsamp {\n  font-family: monospace, monospace;\n}\n\n/**\n  * Add the correct font size in all browsers.\n  */\nsmall {\n  font-size: 75%;\n}\n\n/**\n * Prevent `sub` and `sup` elements from affecting the line height in\n * all browsers.\n */\nsub,\nsup {\n  font-size: 75%;\n  line-height: 0;\n  position: relative;\n  vertical-align: baseline;\n}\n\nsub {\n  bottom: -5px;\n}\n\nsup {\n  top: -5px;\n}\n\n/**\n * 1. Change the font styles in all browsers.\n * 2. Remove the margin in Firefox and Safari.\n */\nbutton,\ninput,\noptgroup,\nselect,\ntextarea {\n  font-family: inherit;\n  font-size: 100%;\n  line-height: 1;\n  margin: 0;\n  padding: 0;\n}\n\n/**\n * Show the overflow in IE.\n * 1. Show the overflow in Edge.\n */\nbutton,\ninput {\n  /* 1 */\n  overflow: visible;\n}\n\n/**\n * Remove the inheritance of text transform in Edge, Firefox, and IE.\n * 1. Remove the inheritance of text transform in Firefox.\n */\nbutton,\nselect {\n  /* 1 */\n  text-transform: none;\n}\n\n/**\n * Correct the inability to style clickable types in iOS and Safari.\n */\nbutton,\n[type=button],\n[type=reset],\n[type=submit] {\n  -webkit-appearance: button;\n}\n\n/**\n * Remove the inner border and padding in Firefox.\n */\nbutton::-moz-focus-inner,\n[type=button]::-moz-focus-inner,\n[type=reset]::-moz-focus-inner,\n[type=submit]::-moz-focus-inner {\n  border-style: none;\n  padding: 0;\n  outline: 0;\n}\n\nlegend {\n  color: inherit;\n  white-space: normal;\n  display: block;\n  border: 0;\n  max-width: 100%;\n  width: 100%;\n}\n\nfieldset {\n  min-width: 0;\n}\n\nbody:not(:-moz-handler-blocked) fieldset {\n  display: block;\n}\n\n/**\n * Add the correct vertical alignment in Chrome, Firefox, and Opera.\n */\nprogress {\n  vertical-align: baseline;\n}\n\n/**\n * Correct the cursor style of increment and decrement buttons in Chrome.\n */\n[type=number]::-webkit-inner-spin-button,\n[type=number]::-webkit-outer-spin-button {\n  height: auto;\n}\n\n/**\n * 1. Correct the odd appearance in Chrome and Safari.\n * 2. Correct the outline style in Safari.\n */\n[type=search] {\n  -webkit-appearance: textfield;\n  /* 1 */\n  outline-offset: -2px;\n  /* 2 */\n}\n\n/**\n * Remove the inner padding in Chrome and Safari on macOS.\n */\n[type=search]::-webkit-search-decoration {\n  -webkit-appearance: none;\n}\n\n/**\n * 1. Correct the inability to style clickable types in iOS and Safari.\n * 2. Change font properties to `inherit` in Safari.\n */\n::-webkit-file-upload-button {\n  -webkit-appearance: button;\n  /* 1 */\n  font: inherit;\n  /* 2 */\n}\n\n/* Interactive\n   ========================================================================== */\n/*\n * Add the correct display in all browsers.\n */\nsummary {\n  display: list-item;\n}\n\n/*\n * Misc\n * ========================================================================== */\n/**\n * Add the correct display in IE 10+.\n */\ntemplate {\n  display: none;\n}\n\n*::-webkit-scrollbar {\n  width: 8px;\n}\n\n*::-webkit-scrollbar-track {\n  background: rgb(203, 231, 255);\n}\n\n*::-webkit-scrollbar-thumb {\n  background-color: rgb(140, 140, 255);\n  border-radius: 20px;\n}\n\n.element-footer {\n  list-style-type: none;\n  margin: 0 50px;\n  margin-top: 15px;\n  display: inline-block;\n}\n\nhtml {\n  height: 100%;\n}\n\nbody {\n  height: 100%;\n}\n\n#root {\n  height: 100%;\n}\n\n.app {\n  display: flex;\n  flex-direction: column;\n  height: 100%;\n}\n\n.body {\n  flex: 1 0 auto;\n}\n\n.main__container {\n  display: grid;\n  grid-template-columns: 1fr 3fr;\n  grid-gap: 20px;\n  gap: 20px;\n}\n\n.container {\n  max-width: 1200px;\n  padding: 0 15px;\n  margin: 0 auto;\n}\n\n.footer {\n  content: \"footer\";\n  height: 150px;\n  width: 100%;\n}\n\n.footer__container {\n  font-family: \"DM Sans\", sans-serif;\n  display: flex;\n  flex-direction: row;\n  align-items: flex-start;\n  justify-content: center;\n  font-size: 30px;\n  width: 100%;\n  margin-top: 50px;\n}\n\n.validation-modal {\n  height: 50px;\n  width: 700px;\n  background-color: bisque;\n}\n\n.header__container {\n  display: flex;\n  flex-direction: row;\n  align-items: center;\n  justify-content: space-between;\n}\n.header__logo {\n  cursor: pointer;\n  max-width: 150px;\n}\n.header__value {\n  color: #61dafb;\n}\n.header__basket {\n  cursor: pointer;\n  position: relative;\n}\n.header__basket-count {\n  position: absolute;\n  top: -10px;\n  right: 0;\n  text-align: center;\n  padding: 5px;\n}\n.header__basket-image {\n  max-width: 40px;\n}\n\n.basket__main-container {\n  display: flex;\n  flex-direction: row;\n  gap: 20px;\n}\n\n.error {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n  margin: 0 auto;\n  text-align: center;\n  color: red;\n  text-transform: uppercase;\n}\n.error__name {\n  font-size: 60px;\n}\n.error__type {\n  font-size: 100px;\n}\n\n/*catalog*/\n.catalog__list {\n  grid-template-columns: repeat(4, 1fr);\n  grid-gap: 20px;\n  gap: 20px;\n  display: grid;\n}\n.catalog__list_other {\n  display: grid;\n  grid-template-columns: repeat(2, 1fr);\n  grid-gap: 40px;\n  gap: 40px;\n}\n.catalog__item {\n  border: 1px solid rgb(212, 235, 255);\n  border-radius: 5px;\n  background-color: aliceblue;\n  background-size: cover;\n  background-position: center;\n}\n.catalog__header {\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n}\n\n.product__header {\n  background-color: #61dafb;\n  text-align: center;\n}\n.product__header_active {\n  background-color: #f84200;\n  text-align: center;\n}\n.product__btns {\n  display: flex;\n  flex-direction: row;\n  align-items: center;\n  justify-content: center;\n  gap: 10px;\n}\n.product__description {\n  background-color: rgba(255, 255, 255, 0.76);\n  display: inline-block;\n  padding: 5px;\n}\n.product__description p {\n  font-size: 14px;\n  font-weight: 500;\n  color: rgb(89, 0, 255);\n}\n.product__description span {\n  font-size: 12px;\n  font-weight: 400;\n  color: rgb(0, 0, 0);\n}\n\n/*filter*/\n.filter__btns {\n  display: flex;\n  flex-direction: row;\n  justify-content: center;\n  align-items: center;\n}\n.filter__container {\n  display: flex;\n  flex-direction: column;\n  gap: 20px;\n}\n\n/*card*/\n.card__container {\n  display: grid;\n  grid-template-columns: 1fr 1fr;\n  grid-gap: 0;\n  gap: 0;\n  align-items: center;\n}\n.card__sliders {\n  display: flex;\n  flex-direction: row;\n  max-height: 400px;\n  overflow: hidden;\n}\n.card__info {\n  width: 100%;\n}\n\n.info__btns {\n  display: flex;\n  flex-direction: row;\n  justify-content: space-around;\n  gap: 20px;\n}", "",{"version":3,"sources":["webpack://./node_modules/scss-reset/_reset.scss","webpack://./src/styles/App.scss"],"names":[],"mappings":"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","sourcesContent":["/**\n * Reset Mixing\n * ================================================== */\n\n/**\n * Disable Animation\n */\n@mixin disableAnimation {\n  transform: none !important;\n\n  transition: none !important;\n  transition-property: none !important;\n  transition-duration: 0s !important;\n  transition-delay: 0s !important;\n\n  animation: none !important;\n  animation-duration: 0s !important;\n  animation-delay: 0s !important;\n  animation-iteration-count: 1 !important;\n\n  scroll-behavior: auto !important;\n}\n\n/**\n * Disable animation depends on Browser or Operation System configuration\n */\n@mixin acDisableAnimation {\n  @media (prefers-reduced-motion: reduce) {\n    @include disableAnimation;\n  }\n}\n\n/**\n * Accessability. Black and White Mode\n */\n@mixin acModeBW {\n  filter: grayscale(100%);\n}\n\n/**\n * Accessability. Inverse Mode\n */\n@mixin acModeContrast {\n  filter: invert(100%);\n  background-color: $white !important;\n}\n\n/**\n * Meter reset\n */\n@mixin meterReset {\n  meter {\n    background: none;\n    -webkit-appearance: none;\n  }\n\n  ::-moz-meter-bar {\n    -moz-appearance: none\n  }\n\n  :-moz-meter-optimum::-moz-meter-bar,\n  :-moz-meter-sub-optimum::-moz-meter-bar,\n  :-moz-meter-sub-sub-optimum::-moz-meter-bar {\n    background: none\n  }\n\n\n  meter::-webkit-meter-bar,\n  meter::-webkit-meter-optimum-value,\n  meter::-webkit-meter-suboptimum-value,\n  meter::-webkit-meter-even-less-good-value,\n  meter::-webkit-meter-inner-element {\n    background: none;\n  }\n}\n\n@mixin progressReset {\n\n  /**\n   * Progress Bar Reset\n   *\n   */\n  progress,\n  progress[role] {\n    display: block;\n\n    overflow: hidden;\n\n    width: 100%;\n    height: 40px;\n    margin: 0;\n\n    /* Reset Defaults */\n    appearance: none;\n    border: none;\n\n    /* Needs to be in here for Safari polyfill so background images work as expected. */\n    background-size: auto;\n  }\n\n  /* Polyfill */\n  progress[role]:after {\n    background-image: none;\n    /* removes default background from polyfill */\n  }\n\n  /* Ensure fallback text doesn't appear in polyfill */\n  progress[role] strong {\n    display: none;\n  }\n}\n\n\n/**\n * Modern CSS Reset Tweaks\n * ================================================== */\n\nhtml {\n  -webkit-text-size-adjust: 100%;\n\n  &:focus-within {\n    scroll-behavior: smooth;\n  }\n}\n\nbody {\n  text-size-adjust: 100%;\n  position: relative;\n\n  width: 100%;\n  min-height: 100vh;\n\n  -moz-osx-font-smoothing: grayscale;\n  -webkit-font-smoothing: antialiased;\n  text-rendering: optimizeSpeed;\n}\n\n\n/* Box sizing normalization */\n*,\n::after,\n::before {\n  box-sizing: border-box;\n}\n\n\n/* Elements that don't have a class get default styles */\na:not([class]) {\n  text-decoration-skip-ink: auto;\n}\n\n\n/**\n * CSS Reset Tweaks\n *\n * http://meyerweb.com/eric/tools/css/reset/\n * v2.0-modified | 20110126\n * License: none (public domain)\n */\n\nhtml,\nbody,\ndiv,\nspan,\napplet,\nobject,\niframe,\nh1,\nh2,\nh3,\nh4,\nh5,\nh6,\np,\nblockquote,\npre,\na,\nabbr,\nacronym,\naddress,\nbig,\ncite,\ncode,\ndel,\ndfn,\nem,\nimg,\nins,\nkbd,\nq,\ns,\nsamp,\nsmall,\nstrike,\nstrong,\nsub,\nsup,\ntt,\nvar,\nb,\nu,\ni,\ncenter,\ndl,\ndt,\ndd,\nol,\nul,\nli,\nfieldset,\nform,\nlabel,\nlegend,\ntable,\ncaption,\ntbody,\ntfoot,\nthead,\ntr,\nth,\ntd,\narticle,\naside,\ncanvas,\ndetails,\nembed,\nfigure,\nfigcaption,\nfooter,\nheader,\nhgroup,\nmenu,\nnav,\noutput,\nruby,\nsection,\nsummary,\ntime,\nmark,\naudio,\nvideo {\n  font-size: 100%;\n  font: inherit;\n  margin: 0;\n  padding: 0;\n  border: 0;\n  vertical-align: baseline;\n}\n\n/* make sure to set some focus styles for accessibility */\n:focus {\n  outline: 0;\n}\n\n/* HTML5 display-role reset for older browsers */\nmain,\narticle,\naside,\ndetails,\nfigcaption,\nfigure,\nfooter,\nheader,\nhgroup,\nmenu,\nnav,\nsection {\n  display: block;\n}\n\nol,\nul {\n  list-style: none;\n}\n\nblockquote,\nq {\n  quotes: none;\n\n  &:before,\n  &:after {\n    content: '';\n    content: none;\n  }\n}\n\n/**\n * Input Reset\n */\ninput:required,\ninput {\n  box-shadow: none;\n}\n\ninput:-webkit-autofill,\ninput:-webkit-autofill:hover,\ninput:-webkit-autofill:focus,\ninput:-webkit-autofill:active {\n  -webkit-box-shadow: 0 0 0 30px white inset;\n}\n\ninput[type=search]::-webkit-search-cancel-button,\ninput[type=search]::-webkit-search-decoration,\ninput[type=search]::-webkit-search-results-button,\ninput[type=search]::-webkit-search-results-decoration {\n  -webkit-appearance: none;\n  -moz-appearance: none;\n}\n\ninput[type=search] {\n  -webkit-appearance: none;\n  -moz-appearance: none;\n  -webkit-box-sizing: content-box;\n  -moz-box-sizing: content-box;\n  box-sizing: content-box;\n}\n\ntextarea {\n  overflow: auto;\n  vertical-align: top;\n  resize: vertical;\n}\n\ninput {\n  &:focus {\n    outline: none;\n  }\n}\n\n/**\n * Correct `inline-block` display not defined in IE 6/7/8/9 and Firefox 3.\n */\naudio,\ncanvas,\nvideo {\n  display: inline-block;\n  max-width: 100%;\n}\n\n/**\n * Prevent modern browsers from displaying `audio` without controls.\n * Remove excess height in iOS 5 devices.\n */\n\naudio:not([controls]) {\n  display: none;\n  height: 0;\n}\n\n/**\n * Address styling not present in IE 7/8/9, Firefox 3, and Safari 4.\n */\n\n[hidden] {\n  display: none;\n}\n\n/**\n * Improve readability when focused and also mouse hovered in all browsers.\n */\na:active,\na:hover {\n  outline: none;\n}\n\n/* Make images easier to work with */\nimg {\n  max-width: 100%;\n  display: inline-block;\n  vertical-align: middle;\n  height: auto;\n}\n\n/* Make pictures easier to work with */\npicture {\n  display: inline-block;\n}\n\n/**\n * Address Firefox 3+ setting `line-height` on `input` using `!important` in\n * the UA stylesheet.\n */\n\nbutton,\ninput {\n  line-height: normal;\n}\n\n/**\n * Address inconsistent `text-transform` inheritance for `button` and `select`.\n * All other form control elements do not inherit `text-transform` values.\n * Correct `button` style inheritance in Chrome, Safari 5+, and IE 6+.\n * Correct `select` style inheritance in Firefox 4+ and Opera.\n */\n\nbutton,\nselect {\n  text-transform: none;\n}\n\nbutton,\nhtml input[type=\"button\"],\ninput[type=\"reset\"],\ninput[type=\"submit\"] {\n  -webkit-appearance: button;\n  cursor: pointer;\n  border: 0;\n  background: transparent;\n}\n\n/**\n * Re-set default cursor for disabled elements.\n */\n\nbutton[disabled],\nhtml input[disabled] {\n  cursor: default;\n}\n\n[disabled] {\n  pointer-events: none;\n}\n\n/**\n * 1. Address box sizing set to content-box in IE 8/9.\n */\ninput[type=\"checkbox\"],\ninput[type=\"radio\"] {\n  padding: 0;\n}\n\n/**\n * 1. Address `appearance` set to `searchfield` in Safari 5 and Chrome.\n * 2. Address `box-sizing` set to `border-box` in Safari 5 and Chrome\n *    (include `-moz` to future-proof).\n */\n\ninput[type=\"search\"] {\n  -webkit-appearance: textfield;\n  -moz-box-sizing: content-box;\n  -webkit-box-sizing: content-box;\n  box-sizing: content-box;\n}\n\n/**\n * Remove inner padding and search cancel button in Safari 5 and Chrome\n * on OS X.\n */\n\ninput[type=\"search\"]::-webkit-search-cancel-button,\ninput[type=\"search\"]::-webkit-search-decoration {\n  -webkit-appearance: none;\n}\n\n/**\n * Remove inner padding and border in Firefox 3+.\n */\n\nbutton::-moz-focus-inner,\ninput::-moz-focus-inner {\n  border: 0;\n  padding: 0;\n}\n\nbutton {\n  border: 0;\n  background: transparent;\n}\n\ntextarea {\n  overflow: auto;\n  vertical-align: top;\n  resize: vertical;\n}\n\n/**\n * Remove most spacing between table cells.\n */\ntable {\n  border-collapse: collapse;\n  border-spacing: 0;\n  text-indent: 0;\n}\n\n\n/**\n * Based on normalize.css v8.0.1\n * github.com/necolas/normalize.css\n */\nhr {\n  box-sizing: content-box;\n  overflow: visible;\n  background: #000;\n  border: 0;\n  height: 1px;\n  line-height: 0;\n  margin: 0;\n  padding: 0;\n  page-break-after: always;\n  width: 100%;\n}\n\n/**\n * 1. Correct the inheritance and scaling of font size in all browsers.\n */\npre {\n  font-family: monospace, monospace;\n  font-size: 100%;\n}\n\n/**\n * Remove the gray background on active links in IE 10.\n */\na {\n  background-color: transparent;\n}\n\n/**\n * 1. Remove the bottom border in Chrome 57-\n * 2. Add the correct text decoration in Chrome, Edge, IE, Opera, and Safari.\n */\nabbr[title] {\n  border-bottom: none;\n  text-decoration: none;\n}\n\ncode,\nkbd,\npre,\nsamp {\n  font-family: monospace, monospace;\n}\n\n/**\n  * Add the correct font size in all browsers.\n  */\nsmall {\n  font-size: 75%;\n}\n\n/**\n * Prevent `sub` and `sup` elements from affecting the line height in\n * all browsers.\n */\nsub,\nsup {\n  font-size: 75%;\n  line-height: 0;\n  position: relative;\n  vertical-align: baseline;\n}\n\nsub {\n  bottom: -5px;\n}\n\nsup {\n  top: -5px;\n}\n\n/**\n * 1. Change the font styles in all browsers.\n * 2. Remove the margin in Firefox and Safari.\n */\nbutton,\ninput,\noptgroup,\nselect,\ntextarea {\n  font-family: inherit;\n  font-size: 100%;\n  line-height: 1;\n  margin: 0;\n  padding: 0;\n}\n\n/**\n * Show the overflow in IE.\n * 1. Show the overflow in Edge.\n */\nbutton,\ninput {\n  /* 1 */\n  overflow: visible;\n}\n\n/**\n * Remove the inheritance of text transform in Edge, Firefox, and IE.\n * 1. Remove the inheritance of text transform in Firefox.\n */\n\nbutton,\nselect {\n  /* 1 */\n  text-transform: none;\n}\n\n/**\n * Correct the inability to style clickable types in iOS and Safari.\n */\n\nbutton,\n[type=\"button\"],\n[type=\"reset\"],\n[type=\"submit\"] {\n  -webkit-appearance: button;\n}\n\n/**\n * Remove the inner border and padding in Firefox.\n */\n\nbutton::-moz-focus-inner,\n[type=\"button\"]::-moz-focus-inner,\n[type=\"reset\"]::-moz-focus-inner,\n[type=\"submit\"]::-moz-focus-inner {\n  border-style: none;\n  padding: 0;\n  outline: 0;\n}\n\n\nlegend {\n  color: inherit;\n  white-space: normal;\n\n  display: block;\n  border: 0;\n  max-width: 100%;\n  width: 100%;\n}\n\nfieldset {\n  min-width: 0;\n}\n\nbody:not(:-moz-handler-blocked) fieldset {\n  display: block;\n}\n\n\n/**\n * Add the correct vertical alignment in Chrome, Firefox, and Opera.\n */\nprogress {\n  vertical-align: baseline;\n}\n\n\n/**\n * Correct the cursor style of increment and decrement buttons in Chrome.\n */\n[type=\"number\"]::-webkit-inner-spin-button,\n[type=\"number\"]::-webkit-outer-spin-button {\n  height: auto;\n}\n\n\n/**\n * 1. Correct the odd appearance in Chrome and Safari.\n * 2. Correct the outline style in Safari.\n */\n[type=\"search\"] {\n  -webkit-appearance: textfield;\n  /* 1 */\n  outline-offset: -2px;\n  /* 2 */\n}\n\n/**\n * Remove the inner padding in Chrome and Safari on macOS.\n */\n[type=\"search\"]::-webkit-search-decoration {\n  -webkit-appearance: none;\n}\n\n/**\n * 1. Correct the inability to style clickable types in iOS and Safari.\n * 2. Change font properties to `inherit` in Safari.\n */\n::-webkit-file-upload-button {\n  -webkit-appearance: button;\n  /* 1 */\n  font: inherit;\n  /* 2 */\n}\n\n/* Interactive\n   ========================================================================== */\n\n/*\n * Add the correct display in all browsers.\n */\nsummary {\n  display: list-item;\n}\n\n/*\n * Misc\n * ========================================================================== */\n\n/**\n * Add the correct display in IE 10+.\n */\ntemplate {\n  display: none;\n}\n","@import 'scss-reset/_reset.scss';\r\n@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@1,500&display=swap');\r\n*::-webkit-scrollbar {\r\n  width: 8px;\r\n}\r\n*::-webkit-scrollbar-track {\r\n  background: rgb(203, 231, 255);\r\n}\r\n*::-webkit-scrollbar-thumb {\r\n  background-color: rgb(140, 140, 255);\r\n  border-radius: 20px;\r\n}\r\n.element-footer{\r\n  list-style-type: none;\r\n  margin: 0 50px;\r\n  margin-top: 15px;\r\n  display: inline-block;\r\n}\r\n\r\nhtml {\r\n  height: 100%;\r\n}\r\n\r\nbody {\r\n  height: 100%;\r\n}\r\n\r\n#root {\r\n  height: 100%;\r\n}\r\n\r\n.app {\r\n  display: flex;\r\n  flex-direction: column;\r\n  height: 100%;\r\n}\r\n\r\n.body {\r\n  flex: 1 0 auto;\r\n}\r\n\r\n.main {\r\n  &__container {\r\n    display: grid;\r\n    grid-template-columns: 1fr 3fr;\r\n    gap: 20px;\r\n  }\r\n}\r\n\r\n.container {\r\n  max-width: 1200px;\r\n  padding: 0 15px;\r\n\r\n  margin: 0 auto;\r\n}\r\n\r\n.footer {\r\n  content: 'footer';\r\n  height: 150px;\r\n  width: 100%;\r\n}\r\n.footer__container{\r\n  font-family: 'DM Sans', sans-serif;\r\n  display: flex;\r\n  flex-direction:row;\r\n  align-items: flex-start;\r\n  justify-content: center;\r\n  font-size: 30px;\r\n  width: 100%;\r\n  margin-top: 50px;\r\n}\r\n.validation-modal {\r\n  height: 50px;\r\n  width: 700px;\r\n  background-color: bisque;\r\n}\r\n\r\n.header {\r\n  &__container {\r\n    display: flex;\r\n    flex-direction: row;\r\n    align-items: center;\r\n    justify-content: space-between;\r\n  }\r\n  \r\n  &__logo {\r\n    cursor: pointer;\r\n    max-width: 150px;\r\n  }\r\n  \r\n  &__sum {\r\n    \r\n  }\r\n  \r\n  &__value {\r\n    color: #61dafb;\r\n  }\r\n  \r\n  &__basket {\r\n    cursor: pointer;\r\n    position: relative;\r\n    &-count {\r\n      position: absolute;\r\n      top: -10px;\r\n      right: 0;\r\n      text-align: center;\r\n      padding: 5px;\r\n    }\r\n    \r\n    &-image {\r\n      max-width: 40px;\r\n    }\r\n  }\r\n}\r\n\r\n.basket__main-container {\r\n  display: flex;\r\n  flex-direction: row;\r\n  gap: 20px;\r\n}\r\n\r\n.error {\r\n  display: flex;\r\n  flex-direction: column;\r\n  align-items: center;\r\n  justify-content: center;\r\n  \r\n  margin: 0 auto;\r\n\r\n  text-align: center;\r\n  color: red;\r\n  text-transform: uppercase;\r\n\r\n  &__name {\r\n    font-size: 60px;  \r\n  }\r\n  \r\n  &__type {\r\n    font-size: 100px;  \r\n  }\r\n}\r\n\r\n/*catalog*/\r\n\r\n.catalog {\r\n  &__container {\r\n\r\n  }\r\n  \r\n  &__list {\r\n    grid-template-columns: repeat(4, 1fr);\r\n    gap: 20px;\r\n    display: grid;\r\n    \r\n    &_other {\r\n      display: grid;\r\n      grid-template-columns: repeat(2, 1fr);\r\n      gap: 40px;\r\n    }\r\n  }\r\n\r\n\r\n  &__item {\r\n    border: 1px solid rgb(212, 235, 255);\r\n    border-radius: 5px;\r\n    background-color: aliceblue;\r\n    background-size: cover;\r\n    background-position: center;\r\n  }\r\n\r\n  &__header {\r\n    display: flex;\r\n    flex-direction: row;\r\n    justify-content: space-between;\r\n  }\r\n}\r\n\r\n.product {\r\n  &__header {\r\n    background-color: #61dafb;\r\n    text-align: center;\r\n    \r\n    &_active {\r\n      background-color: #f84200;\r\n      text-align: center;\r\n    }\r\n  }\r\n\r\n  &__body {\r\n\r\n  }\r\n\r\n  &__btns {\r\n    display: flex;\r\n    flex-direction: row;\r\n    align-items: center;\r\n    justify-content: center;\r\n    gap: 10px;\r\n  }\r\n\r\n  &__description {\r\n    background-color: rgba(255, 255, 255, 0.76);\r\n    display: inline-block;\r\n    padding: 5px;\r\n    & p {\r\n      font-size: 14px;\r\n      font-weight: 500;\r\n      color: rgb(89, 0, 255);\r\n    }\r\n    \r\n    & span {\r\n      font-size: 12px;\r\n      font-weight: 400;\r\n      color: rgb(0, 0, 0);\r\n    }\r\n  }\r\n}\r\n\r\n/*filter*/\r\n\r\n.filter {\r\n  &__btns {\r\n    display: flex;\r\n    flex-direction: row;\r\n    justify-content: center;\r\n    align-items: center;\r\n  }\r\n\r\n  &__container {\r\n    display: flex;\r\n    flex-direction: column;\r\n    gap: 20px;\r\n  }\r\n}\r\n\r\n/*card*/\r\n\r\n.card {\r\n  &__container {\r\n    display: grid;\r\n    grid-template-columns: 1fr 1fr;\r\n    gap: 0;\r\n    align-items: center;\r\n  }\r\n\r\n  &__sliders {\r\n    display: flex;\r\n    flex-direction: row;\r\n    max-height: 400px;\r\n    overflow: hidden;\r\n  }\r\n  &__info {\r\n    width: 100%;\r\n  }\r\n}\r\n\r\n.info {\r\n  &__btns {\r\n    display: flex;\r\n    flex-direction: row;\r\n    justify-content: space-around;\r\n    gap: 20px;\r\n  }\r\n}\r\n\r\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -53282,9 +53580,9 @@ module.exports = styleTagTransform;
 
 "use strict";
 
-let cha = '12';
-cha += 'sd';
-console.log(cha);
+const type = 'Typescript';
+const script = ' is Here!';
+console.log(type + script);
 
 
 /***/ }),
@@ -69803,7 +70101,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"products":[{"id":1,"model":"Dixi 3/15","description":"Первая BMW автомобиль","price":500,"discountPercentage":12.96,"rating":4.69,"stock":4,"brand":"BMW","category":"Cars","thumbnail":"main1.jpg","images":["3-15bmw.jpg","dixi15-03.jpg","bmw_dixi.jpg","BMW-Dixi.jpg"]},{"id":2,"model":"303","description":"Начало брендовой решетки","price":250.1,"discountPercentage":12.96,"rating":4.39,"stock":10,"brand":"BMW","category":"Cars","thumbnail":"main2.jpg","images":["BMW_303_02.jpg","bmw_303_03.jpg","bmw_303_04.jpg","bmw_303_05.jpg"]},{"id":3,"model":"503","description":"Начало роскоши","price":850,"discountPercentage":12,"rating":4.89,"stock":20,"brand":"BMW","category":"Cars","thumbnail":"main3.jpg","images":["bmw_503_01.jpg","bmw_503_02.jpg","bmw_503_03.jpg","bmw_503_04.jpg"]},{"id":4,"model":"507","description":"Одна из самых красивых машин в мире","price":9999,"discountPercentage":0,"rating":5,"stock":1,"brand":"BMW","category":"Cars","thumbnail":"main4.jpg","images":["507-1.jpg","507-2.jpg","507-3.jpg","507-4.jpg"]},{"id":5,"model":"E9","description":"Отец шестерки","price":850.1,"discountPercentage":6,"rating":4.49,"stock":14,"brand":"BMW","category":"Cars","thumbnail":"main5.jpg","images":["bmw_e9_1.jpg","bmw_e9_2.jpg","bmw_e9_3.jpg","bmw_e9_4.jpg"]},{"id":6,"model":"e24","description":"Гроза автобанов","price":3000,"discountPercentage":96,"rating":4.89,"stock":3,"brand":"BMW","category":"Cars","thumbnail":"main6.jpg","images":["bmw_e24_01.jpg","bmw_e24_02.jpg","bmw_e24_03.jpg","bmw_e24_04.jpg"]},{"id":7,"model":"M1","description":"спортивный автомобиль","price":3500,"discountPercentage":0,"rating":4.69,"stock":30,"brand":"BMW","category":"Cars","thumbnail":"main7.jpg","images":["bmw_m1_01.jpg","bmw_m1_02.jpg","bmw_m1_03.jpg","bmw_m1_04.jpg"]},{"id":8,"model":"E28","description":"Брендовая пятерка","price":400,"discountPercentage":12,"rating":4,"stock":100,"brand":"BMW","category":"Cars","thumbnail":"main8.jpg","images":["bmw_e28_01.jpg","bmw_e28_02.jpg","bmw_e28_03.jpg","bmw_e28_04.jpg"]},{"id":9,"model":"E30","description":"Первая культовая трешка","price":150,"discountPercentage":20,"rating":3.8,"stock":70,"brand":"BMW","category":"Cars","thumbnail":"main9.jpg","images":["bmw_e30_01.jpg","bmw_e30_02.jpg","bmw_e30_03.jpg","bmw_e30_04.jpg"]},{"id":10,"model":"E34","description":"Культовая пятерка","price":50,"discountPercentage":10,"rating":4.1,"stock":200,"brand":"BMW","category":"Cars","thumbnail":"main10.jpg","images":["bmw_e34_01.jpg","bmw_e34_02.jpg","bmw_e34_03.jpg","bmw_e34_04.jpg"]},{"id":11,"model":"E31","description":"Восьмерка","price":800,"discountPercentage":12,"rating":4.29,"stock":13,"brand":"BMW","category":"Cars","thumbnail":"main11.jpg","images":["bmw_e31_01.jpg","bmw_e31_02.jpg","bmw_e31_03.jpg","bmw_e31_04.jpg"]},{"id":12,"model":"E36","description":"Трешка","price":100,"discountPercentage":12,"rating":3.69,"stock":203,"brand":"BMW","category":"Cars","thumbnail":"main12.jpg","images":["bmw_e36_01.jpg","bmw_e36_02.jpg","bmw_e36_03.jpg","bmw_e36_04.jpg"]},{"id":13,"model":"E38","description":"Семерка","price":300,"discountPercentage":12,"rating":4,"stock":93,"brand":"BMW","category":"Cars","thumbnail":"main13.jpg","images":["bmw_e38_01.jpg","bmw_e38_02.jpg","bmw_e38_03.jpg","bmw_e38_04.jpg"]},{"id":14,"model":"E39","description":"Девятка","price":300,"discountPercentage":120,"rating":4.29,"stock":130,"brand":"BMW","category":"Cars","thumbnail":"main14.jpg","images":["bmw_e39_01.jpg","bmw_e39_02.jpg","bmw_e39_03.jpg","bmw_e39_04.jpg"]},{"id":15,"model":"E53","description":"X5","price":400,"discountPercentage":12,"rating":3.5,"stock":90,"brand":"BMW","category":"Cars","thumbnail":"main15.jpg","images":["bmw_e53_01.jpg","bmw_e53_02.jpg","bmw_e53_03.jpg","bmw_e53_04.jpg"]},{"id":16,"model":"Z8","description":"James Bont","price":2000,"discountPercentage":0,"rating":4,"stock":20,"brand":"BMW","category":"Cars","thumbnail":"main16.jpg","images":["bmw_z8_01.jpg","bmw_z8_02.jpg","bmw_z8_03.jpg","bmw_z8_04.jpg"]},{"id":17,"model":"E60","description":"M5","price":600,"discountPercentage":12,"rating":4.29,"stock":13,"brand":"BMW","category":"Cars","thumbnail":"main17.jpg","images":["bmw_e60_01.jpg","bmw_e60_02.jpg","bmw_e60_03.jpg","bmw_e60_04.jpg"]},{"id":18,"model":"F90","description":"M5","price":1200,"discountPercentage":12,"rating":5,"stock":30,"brand":"BMW","category":"Cars","thumbnail":"main18.jpg","images":["bmw_f90_01.jpg","bmw_f90_02.jpg","bmw_f90_03.jpg","bmw_f90_04.jpg"]},{"id":19,"model":"R1200R","description":"bike","price":600,"discountPercentage":12,"rating":4.29,"stock":13,"brand":"BMW","category":"Motorcycle","thumbnail":"main19.jpg","images":["bmw_r1200r_01.jpg","bmw_r1200r_02.jpg","bmw_r1200r_03.jpg","bmw_r1200r_04.jpg"]},{"id":20,"model":"s1000r","description":"bike","price":600,"discountPercentage":12,"rating":4.29,"stock":13,"brand":"BMW","category":"Motorcycle","thumbnail":"main20.jpg","images":["bmw_s1000r_01.jpg","bmw_s1000r_02.jpg","bmw_s1000r_03.jpg","bmw_s1000r_04.jpg"]},{"id":21,"model":"W140","description":"Kaban","price":1600,"discountPercentage":0,"rating":4.9,"stock":3,"brand":"Mercedes","category":"Cars","thumbnail":"main21.jpg","images":["mercedes_w140_01.jpg","mercedes_w140_02.jpg","mercedes_w140_03.jpg","mercedes_w140_04.jpg"]},{"id":22,"model":"D2","description":"S8 d2","price":900,"discountPercentage":12,"rating":4.29,"stock":13,"brand":"AUDI","category":"Cars","thumbnail":"main22.jpg","images":["audi_d2_01.jpg","audi_d2_02.jpg","audi_d2_03.jpg","audi_d2_04.jpg"]},{"id":23,"model":"Quattro S1","description":"legend all-whell drive","price":900,"discountPercentage":12,"rating":4.29,"stock":13,"brand":"AUDI","category":"Cars","thumbnail":"main23.jpg","images":["audi_Qs1_01.jpg","audi_Qs1_02.jpg","audi_Qs1_03.jpg","audi_Qs1_04.jpg"]},{"id":24,"model":"TTRS","description":"Lovely car of Mikhail","price":900,"discountPercentage":12,"rating":4.29,"stock":13,"brand":"AUDI","category":"Cars","thumbnail":"main24.jpg","images":["audi_tt_01.jpg","audi_tt_02.jpg","audi_tt_03.jpg","audi_tt_04.jpg"]},{"id":25,"model":"XC90","description":"1 generation rest","price":900,"discountPercentage":0,"rating":5,"stock":80,"brand":"Volvo","category":"Cars","thumbnail":"main25.jpg","images":["volvo_xc90_01.jpg","volvo_xc90_02.jpg","volvo_xc90_03.jpg","volvo_xc90_04.jpg"]},{"id":26,"model":"911 Turbo S","description":"lovely car of girls","price":1900,"discountPercentage":12,"rating":4.29,"stock":13,"brand":"Porsche","category":"Cars","thumbnail":"main26.jpg","images":["porsche_911_01.jpg","porsche_911_02.jpg","porsche_911_03.jpg","porsche_911_04.jpg"]},{"id":27,"model":"S60","description":"2005y","price":900,"discountPercentage":12,"rating":4.29,"stock":13,"brand":"Volvo","category":"Cars","thumbnail":"main27.jpg","images":["volvo_s60_01.jpg","volvo_s60_02.jpg","volvo_s60_03.jpg","volvo_s60_04.jpg"]},{"id":28,"model":"405","description":"father of taxi","price":900,"discountPercentage":12,"rating":4.29,"stock":13,"brand":"Peugeot","category":"Cars","thumbnail":"main28.jpg","images":["peugeot_405_01.jpg","peugeot_405_02.jpg","peugeot_405_03.jpg","peugeot_405_04.jpg"]},{"id":29,"model":"406","description":"legend from taxi","price":900,"discountPercentage":12,"rating":4.29,"stock":13,"brand":"Peugeot","category":"Cars","thumbnail":"main29.jpg","images":["peugeot_406_01.jpg","peugeot_406_02.jpg","peugeot_406_03.jpg","peugeot_406_04.jpg"]},{"id":30,"model":"Civic 5","description":"Japanese","price":500,"discountPercentage":12,"rating":4.89,"stock":13,"brand":"HONDA","category":"Cars","thumbnail":"main30.jpg","images":["honda_civic_01.jpg","honda_civic_02.jpg","honda_civic_03.jpg","honda_civic_04.jpg"]},{"id":31,"model":"2107","description":"Лягэнда беларуских зимних дорог","price":1,"discountPercentage":0,"rating":5,"stock":999,"brand":"Жэгулі","category":"Cars","thumbnail":"main31.jpg","images":["zhiguli_07_01.jpg","zhiguli_07_02.jpg","zhiguli_07_03.jpg","zhiguli_07_04.jpg"]},{"id":32,"model":"Sport","description":"daddy of sto","price":5900,"discountPercentage":0,"rating":4.29,"stock":25,"brand":"Range Rover","category":"Cars","thumbnail":"main32.jpg","images":["range_sport_01.jpg","range_sport_02.jpg","range_sport_03.jpg","range_sport_04.jpg"]},{"id":33,"model":"CBR1100xx","description":"meat","price":900,"discountPercentage":12,"rating":4.29,"stock":13,"brand":"Honda","category":"Motorcycle","thumbnail":"main33.jpg","images":["honda_CBR_01.jpg","honda_CBR_02.jpg","honda_CBR_03.jpg","honda_CBR_04.jpg"]},{"id":34,"model":"Boulevard","description":"meat","price":900,"discountPercentage":12,"rating":4.29,"stock":13,"brand":"Suzuki","category":"Motorcycle","thumbnail":"main34.jpg","images":["suzuki_boulevard_01.jpg","suzuki_boulevard_02.jpg","suzuki_boulevard_03.jpg","suzuki_boulevard_04.jpg"]},{"id":35,"model":"YZF-R125","description":"meat","price":900,"discountPercentage":12,"rating":4.29,"stock":13,"brand":"Yamaha","category":"Motorcycle","thumbnail":"main35.jpg","images":["yamaha_yzf_01.jpg","yamaha_yzf_02.jpg","yamaha_yzf_03.jpg","yamaha_yzf_04.jpg"]},{"id":36,"model":"LS-218","description":"meat","price":900,"discountPercentage":12,"rating":4.29,"stock":13,"brand":"Lightning","category":"Motorcycle","thumbnail":"main36.jpg","images":["lightning_ls_01.jpg","lightning_ls_02.jpg","lightning_ls_03.jpg","lightning_ls_04.jpg"]},{"id":37,"model":"Raptor 1000","description":"meat","price":900,"discountPercentage":12,"rating":4.29,"stock":13,"brand":"Cagiva","category":"Motorcycle","thumbnail":"main37.jpg","images":["cagiva_raptor_01.jpg","cagiva_raptor_02.jpg","cagiva_raptor_03.jpg","cagiva_raptor_04.jpg"]},{"id":38,"model":"150 TAP","description":"millitary","price":900,"discountPercentage":12,"rating":4.29,"stock":13,"brand":"Vespa","category":"Motorcycle","thumbnail":"main38.jpg","images":["vespa_tap_01.jpg","vespa_tap_02.jpg","vespa_tap_03.jpg","vespa_tap_04.jpg"]},{"id":39,"model":"А-750","description":"soveit","price":900,"discountPercentage":12,"rating":4.29,"stock":13,"brand":"ПМЗ","category":"Motorcycle","thumbnail":"main39.jpg","images":["pmz_a750_01.jpg","pmz_a750_02.jpg","pmz_a750_03.jpg","pmz_a750_04.jpg"]},{"id":40,"model":"82","description":"Гордость наших полей","price":8900,"discountPercentage":12,"rating":4.29,"stock":100,"brand":"Трахтар Беларус","category":"Monster","thumbnail":"main40.jpg","images":["mtz_bel_01.jpg","mtz_bel_02.jpg","mtz_bel_03.jpg","mtz_bel_04.jpg"]}]}');
+module.exports = JSON.parse('{"products":[{"id":1,"model":"Dixi 3/15","description":"Первая BMW автомобиль","price":500,"discountPercentage":12.96,"rating":4.69,"stock":4,"brand":"BMW","category":"Cars","count":0,"thumbnail":"main1.jpg","images":["3-15bmw.jpg","dixi15-03.jpg","bmw_dixi.jpg","BMW-Dixi.jpg"]},{"id":2,"model":"303","description":"Начало брендовой решетки","price":250.1,"discountPercentage":12.96,"rating":4.39,"stock":10,"brand":"BMW","category":"Cars","count":0,"thumbnail":"main2.jpg","images":["BMW_303_02.jpg","bmw_303_03.jpg","bmw_303_04.jpg","bmw_303_05.jpg"]},{"id":3,"model":"503","description":"Начало роскоши","price":850,"discountPercentage":12,"rating":4.89,"stock":20,"brand":"BMW","category":"Cars","count":0,"thumbnail":"main3.jpg","images":["bmw_503_01.jpg","bmw_503_02.jpg","bmw_503_03.jpg","bmw_503_04.jpg"]},{"id":4,"model":"507","description":"Одна из самых красивых машин в мире","price":9999,"discountPercentage":0,"rating":5,"stock":1,"brand":"BMW","category":"Cars","count":0,"thumbnail":"main4.jpg","images":["507-1.jpg","507-2.jpg","507-3.jpg","507-4.jpg"]},{"id":5,"model":"E9","description":"Отец шестерки","price":850.1,"discountPercentage":6,"rating":4.49,"stock":14,"brand":"BMW","category":"Cars","count":0,"thumbnail":"main5.jpg","images":["bmw_e9_1.jpg","bmw_e9_2.jpg","bmw_e9_3.jpg","bmw_e9_4.jpg"]},{"id":6,"model":"e24","description":"Гроза автобанов","price":3000,"discountPercentage":96,"rating":4.89,"stock":3,"brand":"BMW","category":"Cars","count":0,"thumbnail":"main6.jpg","images":["bmw_e24_01.jpg","bmw_e24_02.jpg","bmw_e24_03.jpg","bmw_e24_04.jpg"]},{"id":7,"model":"M1","description":"спортивный автомобиль","price":3500,"discountPercentage":0,"rating":4.69,"stock":30,"brand":"BMW","category":"Cars","count":0,"thumbnail":"main7.jpg","images":["bmw_m1_01.jpg","bmw_m1_02.jpg","bmw_m1_03.jpg","bmw_m1_04.jpg"]},{"id":8,"model":"E28","description":"Брендовая пятерка","price":400,"discountPercentage":12,"rating":4,"stock":100,"brand":"BMW","category":"Cars","count":0,"thumbnail":"main8.jpg","images":["bmw_e28_01.jpg","bmw_e28_02.jpg","bmw_e28_03.jpg","bmw_e28_04.jpg"]},{"id":9,"model":"E30","description":"Первая культовая трешка","price":150,"discountPercentage":20,"rating":3.8,"stock":70,"brand":"BMW","category":"Cars","count":0,"thumbnail":"main9.jpg","images":["bmw_e30_01.jpg","bmw_e30_02.jpg","bmw_e30_03.jpg","bmw_e30_04.jpg"]},{"id":10,"model":"E34","description":"Культовая пятерка","price":50,"discountPercentage":10,"rating":4.1,"stock":200,"brand":"BMW","category":"Cars","count":0,"thumbnail":"main10.jpg","images":["bmw_e34_01.jpg","bmw_e34_02.jpg","bmw_e34_03.jpg","bmw_e34_04.jpg"]},{"id":11,"model":"E31","description":"Восьмерка","price":800,"discountPercentage":12,"rating":4.29,"stock":13,"brand":"BMW","category":"Cars","count":0,"thumbnail":"main11.jpg","images":["bmw_e31_01.jpg","bmw_e31_02.jpg","bmw_e31_03.jpg","bmw_e31_04.jpg"]},{"id":12,"model":"E36","description":"Трешка","price":100,"discountPercentage":12,"rating":3.69,"stock":203,"brand":"BMW","category":"Cars","count":0,"thumbnail":"main12.jpg","images":["bmw_e36_01.jpg","bmw_e36_02.jpg","bmw_e36_03.jpg","bmw_e36_04.jpg"]},{"id":13,"model":"E38","description":"Семерка","price":300,"discountPercentage":12,"rating":4,"stock":93,"brand":"BMW","category":"Cars","count":0,"thumbnail":"main13.jpg","images":["bmw_e38_01.jpg","bmw_e38_02.jpg","bmw_e38_03.jpg","bmw_e38_04.jpg"]},{"id":14,"model":"E39","description":"Девятка","price":300,"discountPercentage":120,"rating":4.29,"stock":130,"brand":"BMW","category":"Cars","count":0,"thumbnail":"main14.jpg","images":["bmw_e39_01.jpg","bmw_e39_02.jpg","bmw_e39_03.jpg","bmw_e39_04.jpg"]},{"id":15,"model":"E53","description":"X5","price":400,"discountPercentage":12,"rating":3.5,"stock":90,"brand":"BMW","category":"Cars","count":0,"thumbnail":"main15.jpg","images":["bmw_e53_01.jpg","bmw_e53_02.jpg","bmw_e53_03.jpg","bmw_e53_04.jpg"]},{"id":16,"model":"Z8","description":"James Bont","price":2000,"discountPercentage":0,"rating":4,"stock":20,"brand":"BMW","category":"Cars","count":0,"thumbnail":"main16.jpg","images":["bmw_z8_01.jpg","bmw_z8_02.jpg","bmw_z8_03.jpg","bmw_z8_04.jpg"]},{"id":17,"model":"E60","description":"M5","price":600,"discountPercentage":12,"rating":4.29,"stock":13,"brand":"BMW","category":"Cars","count":0,"thumbnail":"main17.jpg","images":["bmw_e60_01.jpg","bmw_e60_02.jpg","bmw_e60_03.jpg","bmw_e60_04.jpg"]},{"id":18,"model":"F90","description":"M5","price":1200,"discountPercentage":12,"rating":5,"stock":30,"brand":"BMW","category":"Cars","count":0,"thumbnail":"main18.jpg","images":["bmw_f90_01.jpg","bmw_f90_02.jpg","bmw_f90_03.jpg","bmw_f90_04.jpg"]},{"id":19,"model":"R1200R","description":"bike","price":600,"discountPercentage":12,"rating":4.29,"stock":13,"brand":"BMW","category":"Motorcycle","count":0,"thumbnail":"main19.jpg","images":["bmw_r1200r_01.jpg","bmw_r1200r_02.jpg","bmw_r1200r_03.jpg","bmw_r1200r_04.jpg"]},{"id":20,"model":"s1000r","description":"bike","price":600,"discountPercentage":12,"rating":4.29,"stock":13,"brand":"BMW","category":"Motorcycle","count":0,"thumbnail":"main20.jpg","images":["bmw_s1000r_01.jpg","bmw_s1000r_02.jpg","bmw_s1000r_03.jpg","bmw_s1000r_04.jpg"]},{"id":21,"model":"W140","description":"Kaban","price":1600,"discountPercentage":0,"rating":4.9,"stock":3,"brand":"Mercedes","category":"Cars","count":0,"thumbnail":"main21.jpg","images":["mercedes_w140_01.jpg","mercedes_w140_02.jpg","mercedes_w140_03.jpg","mercedes_w140_04.jpg"]},{"id":22,"model":"D2","description":"S8 d2","price":900,"discountPercentage":12,"rating":4.29,"stock":13,"brand":"AUDI","category":"Cars","count":0,"thumbnail":"main22.jpg","images":["audi_d2_01.jpg","audi_d2_02.jpg","audi_d2_03.jpg","audi_d2_04.jpg"]},{"id":23,"model":"Quattro S1","description":"legend all-whell drive","price":900,"discountPercentage":12,"rating":4.29,"stock":13,"brand":"AUDI","category":"Cars","count":0,"thumbnail":"main23.jpg","images":["audi_Qs1_01.jpg","audi_Qs1_02.jpg","audi_Qs1_03.jpg","audi_Qs1_04.jpg"]},{"id":24,"model":"TTRS","description":"Lovely car of Mikhail","price":900,"discountPercentage":12,"rating":4.29,"stock":13,"brand":"AUDI","category":"Cars","count":0,"thumbnail":"main24.jpg","images":["audi_tt_01.jpg","audi_tt_02.jpg","audi_tt_03.jpg","audi_tt_04.jpg"]},{"id":25,"model":"XC90","description":"1 generation rest","price":900,"discountPercentage":0,"rating":5,"stock":80,"brand":"Volvo","category":"Cars","count":0,"thumbnail":"main25.jpg","images":["volvo_xc90_01.jpg","volvo_xc90_02.jpg","volvo_xc90_03.jpg","volvo_xc90_04.jpg"]},{"id":26,"model":"911 Turbo S","description":"lovely car of girls","price":1900,"discountPercentage":12,"rating":4.29,"stock":13,"brand":"Porsche","category":"Cars","count":0,"thumbnail":"main26.jpg","images":["porsche_911_01.jpg","porsche_911_02.jpg","porsche_911_03.jpg","porsche_911_04.jpg"]},{"id":27,"model":"S60","description":"2005y","price":900,"discountPercentage":12,"rating":4.29,"stock":13,"brand":"Volvo","category":"Cars","count":0,"thumbnail":"main27.jpg","images":["volvo_s60_01.jpg","volvo_s60_02.jpg","volvo_s60_03.jpg","volvo_s60_04.jpg"]},{"id":28,"model":"405","description":"father of taxi","price":900,"discountPercentage":12,"rating":4.29,"stock":13,"brand":"Peugeot","category":"Cars","count":0,"thumbnail":"main28.jpg","images":["peugeot_405_01.jpg","peugeot_405_02.jpg","peugeot_405_03.jpg","peugeot_405_04.jpg"]},{"id":29,"model":"406","description":"legend from taxi","price":900,"discountPercentage":12,"rating":4.29,"stock":13,"brand":"Peugeot","category":"Cars","count":0,"thumbnail":"main29.jpg","images":["peugeot_406_01.jpg","peugeot_406_02.jpg","peugeot_406_03.jpg","peugeot_406_04.jpg"]},{"id":30,"model":"Civic 5","description":"Japanese","price":500,"discountPercentage":12,"rating":4.89,"stock":13,"brand":"HONDA","category":"Cars","count":0,"thumbnail":"main30.jpg","images":["honda_civic_01.jpg","honda_civic_02.jpg","honda_civic_03.jpg","honda_civic_04.jpg"]},{"id":31,"model":"2107","description":"Лягэнда беларуских зимних дорог","price":1,"discountPercentage":0,"rating":5,"stock":999,"brand":"Жэгулі","category":"Cars","count":0,"thumbnail":"main31.jpg","images":["zhiguli_07_01.jpg","zhiguli_07_02.jpg","zhiguli_07_03.jpg","zhiguli_07_04.jpg"]},{"id":32,"model":"Sport","description":"daddy of sto","price":5900,"discountPercentage":0,"rating":4.29,"stock":25,"brand":"Range Rover","category":"Cars","count":0,"thumbnail":"main32.jpg","images":["range_sport_01.jpg","range_sport_02.jpg","range_sport_03.jpg","range_sport_04.jpg"]},{"id":33,"model":"CBR1100xx","description":"meat","price":900,"discountPercentage":12,"rating":4.29,"stock":13,"brand":"Honda","category":"Motorcycle","count":0,"thumbnail":"main33.jpg","images":["honda_CBR_01.jpg","honda_CBR_02.jpg","honda_CBR_03.jpg","honda_CBR_04.jpg"]},{"id":34,"model":"Boulevard","description":"meat","price":900,"discountPercentage":12,"rating":4.29,"stock":13,"brand":"Suzuki","category":"Motorcycle","count":0,"thumbnail":"main34.jpg","images":["suzuki_boulevard_01.jpg","suzuki_boulevard_02.jpg","suzuki_boulevard_03.jpg","suzuki_boulevard_04.jpg"]},{"id":35,"model":"YZF-R125","description":"meat","price":900,"discountPercentage":12,"rating":4.29,"stock":13,"brand":"Yamaha","category":"Motorcycle","count":0,"thumbnail":"main35.jpg","images":["yamaha_yzf_01.jpg","yamaha_yzf_02.jpg","yamaha_yzf_03.jpg","yamaha_yzf_04.jpg"]},{"id":36,"model":"LS-218","description":"meat","price":900,"discountPercentage":12,"rating":4.29,"stock":13,"brand":"Lightning","category":"Motorcycle","count":0,"thumbnail":"main36.jpg","images":["lightning_ls_01.jpg","lightning_ls_02.jpg","lightning_ls_03.jpg","lightning_ls_04.jpg"]},{"id":37,"model":"Raptor 1000","description":"meat","price":900,"discountPercentage":12,"rating":4.29,"stock":13,"brand":"Cagiva","category":"Motorcycle","count":0,"thumbnail":"main37.jpg","images":["cagiva_raptor_01.jpg","cagiva_raptor_02.jpg","cagiva_raptor_03.jpg","cagiva_raptor_04.jpg"]},{"id":38,"model":"150 TAP","description":"millitary","price":900,"discountPercentage":12,"rating":4.29,"stock":13,"brand":"Vespa","category":"Motorcycle","count":0,"thumbnail":"main38.jpg","images":["vespa_tap_01.jpg","vespa_tap_02.jpg","vespa_tap_03.jpg","vespa_tap_04.jpg"]},{"id":39,"model":"А-750","description":"soveit","price":900,"discountPercentage":12,"rating":4.29,"stock":13,"brand":"ПМЗ","category":"Motorcycle","count":0,"thumbnail":"main39.jpg","images":["pmz_a750_01.jpg","pmz_a750_02.jpg","pmz_a750_03.jpg","pmz_a750_04.jpg"]},{"id":40,"model":"82","description":"Гордость наших полей","price":8900,"discountPercentage":12,"rating":4.29,"stock":100,"brand":"Трахтар Беларус","category":"Monster","count":0,"thumbnail":"main40.jpg","images":["mtz_bel_01.jpg","mtz_bel_02.jpg","mtz_bel_03.jpg","mtz_bel_04.jpg"]}]}');
 
 /***/ })
 
