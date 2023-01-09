@@ -13024,33 +13024,6 @@ function AppRouter(_ref) {
 
 /***/ }),
 
-/***/ "./src/components/Basket/BasketHeader.jsx":
-/*!************************************************!*\
-  !*** ./src/components/Basket/BasketHeader.jsx ***!
-  \************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-
-function BasketHeader() {
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "basket__header"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Basket items"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "basket__limit"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "basket__pagination"
-  }));
-}
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (BasketHeader);
-
-/***/ }),
-
 /***/ "./src/components/Basket/BasketItem.jsx":
 /*!**********************************************!*\
   !*** ./src/components/Basket/BasketItem.jsx ***!
@@ -13126,11 +13099,39 @@ function BasketList(_ref) {
   let {
     props,
     deleteItem,
-    getCount
+    limit,
+    setLimit
   } = _ref;
+  const getCount = (ind, count) => {
+    console.log(ind);
+    const newItem = props.find(el => el.info.id === ind);
+    newItem.count = count;
+    let newBasket = [];
+    console.log(newItem);
+    if (newItem.count <= 0) {
+      console.log('first');
+      newBasket = [...props.slice(0, props.findIndex(el => el.info.id === ind)), ...props.slice(props.findIndex(el => el.info.id === ind) + 1)];
+    } else {
+      console.log('second');
+      console.log(props.findIndex(el => el.info.id === ind));
+      console.log(props.findIndex(el => el.info.id === ind) + 1);
+      newBasket = [...props.slice(0, props.findIndex(el => el.info.id === ind)), newItem, ...props.slice(props.findIndex(el => el.info.id === ind) + 1)];
+    }
+    localStorage.setItem('basket', JSON.stringify(newBasket.map(item => {
+      return {
+        id: item.info.id,
+        count: item.count,
+        price: item.info.price
+      };
+    })));
+    setCountt(newBasket.reduce((prev, cur) => prev + cur.count, 0));
+    setSum(newBasket.reduce((prev, cur) => prev + cur.count * cur.info.price, 0).toFixed(3));
+  };
+  const [countt, setCountt] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(props.reduce((prev, cur) => prev + cur.count, 0)); //изменить имя
+  const [sum, setSum] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(props.reduce((prev, cur) => prev + cur.count * cur.info.price, 0));
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "basket"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("ul", {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h1", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Items in basket: ", countt), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Sum of the basket: ", sum)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("ul", {
     className: "basket__container"
   }, props.map((item, ind) => {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_BasketItem_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
@@ -14168,11 +14169,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _API_getJSON__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../API/getJSON */ "./src/API/getJSON.js");
-/* harmony import */ var _components_Basket_BasketHeader_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/Basket/BasketHeader.jsx */ "./src/components/Basket/BasketHeader.jsx");
-/* harmony import */ var _components_Basket_BasketList_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/Basket/BasketList.jsx */ "./src/components/Basket/BasketList.jsx");
-/* harmony import */ var _components_Sale_Sale_jsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../components/Sale/Sale.jsx */ "./src/components/Sale/Sale.jsx");
-/* harmony import */ var _styles_App_scss__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../styles/App.scss */ "./src/styles/App.scss");
-
+/* harmony import */ var _components_Basket_BasketList_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/Basket/BasketList.jsx */ "./src/components/Basket/BasketList.jsx");
+/* harmony import */ var _components_Sale_Sale_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/Sale/Sale.jsx */ "./src/components/Sale/Sale.jsx");
+/* harmony import */ var _styles_App_scss__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../styles/App.scss */ "./src/styles/App.scss");
 
 
 
@@ -14182,10 +14181,12 @@ function Basket() {
   const [items, setItems] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
   const [isLoading, setisLoading] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
   const [basketItems, setBasketItems] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
-  const [propes, setPropes] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
+  const [limit, setLimit] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({
+    limit: 5,
+    pages: basketItems / limit
+  });
   const deleteItem = ind => {
     const newBasket = [...basketItems.slice(0, basketItems.findIndex(el => el.id === ind)), ...basketItems.slice(basketItems.findIndex(el => el.id === ind) + 1)];
-    console.log(newBasket);
     setBasketItems(newBasket);
     localStorage.setItem('basket', JSON.stringify(newBasket));
   };
@@ -14199,34 +14200,27 @@ function Basket() {
     }
     setisLoading(true);
   }, []);
-  const getCount = (ind, count) => {
-    const newItem = props.find(el => el.info.id === ind);
-    newItem.count = count;
-    let newBasket = [];
-    if (newItem.count <= 0) {
-      newBasket = [...props.slice(0, props.findIndex(el => el.info.id === ind)), ...props.slice(props.findIndex(el => el.info.id === ind) + 1)];
-    } else {
-      newBasket = [...props.slice(0, props.findIndex(el => el.info.id === ind)), newItem, ...props.slice(props.findIndex(el => el.info.id === ind) + 1)];
-    }
-    localStorage.setItem('basket', JSON.stringify(newBasket.map(item => {
-      return {
-        id: item.info.id,
-        count: count,
-        price: item.info.price
-      };
-    })));
-    setCountt(newBasket.reduce((prev, cur) => prev + cur.count, 0));
-    setSum(newBasket.reduce((prev, cur) => prev + cur.count * cur.info.price, 0).toFixed(3));
-  };
-  const [countt, setCountt] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(props.reduce((prev, cur) => prev + cur.count, 0)); //изменить имя
-  const [sum, setSum] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(props.reduce((prev, cur) => prev + cur.count * cur.info.price, 0));
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, isLoading && basketItems.length ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "basket__main"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "container"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "basket__main-container"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h1", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Items in basket: ", countt), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Basket_BasketHeader_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Basket_BasketList_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "basket__header"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Basket items"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "basket__limit"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
+    type: "number",
+    value: 5,
+    max: 5,
+    min: 1,
+    onChange: e => setLimit(e.target.value)
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "basket__pagination"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
+    type: "text"
+  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Basket_BasketList_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
     props: basketItems.map(item => {
       return {
         info: items[item.id - 1],
@@ -14234,8 +14228,9 @@ function Basket() {
       };
     }),
     deleteItem: deleteItem,
-    getCount: getCount
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Sale_Sale_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    limit: limit,
+    setLimit: setLimit
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Sale_Sale_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
     countProducts: basketItems.length
   })))) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h1", null, "\u041F\u0443\u0441\u0442\u043E!"));
 }

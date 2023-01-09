@@ -27,3 +27,27 @@
 
     }
 }
+
+.sales-active {
+    background-color: rgb(179, 255, 255);
+    border: 1px solid #04b8ff;
+    &__header {
+        text-align: center;
+        font-size: 16px;
+    }
+    &__list {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    &__item {
+        border: 2px solid #9e66ff;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        
+        gap: 10px;
+    }
+}

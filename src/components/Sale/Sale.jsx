@@ -2,10 +2,12 @@ import React, { useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import MyButton from '../UI/Button/MyButton.jsx'
 import MyInput from '../UI/Input/MyInput.jsx'
+import ActivePromos from './ActivePromos.jsx'
 import SaleItem from './SaleItem.jsx'
 
-function Sale({countProducts, totalPrice}) {
+function Sale({totalPrice}) {
     const [promo, setPromo] = useState('')
+    const [activeSales, setActiveSales] = useState([])
     const saleArray = [ //No anyone knows about this instead of me!
         {
             'name': 'ABOBA',
@@ -19,8 +21,8 @@ function Sale({countProducts, totalPrice}) {
         }
     ]
 
-    function addToSales () {
-        
+    function buyItem () {
+
     }
 
     return (
@@ -37,19 +39,40 @@ function Sale({countProducts, totalPrice}) {
                     placeholder = "Enter promo..."
                 />
                 {
+                    activeSales.length
+                    ?
+                    <ActivePromos activeSales={activeSales} setActiveSales={setActiveSales}/>
+                    :
+                    <h1>
+                        Промокоды не активированы
+                    </h1>
+                }
+                {
                     saleArray
                     .filter(item => 
                         item.name === promo
                     )
                     .map(item => 
-                        <SaleItem key={item.name} item={item} />   
+                        <SaleItem key={item.name} item={item} activeSales={activeSales} setActiveSales={setActiveSales}/>   
                     )
                 }
                 <p className='sale__promo-example'>
                     Test promo: 'ABOBA' or 'MONEY'
                 </p>
-                <MyButton onClick={() => addToSales}>Click to buy</MyButton>
+                <MyButton onClick={() => buyItem}>Click to buy</MyButton>
             </div>
+            <h1 className='sale__conclusion'>
+                Conclusion order's sum: {
+                    activeSales.length
+                    ?
+                    totalPrice - (totalPrice *
+                    activeSales.reduce((prev, curr) => {
+                        return prev + curr.sale
+                    }, 0) / 100)
+                    :
+                    totalPrice
+                }
+            </h1>
         </div>
     </div>
   )
