@@ -7,8 +7,10 @@ function Header() {
     const [countOfBasket, setCountOfBasket] = useState(0)
 
     setInterval(() => { //I had no time guys, just relax! :DDDDD
-        setSumOfBasket(JSON.parse(localStorage.getItem('basket')).reduce((prev, curr) => prev + (curr.price * curr.count), 0))
-        setCountOfBasket(JSON.parse(localStorage.getItem('basket')).reduce((prev, curr) => prev + curr.count, 0))
+        if(localStorage.getItem('basket')) {
+            setSumOfBasket(JSON.parse(localStorage.getItem('basket')).reduce((prev, curr) => prev + (curr.price * curr.count), 0))
+            setCountOfBasket(JSON.parse(localStorage.getItem('basket')).reduce((prev, curr) => prev + curr.count, 0))
+        }
     }, 1000)
 
     useEffect(() => {
