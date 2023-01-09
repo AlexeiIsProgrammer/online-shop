@@ -4,11 +4,13 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from 'react-router-dom';
 
   export default function ValidationModal({isOpen, setIsOpen, setBasketItems}){
+    
     const navigate = useNavigate()
     const [isClicked, setIsClicked] = useState(true)
     const [counter, setCounter] = useState(5)
-    const { register, handleSubmit } = useForm();
+    const { register, handleSubmit,formState: { errors } } = useForm();
     const onSubmit = data => {
+        console.log(data);
         setIsClicked(false)
         let counterLocal = 5
         const intVal = setInterval(() => {
@@ -32,16 +34,23 @@ import { useNavigate } from 'react-router-dom';
             {
                 isClicked
                 ?
-                <form onSubmit={handleSubmit(onSubmit)}>
-                    <input {...register("name&surname",{ pattern: /^[A-Za-z]+$/i })} type="text" placeholder='name&surname'/>
-                    <input type="number" {...register("age")} placeholder='age'/>
-                    <input {...register("adress",{ pattern: /^[A-Za-z]+$/i, oninvalid: () => console.log("working!")} )} type="text" placeholder='adress'/>
-                    <input {...register("e_mail",{ pattern: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/})} type="text" placeholder='e_mail'/>
-                    <input type="number" {...register("num_card", { min: 18, max: 99 })} placeholder='num_card' />
-                    <input type="number" {...register("cvv", { min: 18, max: 99 })} placeholder='cvv'/>
-                    {/* <input type="number" {...register("date_card", { min: 18, max: 99 })} placeholder='date_card'/> */}
-                    <button type='submit'>Send results</button>
-                </form>
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <input {...register("name_surname",{required: true, pattern: /^[A-Za-zA-Яа-я]+$/i, pattern: /^\S\w{2,10} \S\w{3,10}$/i})} type="text" placeholder='name&surname'/>
+                {errors.name_surname && <p>Please check the name_surname</p>}
+                <input type="number" {...register("telephone", {required: true,pattern:/^(\+)[\d\-\(\)]{9}\d$/g})} placeholder='telephone'/>
+                {errors.telephone && <p>Please check the telephone</p>}
+                <input {...register("adress",{required: true, pattern: /^[A-Za-zA-Яа-я]+$/i, pattern: /^\S\w{5,10} \S\w{4,10} \S\w{4,10}$/i})} type="text" placeholder='adress'/>
+                {errors.adress && <p>Please check the adress</p>}
+                <input {...register("e_mail",{required: true, pattern: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/})} type="text" placeholder='e_mail'/>
+                {errors.e_mail && <p>Please check the e_mail</p>}
+                <input type="number" {...register("num_card", {required: true,pattern:/^0-9/, pattern:/.{16}/ })} placeholder='num_card' />
+                {errors.num_card && <p>Please check the num_card</p>}
+                <input type="number" {...register("cvv", {required: true, pattern:/^0-9/, pattern:/.{3}/ })} placeholder='cvv'/>
+                {errors.cvv && <p>Please check the cvv</p>}
+                <input type="text" {...register("date_card", {required: true, pattern:/.{4}/, pattern:/^([0-1][0-2]) ([0-9][0-9])$/})} placeholder='date_card'/>
+                {errors.date_card && <p>Please check the date_card</p>}
+                <button type='submit'>Send results</button>
+            </form>
                 :
                 <h1>
                     Окно закроется через: {counter}...
