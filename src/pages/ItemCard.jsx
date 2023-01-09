@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { Controller } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css/bundle';
@@ -10,8 +10,10 @@ import Slide from '../components/Slider/Slide.jsx'
 import SubSlider from '../components/Slider/SubSlider.jsx'
 import MyButton from '../components/UI/Button/MyButton.jsx'
 import '../styles/App.scss'
+import ValidationModal from '../components/ValidationModal.jsx';
 //Страница карточки товара
 function ItemCard() {
+    const navigate = useNavigate()
     const params = useParams()
     const [item, setItem] = useState({})
     const [isLoading, setIsLoading] = useState(false)
@@ -41,7 +43,13 @@ function ItemCard() {
             localStorage.setItem('basket', JSON.stringify(newBasket))
         }
     }
-    
+
+    function fastBuy() {
+        addToBasket({id: item.id, count: 1, price: item.price})
+        localStorage.setItem('isBought', true)
+        navigate('/basket')
+    }
+
     return (
         <div className="card">
             {
@@ -82,7 +90,7 @@ function ItemCard() {
                                 'Удалить из корзины'
                             }
                             </MyButton>
-                            <MyButton onClick={() => alert("Открытие формы с валидацией!")}>Купить прямо сейчас!</MyButton>
+                            <MyButton onClick={() => fastBuy()}>Купить прямо сейчас!</MyButton>
                         </div>
                     </div>
                 </div>

@@ -70,9 +70,33 @@ body {
   margin-top: 50px;
 }
 .validation-modal {
-  height: 50px;
-  width: 700px;
+  z-index: 10;
+  display: none;
+  position: fixed;
+  border-radius: 25px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   background-color: bisque;
+  padding: 20px;
+
+  &__container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    & form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+
+  &.active {
+    display: block;
+  }
 }
 
 .header {
@@ -272,3 +296,6 @@ body {
   }
 }
 
+.error {
+  border: 2px solid red;
+}

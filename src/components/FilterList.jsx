@@ -25,12 +25,12 @@ function FilterList({filter, setFilter, props}) {
                 <FiltersPattern name='Brand'>
                     <Model filter={filter} setFilter={setFilter} name='brand' props={[...modelSet]}/>
                 </FiltersPattern>
-                <FiltersPattern name='Price'>
+                {/* <FiltersPattern name='Price'>
                     <Price type="range" multiple/>
                 </FiltersPattern>
                 <FiltersPattern name='Stock'>
                     <Stock type="range" multiple/>
-                </FiltersPattern>
+                </FiltersPattern> */}
             </div>
         </div>
     )

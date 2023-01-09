@@ -11,6 +11,10 @@ function Header() {
             setSumOfBasket(JSON.parse(localStorage.getItem('basket')).reduce((prev, curr) => prev + (curr.price * curr.count), 0))
             setCountOfBasket(JSON.parse(localStorage.getItem('basket')).reduce((prev, curr) => prev + curr.count, 0))
         }
+        else {
+            setSumOfBasket(0)
+            setCountOfBasket(0)
+        }
     }, 1000)
 
     useEffect(() => {

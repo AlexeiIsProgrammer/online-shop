@@ -1,13 +1,15 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import MyButton from '../UI/Button/MyButton.jsx'
 import MyInput from '../UI/Input/MyInput.jsx'
+import ValidationModal from '../ValidationModal.jsx'
 import ActivePromos from './ActivePromos.jsx'
 import SaleItem from './SaleItem.jsx'
 
-function Sale({totalPrice}) {
+function Sale({totalPrice, setBasketItems}) {
     const [promo, setPromo] = useState('')
     const [activeSales, setActiveSales] = useState([])
+    const [isOpen, setIsOpen] = useState(false)
     const saleArray = [ //No anyone knows about this instead of me!
         {
             'name': 'ABOBA',
@@ -22,8 +24,14 @@ function Sale({totalPrice}) {
     ]
 
     function buyItem () {
-
+        setIsOpen(true)
     }
+
+    useEffect(() => {
+        if(localStorage.getItem('isBought')) {
+            setIsOpen(true)
+        }
+    })
 
     return (
     
@@ -59,7 +67,7 @@ function Sale({totalPrice}) {
                 <p className='sale__promo-example'>
                     Test promo: 'ABOBA' or 'MONEY'
                 </p>
-                <MyButton onClick={() => buyItem}>Click to buy</MyButton>
+                <MyButton onClick={() => buyItem()}>Click to buy</MyButton>
             </div>
             <h1 className='sale__conclusion'>
                 Conclusion order's sum: {
@@ -74,6 +82,7 @@ function Sale({totalPrice}) {
                 }
             </h1>
         </div>
+        <ValidationModal isOpen={isOpen} setIsOpen={setIsOpen} setBasketItems={setBasketItems}/>
     </div>
   )
 }

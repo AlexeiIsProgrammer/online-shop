@@ -14,7 +14,6 @@ function Basket() {
 
   const [sum, setSum] = useState();
 
-
   const deleteItem = (ind) => {
     const newBasket = [...basketItems.slice(0, basketItems.findIndex(el => el.id === ind)), ...basketItems.slice(basketItems.findIndex(el => el.id === ind) + 1)]
     setBasketItems(newBasket)
@@ -86,7 +85,7 @@ function Basket() {
                     limit={limit}
                     getCount={getCount}/>
                 </div>
-                <Sale totalPrice={sum} />
+                <Sale totalPrice={sum} setBasketItems={setBasketItems}/>
                 <h1>
                   <p>
                       Items in basket: {countt}
@@ -101,6 +100,7 @@ function Basket() {
         :
         <h1>Пусто!</h1>
       }
+      
     </div>
   )
 }

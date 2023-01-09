@@ -13590,6 +13590,9 @@ function Header() {
     if (localStorage.getItem('basket')) {
       setSumOfBasket(JSON.parse(localStorage.getItem('basket')).reduce((prev, curr) => prev + curr.price * curr.count, 0));
       setCountOfBasket(JSON.parse(localStorage.getItem('basket')).reduce((prev, curr) => prev + curr.count, 0));
+    } else {
+      setSumOfBasket(0);
+      setCountOfBasket(0);
     }
   }, 1000);
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
@@ -13753,8 +13756,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _UI_Button_MyButton_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../UI/Button/MyButton.jsx */ "./src/components/UI/Button/MyButton.jsx");
 /* harmony import */ var _UI_Input_MyInput_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../UI/Input/MyInput.jsx */ "./src/components/UI/Input/MyInput.jsx");
-/* harmony import */ var _ActivePromos_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ActivePromos.jsx */ "./src/components/Sale/ActivePromos.jsx");
-/* harmony import */ var _SaleItem_jsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./SaleItem.jsx */ "./src/components/Sale/SaleItem.jsx");
+/* harmony import */ var _ValidationModal_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../ValidationModal.jsx */ "./src/components/ValidationModal.jsx");
+/* harmony import */ var _ActivePromos_jsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./ActivePromos.jsx */ "./src/components/Sale/ActivePromos.jsx");
+/* harmony import */ var _SaleItem_jsx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./SaleItem.jsx */ "./src/components/Sale/SaleItem.jsx");
+
 
 
 
@@ -13763,10 +13768,12 @@ __webpack_require__.r(__webpack_exports__);
 
 function Sale(_ref) {
   let {
-    totalPrice
+    totalPrice,
+    setBasketItems
   } = _ref;
   const [promo, setPromo] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('');
   const [activeSales, setActiveSales] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
+  const [isOpen, setIsOpen] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
   const saleArray = [
   //No anyone knows about this instead of me!
   {
@@ -13778,7 +13785,9 @@ function Sale(_ref) {
     'description': 'MONEY MONEY MONEY',
     'sale': 25
   }];
-  function buyItem() {}
+  function buyItem() {
+    setIsOpen(true);
+  }
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "sale"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
@@ -13791,10 +13800,10 @@ function Sale(_ref) {
     value: promo,
     onChange: e => setPromo(e.target.value),
     placeholder: "Enter promo..."
-  }), activeSales.length ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ActivePromos_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
+  }), activeSales.length ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ActivePromos_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], {
     activeSales: activeSales,
     setActiveSales: setActiveSales
-  }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h1", null, "\u041F\u0440\u043E\u043C\u043E\u043A\u043E\u0434\u044B \u043D\u0435 \u0430\u043A\u0442\u0438\u0432\u0438\u0440\u043E\u0432\u0430\u043D\u044B"), saleArray.filter(item => item.name === promo).map(item => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_SaleItem_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], {
+  }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h1", null, "\u041F\u0440\u043E\u043C\u043E\u043A\u043E\u0434\u044B \u043D\u0435 \u0430\u043A\u0442\u0438\u0432\u0438\u0440\u043E\u0432\u0430\u043D\u044B"), saleArray.filter(item => item.name === promo).map(item => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_SaleItem_jsx__WEBPACK_IMPORTED_MODULE_5__["default"], {
     key: item.name,
     item: item,
     activeSales: activeSales,
@@ -13802,12 +13811,16 @@ function Sale(_ref) {
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
     className: "sale__promo-example"
   }, "Test promo: 'ABOBA' or 'MONEY'"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_UI_Button_MyButton_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
-    onClick: () => buyItem
+    onClick: () => buyItem()
   }, "Click to buy")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h1", {
     className: "sale__conclusion"
   }, "Conclusion order's sum: ", activeSales.length ? totalPrice - totalPrice * activeSales.reduce((prev, curr) => {
     return prev + curr.sale;
-  }, 0) / 100 : totalPrice)));
+  }, 0) / 100 : totalPrice)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ValidationModal_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    isOpen: isOpen,
+    setIsOpen: setIsOpen,
+    setBasketItems: setBasketItems
+  }));
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Sale);
 
@@ -14178,21 +14191,93 @@ const MySelect = _ref => {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   "default": () => (/* binding */ ValidationModal)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _styles_App_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../styles/App.scss */ "./src/styles/App.scss");
+/* harmony import */ var react_hook_form__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-hook-form */ "./node_modules/react-hook-form/dist/index.esm.mjs");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
+function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
 
-function ValidationModal() {
+
+
+function ValidationModal(_ref) {
+  let {
+    isOpen,
+    setIsOpen,
+    setBasketItems
+  } = _ref;
+  const navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_2__.useNavigate)();
+  const [isClicked, setIsClicked] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(true);
+  const [counter, setCounter] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(5);
+  const {
+    register,
+    handleSubmit
+  } = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_3__.useForm)();
+  const onSubmit = data => {
+    setIsClicked(false);
+    let counterLocal = 5;
+    const intVal = setInterval(() => {
+      --counterLocal;
+      setCounter(counterLocal);
+      if (counterLocal === 0) {
+        setIsOpen(false);
+        setIsClicked(true);
+        setCounter(5);
+        localStorage.removeItem('basket');
+        setBasketItems([]);
+        clearInterval(intVal);
+        navigate('/main');
+      }
+    }, 1000);
+  };
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "validation-modal"
+    className: `validation-modal ${isOpen ? 'active' : ''}`
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "validation-modal__container"
-  }));
+  }, isClicked ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("form", {
+    onSubmit: handleSubmit(onSubmit)
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", _extends({}, register("name&surname", {
+    pattern: /^[A-Za-z]+$/i
+  }), {
+    type: "text",
+    placeholder: "name&surname"
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", _extends({
+    type: "number"
+  }, register("age"), {
+    placeholder: "age"
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", _extends({}, register("adress", {
+    pattern: /^[A-Za-z]+$/i
+  }), {
+    type: "text",
+    placeholder: "adress"
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", _extends({}, register("e_mail", {
+    pattern: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/
+  }), {
+    type: "text",
+    placeholder: "e_mail"
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", _extends({
+    type: "number"
+  }, register("num_card", {
+    min: 18,
+    max: 99
+  }), {
+    placeholder: "num_card"
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", _extends({
+    type: "number"
+  }, register("cvv", {
+    min: 18,
+    max: 99
+  }), {
+    placeholder: "cvv"
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+    type: "submit"
+  }, "Send results")) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h1", null, "\u041E\u043A\u043D\u043E \u0437\u0430\u043A\u0440\u043E\u0435\u0442\u0441\u044F \u0447\u0435\u0440\u0435\u0437: ", counter, "...")));
 }
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ValidationModal);
+
+//  export default ValidationModal
 
 /***/ }),
 
@@ -14316,7 +14401,8 @@ function Basket() {
     limit: limit,
     getCount: getCount
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Sale_Sale_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
-    totalPrice: sum
+    totalPrice: sum,
+    setBasketItems: setBasketItems
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h1", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Items in basket: ", countt), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Sum of the basket: ", sum))))) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h1", null, "\u041F\u0443\u0441\u0442\u043E!"));
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Basket);
@@ -14367,7 +14453,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
 /* harmony import */ var swiper__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! swiper */ "./node_modules/swiper/swiper.esm.js");
 /* harmony import */ var swiper_react__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! swiper/react */ "./node_modules/swiper/react/swiper-react.js");
 /* harmony import */ var swiper_css_bundle__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! swiper/css/bundle */ "./node_modules/swiper/swiper-bundle.min.css");
@@ -14378,6 +14464,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_Slider_SubSlider_jsx__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../components/Slider/SubSlider.jsx */ "./src/components/Slider/SubSlider.jsx");
 /* harmony import */ var _components_UI_Button_MyButton_jsx__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../components/UI/Button/MyButton.jsx */ "./src/components/UI/Button/MyButton.jsx");
 /* harmony import */ var _styles_App_scss__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../styles/App.scss */ "./src/styles/App.scss");
+/* harmony import */ var _components_ValidationModal_jsx__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../components/ValidationModal.jsx */ "./src/components/ValidationModal.jsx");
+
 
 
 
@@ -14392,10 +14480,12 @@ __webpack_require__.r(__webpack_exports__);
 
 //Страница карточки товара
 function ItemCard() {
-  const params = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_11__.useParams)();
+  const navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_12__.useNavigate)();
+  const params = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_12__.useParams)();
   const [item, setItem] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({});
   const [isLoading, setIsLoading] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
   const [basket, setBasket] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
+  const [isOpen, setIsOpen] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
   const swiper1Ref = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)();
   const swiper2Ref = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)();
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
@@ -14415,6 +14505,14 @@ function ItemCard() {
       setBasket(newBasket);
       localStorage.setItem('basket', JSON.stringify(newBasket));
     }
+  }
+  function fastBuy() {
+    addToBasket({
+      id: item.id,
+      count: 1,
+      price: item.price
+    });
+    navigate('/basket');
   }
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "card"
@@ -14467,8 +14565,11 @@ function ItemCard() {
       price: item.price
     })
   }, !basket.some(el => item.id === el.id) ? 'Добавить в корзину' : 'Удалить из корзины'), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_UI_Button_MyButton_jsx__WEBPACK_IMPORTED_MODULE_9__["default"], {
-    onClick: () => alert("Открытие формы с валидацией!")
-  }, "\u041A\u0443\u043F\u0438\u0442\u044C \u043F\u0440\u044F\u043C\u043E \u0441\u0435\u0439\u0447\u0430\u0441!"))))) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, "\u0417\u0430\u0433\u0440\u0443\u0437\u043A\u0430 \u0442\u043E\u0432\u0430\u0440\u0430..."));
+    onClick: () => fastBuy()
+  }, "\u041A\u0443\u043F\u0438\u0442\u044C \u043F\u0440\u044F\u043C\u043E \u0441\u0435\u0439\u0447\u0430\u0441!"))))) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, "\u0417\u0430\u0433\u0440\u0443\u0437\u043A\u0430 \u0442\u043E\u0432\u0430\u0440\u0430..."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_ValidationModal_jsx__WEBPACK_IMPORTED_MODULE_11__["default"], {
+    isOpen: isOpen,
+    setIsOpen: setIsOpen
+  }));
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ItemCard);
 
@@ -14797,7 +14898,7 @@ __webpack_require__.r(__webpack_exports__);
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 ___CSS_LOADER_EXPORT___.push([module.id, "@import url(https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@1,500&display=swap);"]);
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "/**\n * Reset Mixing\n * ================================================== */\n/**\n * Disable Animation\n */\n/**\n * Disable animation depends on Browser or Operation System configuration\n */\n/**\n * Accessability. Black and White Mode\n */\n/**\n * Accessability. Inverse Mode\n */\n/**\n * Meter reset\n */\n/**\n * Modern CSS Reset Tweaks\n * ================================================== */\nhtml {\n  -webkit-text-size-adjust: 100%;\n}\nhtml[focus-within] {\n  scroll-behavior: smooth;\n}\nhtml:focus-within {\n  scroll-behavior: smooth;\n}\n\nbody {\n  -webkit-text-size-adjust: 100%;\n     -moz-text-size-adjust: 100%;\n          text-size-adjust: 100%;\n  position: relative;\n  width: 100%;\n  min-height: 100vh;\n  -moz-osx-font-smoothing: grayscale;\n  -webkit-font-smoothing: antialiased;\n  text-rendering: optimizeSpeed;\n}\n\n/* Box sizing normalization */\n*,\n::after,\n::before {\n  box-sizing: border-box;\n}\n\n/* Elements that don't have a class get default styles */\na:not([class]) {\n  -webkit-text-decoration-skip: ink;\n          text-decoration-skip-ink: auto;\n}\n\n/**\n * CSS Reset Tweaks\n *\n * http://meyerweb.com/eric/tools/css/reset/\n * v2.0-modified | 20110126\n * License: none (public domain)\n */\nhtml,\nbody,\ndiv,\nspan,\napplet,\nobject,\niframe,\nh1,\nh2,\nh3,\nh4,\nh5,\nh6,\np,\nblockquote,\npre,\na,\nabbr,\nacronym,\naddress,\nbig,\ncite,\ncode,\ndel,\ndfn,\nem,\nimg,\nins,\nkbd,\nq,\ns,\nsamp,\nsmall,\nstrike,\nstrong,\nsub,\nsup,\ntt,\nvar,\nb,\nu,\ni,\ncenter,\ndl,\ndt,\ndd,\nol,\nul,\nli,\nfieldset,\nform,\nlabel,\nlegend,\ntable,\ncaption,\ntbody,\ntfoot,\nthead,\ntr,\nth,\ntd,\narticle,\naside,\ncanvas,\ndetails,\nembed,\nfigure,\nfigcaption,\nfooter,\nheader,\nhgroup,\nmenu,\nnav,\noutput,\nruby,\nsection,\nsummary,\ntime,\nmark,\naudio,\nvideo {\n  font-size: 100%;\n  font: inherit;\n  margin: 0;\n  padding: 0;\n  border: 0;\n  vertical-align: baseline;\n}\n\n/* make sure to set some focus styles for accessibility */\n:focus {\n  outline: 0;\n}\n\n/* HTML5 display-role reset for older browsers */\nmain,\narticle,\naside,\ndetails,\nfigcaption,\nfigure,\nfooter,\nheader,\nhgroup,\nmenu,\nnav,\nsection {\n  display: block;\n}\n\nol,\nul {\n  list-style: none;\n}\n\nblockquote,\nq {\n  quotes: none;\n}\nblockquote:before, blockquote:after,\nq:before,\nq:after {\n  content: \"\";\n  content: none;\n}\n\n/**\n * Input Reset\n */\ninput:required,\ninput {\n  box-shadow: none;\n}\n\ninput:-webkit-autofill,\ninput:-webkit-autofill:hover,\ninput:-webkit-autofill:focus,\ninput:-webkit-autofill:active {\n  -webkit-box-shadow: 0 0 0 30px white inset;\n}\n\ninput[type=search]::-webkit-search-cancel-button,\ninput[type=search]::-webkit-search-decoration,\ninput[type=search]::-webkit-search-results-button,\ninput[type=search]::-webkit-search-results-decoration {\n  -webkit-appearance: none;\n  -moz-appearance: none;\n}\n\ninput[type=search] {\n  -webkit-appearance: none;\n  -moz-appearance: none;\n  box-sizing: content-box;\n}\n\ntextarea {\n  overflow: auto;\n  vertical-align: top;\n  resize: vertical;\n}\n\ninput:focus {\n  outline: none;\n}\n\n/**\n * Correct `inline-block` display not defined in IE 6/7/8/9 and Firefox 3.\n */\naudio,\ncanvas,\nvideo {\n  display: inline-block;\n  max-width: 100%;\n}\n\n/**\n * Prevent modern browsers from displaying `audio` without controls.\n * Remove excess height in iOS 5 devices.\n */\naudio:not([controls]) {\n  display: none;\n  height: 0;\n}\n\n/**\n * Address styling not present in IE 7/8/9, Firefox 3, and Safari 4.\n */\n[hidden] {\n  display: none;\n}\n\n/**\n * Improve readability when focused and also mouse hovered in all browsers.\n */\na:active,\na:hover {\n  outline: none;\n}\n\n/* Make images easier to work with */\nimg {\n  max-width: 100%;\n  display: inline-block;\n  vertical-align: middle;\n  height: auto;\n}\n\n/* Make pictures easier to work with */\npicture {\n  display: inline-block;\n}\n\n/**\n * Address Firefox 3+ setting `line-height` on `input` using `!important` in\n * the UA stylesheet.\n */\nbutton,\ninput {\n  line-height: normal;\n}\n\n/**\n * Address inconsistent `text-transform` inheritance for `button` and `select`.\n * All other form control elements do not inherit `text-transform` values.\n * Correct `button` style inheritance in Chrome, Safari 5+, and IE 6+.\n * Correct `select` style inheritance in Firefox 4+ and Opera.\n */\nbutton,\nselect {\n  text-transform: none;\n}\n\nbutton,\nhtml input[type=button],\ninput[type=reset],\ninput[type=submit] {\n  -webkit-appearance: button;\n  cursor: pointer;\n  border: 0;\n  background: transparent;\n}\n\n/**\n * Re-set default cursor for disabled elements.\n */\nbutton[disabled],\nhtml input[disabled] {\n  cursor: default;\n}\n\n[disabled] {\n  pointer-events: none;\n}\n\n/**\n * 1. Address box sizing set to content-box in IE 8/9.\n */\ninput[type=checkbox],\ninput[type=radio] {\n  padding: 0;\n}\n\n/**\n * 1. Address `appearance` set to `searchfield` in Safari 5 and Chrome.\n * 2. Address `box-sizing` set to `border-box` in Safari 5 and Chrome\n *    (include `-moz` to future-proof).\n */\ninput[type=search] {\n  -webkit-appearance: textfield;\n  box-sizing: content-box;\n}\n\n/**\n * Remove inner padding and search cancel button in Safari 5 and Chrome\n * on OS X.\n */\ninput[type=search]::-webkit-search-cancel-button,\ninput[type=search]::-webkit-search-decoration {\n  -webkit-appearance: none;\n}\n\n/**\n * Remove inner padding and border in Firefox 3+.\n */\nbutton::-moz-focus-inner,\ninput::-moz-focus-inner {\n  border: 0;\n  padding: 0;\n}\n\nbutton {\n  border: 0;\n  background: transparent;\n}\n\ntextarea {\n  overflow: auto;\n  vertical-align: top;\n  resize: vertical;\n}\n\n/**\n * Remove most spacing between table cells.\n */\ntable {\n  border-collapse: collapse;\n  border-spacing: 0;\n  text-indent: 0;\n}\n\n/**\n * Based on normalize.css v8.0.1\n * github.com/necolas/normalize.css\n */\nhr {\n  box-sizing: content-box;\n  overflow: visible;\n  background: #000;\n  border: 0;\n  height: 1px;\n  line-height: 0;\n  margin: 0;\n  padding: 0;\n  page-break-after: always;\n  width: 100%;\n}\n\n/**\n * 1. Correct the inheritance and scaling of font size in all browsers.\n */\npre {\n  font-family: monospace, monospace;\n  font-size: 100%;\n}\n\n/**\n * Remove the gray background on active links in IE 10.\n */\na {\n  background-color: transparent;\n}\n\n/**\n * 1. Remove the bottom border in Chrome 57-\n * 2. Add the correct text decoration in Chrome, Edge, IE, Opera, and Safari.\n */\nabbr[title] {\n  border-bottom: none;\n  text-decoration: none;\n}\n\ncode,\nkbd,\npre,\nsamp {\n  font-family: monospace, monospace;\n}\n\n/**\n  * Add the correct font size in all browsers.\n  */\nsmall {\n  font-size: 75%;\n}\n\n/**\n * Prevent `sub` and `sup` elements from affecting the line height in\n * all browsers.\n */\nsub,\nsup {\n  font-size: 75%;\n  line-height: 0;\n  position: relative;\n  vertical-align: baseline;\n}\n\nsub {\n  bottom: -5px;\n}\n\nsup {\n  top: -5px;\n}\n\n/**\n * 1. Change the font styles in all browsers.\n * 2. Remove the margin in Firefox and Safari.\n */\nbutton,\ninput,\noptgroup,\nselect,\ntextarea {\n  font-family: inherit;\n  font-size: 100%;\n  line-height: 1;\n  margin: 0;\n  padding: 0;\n}\n\n/**\n * Show the overflow in IE.\n * 1. Show the overflow in Edge.\n */\nbutton,\ninput {\n  /* 1 */\n  overflow: visible;\n}\n\n/**\n * Remove the inheritance of text transform in Edge, Firefox, and IE.\n * 1. Remove the inheritance of text transform in Firefox.\n */\nbutton,\nselect {\n  /* 1 */\n  text-transform: none;\n}\n\n/**\n * Correct the inability to style clickable types in iOS and Safari.\n */\nbutton,\n[type=button],\n[type=reset],\n[type=submit] {\n  -webkit-appearance: button;\n}\n\n/**\n * Remove the inner border and padding in Firefox.\n */\nbutton::-moz-focus-inner,\n[type=button]::-moz-focus-inner,\n[type=reset]::-moz-focus-inner,\n[type=submit]::-moz-focus-inner {\n  border-style: none;\n  padding: 0;\n  outline: 0;\n}\n\nlegend {\n  color: inherit;\n  white-space: normal;\n  display: block;\n  border: 0;\n  max-width: 100%;\n  width: 100%;\n}\n\nfieldset {\n  min-width: 0;\n}\n\nbody:not(:-moz-handler-blocked) fieldset {\n  display: block;\n}\n\n/**\n * Add the correct vertical alignment in Chrome, Firefox, and Opera.\n */\nprogress {\n  vertical-align: baseline;\n}\n\n/**\n * Correct the cursor style of increment and decrement buttons in Chrome.\n */\n[type=number]::-webkit-inner-spin-button,\n[type=number]::-webkit-outer-spin-button {\n  height: auto;\n}\n\n/**\n * 1. Correct the odd appearance in Chrome and Safari.\n * 2. Correct the outline style in Safari.\n */\n[type=search] {\n  -webkit-appearance: textfield;\n  /* 1 */\n  outline-offset: -2px;\n  /* 2 */\n}\n\n/**\n * Remove the inner padding in Chrome and Safari on macOS.\n */\n[type=search]::-webkit-search-decoration {\n  -webkit-appearance: none;\n}\n\n/**\n * 1. Correct the inability to style clickable types in iOS and Safari.\n * 2. Change font properties to `inherit` in Safari.\n */\n::-webkit-file-upload-button {\n  -webkit-appearance: button;\n  /* 1 */\n  font: inherit;\n  /* 2 */\n}\n\n/* Interactive\n   ========================================================================== */\n/*\n * Add the correct display in all browsers.\n */\nsummary {\n  display: list-item;\n}\n\n/*\n * Misc\n * ========================================================================== */\n/**\n * Add the correct display in IE 10+.\n */\ntemplate {\n  display: none;\n}\n\n*::-webkit-scrollbar {\n  width: 8px;\n}\n\n*::-webkit-scrollbar-track {\n  background: rgb(203, 231, 255);\n}\n\n*::-webkit-scrollbar-thumb {\n  background-color: rgb(140, 140, 255);\n  border-radius: 20px;\n}\n\n.element-footer {\n  list-style-type: none;\n  margin: 0 50px;\n  margin-top: 15px;\n  display: inline-block;\n}\n\nhtml {\n  height: 100%;\n}\n\nbody {\n  height: 100%;\n}\n\n#root {\n  height: 100%;\n}\n\n.app {\n  display: flex;\n  flex-direction: column;\n  height: 100%;\n}\n\n.body {\n  flex: 1 0 auto;\n}\n\n.main__container {\n  display: grid;\n  grid-template-columns: 1fr 3fr;\n  grid-gap: 20px;\n  gap: 20px;\n}\n\n.container {\n  max-width: 1200px;\n  padding: 0 15px;\n  margin: 0 auto;\n}\n\n.footer {\n  content: \"footer\";\n  height: 150px;\n  width: 100%;\n}\n\n.footer__container {\n  font-family: \"DM Sans\", sans-serif;\n  display: flex;\n  flex-direction: row;\n  align-items: flex-start;\n  justify-content: center;\n  font-size: 30px;\n  width: 100%;\n  margin-top: 50px;\n}\n\n.validation-modal {\n  height: 50px;\n  width: 700px;\n  background-color: bisque;\n}\n\n.header__container {\n  display: flex;\n  flex-direction: row;\n  align-items: center;\n  justify-content: space-between;\n}\n.header__logo {\n  cursor: pointer;\n  max-width: 150px;\n}\n.header__value {\n  color: #61dafb;\n}\n.header__basket {\n  cursor: pointer;\n  position: relative;\n}\n.header__basket-count {\n  position: absolute;\n  top: -10px;\n  right: 0;\n  text-align: center;\n  padding: 5px;\n}\n.header__basket-image {\n  max-width: 40px;\n}\n\n.basket__main-container {\n  display: grid;\n  grid-template-columns: 1fr 1fr;\n  grid-gap: 20px;\n  gap: 20px;\n  align-items: center;\n  justify-content: space-between;\n}\n\n.basket__header {\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n  align-items: center;\n}\n\n.error {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n  margin: 0 auto;\n  text-align: center;\n  color: red;\n  text-transform: uppercase;\n}\n.error__name {\n  font-size: 60px;\n}\n.error__type {\n  font-size: 100px;\n}\n\n/*catalog*/\n.catalog__list {\n  grid-template-columns: repeat(4, 1fr);\n  grid-gap: 20px;\n  gap: 20px;\n  display: grid;\n}\n.catalog__list_other {\n  display: grid;\n  grid-template-columns: repeat(2, 1fr);\n  grid-gap: 40px;\n  gap: 40px;\n}\n.catalog__item {\n  border: 1px solid rgb(212, 235, 255);\n  border-radius: 5px;\n  background-color: aliceblue;\n  background-size: cover;\n  background-position: center;\n}\n.catalog__header {\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n}\n\n.product__header {\n  background-color: #61dafb;\n  text-align: center;\n}\n.product__header_active {\n  background-color: #f84200;\n  text-align: center;\n}\n.product__btns {\n  display: flex;\n  flex-direction: row;\n  align-items: center;\n  justify-content: center;\n  gap: 10px;\n}\n.product__description {\n  background-color: rgba(255, 255, 255, 0.76);\n  display: inline-block;\n  padding: 5px;\n}\n.product__description p {\n  font-size: 14px;\n  font-weight: 500;\n  color: rgb(89, 0, 255);\n}\n.product__description span {\n  font-size: 12px;\n  font-weight: 400;\n  color: rgb(0, 0, 0);\n}\n\n/*filter*/\n.filter__btns {\n  display: flex;\n  flex-direction: row;\n  justify-content: center;\n  align-items: center;\n}\n.filter__container {\n  display: flex;\n  flex-direction: column;\n  gap: 20px;\n}\n\n/*card*/\n.card__container {\n  display: grid;\n  grid-template-columns: 1fr 1fr;\n  grid-gap: 0;\n  gap: 0;\n  align-items: center;\n}\n.card__sliders {\n  display: flex;\n  flex-direction: row;\n  max-height: 400px;\n  overflow: hidden;\n}\n.card__info {\n  width: 100%;\n}\n\n.info__btns {\n  display: flex;\n  flex-direction: row;\n  justify-content: space-around;\n  gap: 20px;\n}", "",{"version":3,"sources":["webpack://./node_modules/scss-reset/_reset.scss","webpack://./src/styles/App.scss"],"names":[],"mappings":"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","sourcesContent":["/**\n * Reset Mixing\n * ================================================== */\n\n/**\n * Disable Animation\n */\n@mixin disableAnimation {\n  transform: none !important;\n\n  transition: none !important;\n  transition-property: none !important;\n  transition-duration: 0s !important;\n  transition-delay: 0s !important;\n\n  animation: none !important;\n  animation-duration: 0s !important;\n  animation-delay: 0s !important;\n  animation-iteration-count: 1 !important;\n\n  scroll-behavior: auto !important;\n}\n\n/**\n * Disable animation depends on Browser or Operation System configuration\n */\n@mixin acDisableAnimation {\n  @media (prefers-reduced-motion: reduce) {\n    @include disableAnimation;\n  }\n}\n\n/**\n * Accessability. Black and White Mode\n */\n@mixin acModeBW {\n  filter: grayscale(100%);\n}\n\n/**\n * Accessability. Inverse Mode\n */\n@mixin acModeContrast {\n  filter: invert(100%);\n  background-color: $white !important;\n}\n\n/**\n * Meter reset\n */\n@mixin meterReset {\n  meter {\n    background: none;\n    -webkit-appearance: none;\n  }\n\n  ::-moz-meter-bar {\n    -moz-appearance: none\n  }\n\n  :-moz-meter-optimum::-moz-meter-bar,\n  :-moz-meter-sub-optimum::-moz-meter-bar,\n  :-moz-meter-sub-sub-optimum::-moz-meter-bar {\n    background: none\n  }\n\n\n  meter::-webkit-meter-bar,\n  meter::-webkit-meter-optimum-value,\n  meter::-webkit-meter-suboptimum-value,\n  meter::-webkit-meter-even-less-good-value,\n  meter::-webkit-meter-inner-element {\n    background: none;\n  }\n}\n\n@mixin progressReset {\n\n  /**\n   * Progress Bar Reset\n   *\n   */\n  progress,\n  progress[role] {\n    display: block;\n\n    overflow: hidden;\n\n    width: 100%;\n    height: 40px;\n    margin: 0;\n\n    /* Reset Defaults */\n    appearance: none;\n    border: none;\n\n    /* Needs to be in here for Safari polyfill so background images work as expected. */\n    background-size: auto;\n  }\n\n  /* Polyfill */\n  progress[role]:after {\n    background-image: none;\n    /* removes default background from polyfill */\n  }\n\n  /* Ensure fallback text doesn't appear in polyfill */\n  progress[role] strong {\n    display: none;\n  }\n}\n\n\n/**\n * Modern CSS Reset Tweaks\n * ================================================== */\n\nhtml {\n  -webkit-text-size-adjust: 100%;\n\n  &:focus-within {\n    scroll-behavior: smooth;\n  }\n}\n\nbody {\n  text-size-adjust: 100%;\n  position: relative;\n\n  width: 100%;\n  min-height: 100vh;\n\n  -moz-osx-font-smoothing: grayscale;\n  -webkit-font-smoothing: antialiased;\n  text-rendering: optimizeSpeed;\n}\n\n\n/* Box sizing normalization */\n*,\n::after,\n::before {\n  box-sizing: border-box;\n}\n\n\n/* Elements that don't have a class get default styles */\na:not([class]) {\n  text-decoration-skip-ink: auto;\n}\n\n\n/**\n * CSS Reset Tweaks\n *\n * http://meyerweb.com/eric/tools/css/reset/\n * v2.0-modified | 20110126\n * License: none (public domain)\n */\n\nhtml,\nbody,\ndiv,\nspan,\napplet,\nobject,\niframe,\nh1,\nh2,\nh3,\nh4,\nh5,\nh6,\np,\nblockquote,\npre,\na,\nabbr,\nacronym,\naddress,\nbig,\ncite,\ncode,\ndel,\ndfn,\nem,\nimg,\nins,\nkbd,\nq,\ns,\nsamp,\nsmall,\nstrike,\nstrong,\nsub,\nsup,\ntt,\nvar,\nb,\nu,\ni,\ncenter,\ndl,\ndt,\ndd,\nol,\nul,\nli,\nfieldset,\nform,\nlabel,\nlegend,\ntable,\ncaption,\ntbody,\ntfoot,\nthead,\ntr,\nth,\ntd,\narticle,\naside,\ncanvas,\ndetails,\nembed,\nfigure,\nfigcaption,\nfooter,\nheader,\nhgroup,\nmenu,\nnav,\noutput,\nruby,\nsection,\nsummary,\ntime,\nmark,\naudio,\nvideo {\n  font-size: 100%;\n  font: inherit;\n  margin: 0;\n  padding: 0;\n  border: 0;\n  vertical-align: baseline;\n}\n\n/* make sure to set some focus styles for accessibility */\n:focus {\n  outline: 0;\n}\n\n/* HTML5 display-role reset for older browsers */\nmain,\narticle,\naside,\ndetails,\nfigcaption,\nfigure,\nfooter,\nheader,\nhgroup,\nmenu,\nnav,\nsection {\n  display: block;\n}\n\nol,\nul {\n  list-style: none;\n}\n\nblockquote,\nq {\n  quotes: none;\n\n  &:before,\n  &:after {\n    content: '';\n    content: none;\n  }\n}\n\n/**\n * Input Reset\n */\ninput:required,\ninput {\n  box-shadow: none;\n}\n\ninput:-webkit-autofill,\ninput:-webkit-autofill:hover,\ninput:-webkit-autofill:focus,\ninput:-webkit-autofill:active {\n  -webkit-box-shadow: 0 0 0 30px white inset;\n}\n\ninput[type=search]::-webkit-search-cancel-button,\ninput[type=search]::-webkit-search-decoration,\ninput[type=search]::-webkit-search-results-button,\ninput[type=search]::-webkit-search-results-decoration {\n  -webkit-appearance: none;\n  -moz-appearance: none;\n}\n\ninput[type=search] {\n  -webkit-appearance: none;\n  -moz-appearance: none;\n  -webkit-box-sizing: content-box;\n  -moz-box-sizing: content-box;\n  box-sizing: content-box;\n}\n\ntextarea {\n  overflow: auto;\n  vertical-align: top;\n  resize: vertical;\n}\n\ninput {\n  &:focus {\n    outline: none;\n  }\n}\n\n/**\n * Correct `inline-block` display not defined in IE 6/7/8/9 and Firefox 3.\n */\naudio,\ncanvas,\nvideo {\n  display: inline-block;\n  max-width: 100%;\n}\n\n/**\n * Prevent modern browsers from displaying `audio` without controls.\n * Remove excess height in iOS 5 devices.\n */\n\naudio:not([controls]) {\n  display: none;\n  height: 0;\n}\n\n/**\n * Address styling not present in IE 7/8/9, Firefox 3, and Safari 4.\n */\n\n[hidden] {\n  display: none;\n}\n\n/**\n * Improve readability when focused and also mouse hovered in all browsers.\n */\na:active,\na:hover {\n  outline: none;\n}\n\n/* Make images easier to work with */\nimg {\n  max-width: 100%;\n  display: inline-block;\n  vertical-align: middle;\n  height: auto;\n}\n\n/* Make pictures easier to work with */\npicture {\n  display: inline-block;\n}\n\n/**\n * Address Firefox 3+ setting `line-height` on `input` using `!important` in\n * the UA stylesheet.\n */\n\nbutton,\ninput {\n  line-height: normal;\n}\n\n/**\n * Address inconsistent `text-transform` inheritance for `button` and `select`.\n * All other form control elements do not inherit `text-transform` values.\n * Correct `button` style inheritance in Chrome, Safari 5+, and IE 6+.\n * Correct `select` style inheritance in Firefox 4+ and Opera.\n */\n\nbutton,\nselect {\n  text-transform: none;\n}\n\nbutton,\nhtml input[type=\"button\"],\ninput[type=\"reset\"],\ninput[type=\"submit\"] {\n  -webkit-appearance: button;\n  cursor: pointer;\n  border: 0;\n  background: transparent;\n}\n\n/**\n * Re-set default cursor for disabled elements.\n */\n\nbutton[disabled],\nhtml input[disabled] {\n  cursor: default;\n}\n\n[disabled] {\n  pointer-events: none;\n}\n\n/**\n * 1. Address box sizing set to content-box in IE 8/9.\n */\ninput[type=\"checkbox\"],\ninput[type=\"radio\"] {\n  padding: 0;\n}\n\n/**\n * 1. Address `appearance` set to `searchfield` in Safari 5 and Chrome.\n * 2. Address `box-sizing` set to `border-box` in Safari 5 and Chrome\n *    (include `-moz` to future-proof).\n */\n\ninput[type=\"search\"] {\n  -webkit-appearance: textfield;\n  -moz-box-sizing: content-box;\n  -webkit-box-sizing: content-box;\n  box-sizing: content-box;\n}\n\n/**\n * Remove inner padding and search cancel button in Safari 5 and Chrome\n * on OS X.\n */\n\ninput[type=\"search\"]::-webkit-search-cancel-button,\ninput[type=\"search\"]::-webkit-search-decoration {\n  -webkit-appearance: none;\n}\n\n/**\n * Remove inner padding and border in Firefox 3+.\n */\n\nbutton::-moz-focus-inner,\ninput::-moz-focus-inner {\n  border: 0;\n  padding: 0;\n}\n\nbutton {\n  border: 0;\n  background: transparent;\n}\n\ntextarea {\n  overflow: auto;\n  vertical-align: top;\n  resize: vertical;\n}\n\n/**\n * Remove most spacing between table cells.\n */\ntable {\n  border-collapse: collapse;\n  border-spacing: 0;\n  text-indent: 0;\n}\n\n\n/**\n * Based on normalize.css v8.0.1\n * github.com/necolas/normalize.css\n */\nhr {\n  box-sizing: content-box;\n  overflow: visible;\n  background: #000;\n  border: 0;\n  height: 1px;\n  line-height: 0;\n  margin: 0;\n  padding: 0;\n  page-break-after: always;\n  width: 100%;\n}\n\n/**\n * 1. Correct the inheritance and scaling of font size in all browsers.\n */\npre {\n  font-family: monospace, monospace;\n  font-size: 100%;\n}\n\n/**\n * Remove the gray background on active links in IE 10.\n */\na {\n  background-color: transparent;\n}\n\n/**\n * 1. Remove the bottom border in Chrome 57-\n * 2. Add the correct text decoration in Chrome, Edge, IE, Opera, and Safari.\n */\nabbr[title] {\n  border-bottom: none;\n  text-decoration: none;\n}\n\ncode,\nkbd,\npre,\nsamp {\n  font-family: monospace, monospace;\n}\n\n/**\n  * Add the correct font size in all browsers.\n  */\nsmall {\n  font-size: 75%;\n}\n\n/**\n * Prevent `sub` and `sup` elements from affecting the line height in\n * all browsers.\n */\nsub,\nsup {\n  font-size: 75%;\n  line-height: 0;\n  position: relative;\n  vertical-align: baseline;\n}\n\nsub {\n  bottom: -5px;\n}\n\nsup {\n  top: -5px;\n}\n\n/**\n * 1. Change the font styles in all browsers.\n * 2. Remove the margin in Firefox and Safari.\n */\nbutton,\ninput,\noptgroup,\nselect,\ntextarea {\n  font-family: inherit;\n  font-size: 100%;\n  line-height: 1;\n  margin: 0;\n  padding: 0;\n}\n\n/**\n * Show the overflow in IE.\n * 1. Show the overflow in Edge.\n */\nbutton,\ninput {\n  /* 1 */\n  overflow: visible;\n}\n\n/**\n * Remove the inheritance of text transform in Edge, Firefox, and IE.\n * 1. Remove the inheritance of text transform in Firefox.\n */\n\nbutton,\nselect {\n  /* 1 */\n  text-transform: none;\n}\n\n/**\n * Correct the inability to style clickable types in iOS and Safari.\n */\n\nbutton,\n[type=\"button\"],\n[type=\"reset\"],\n[type=\"submit\"] {\n  -webkit-appearance: button;\n}\n\n/**\n * Remove the inner border and padding in Firefox.\n */\n\nbutton::-moz-focus-inner,\n[type=\"button\"]::-moz-focus-inner,\n[type=\"reset\"]::-moz-focus-inner,\n[type=\"submit\"]::-moz-focus-inner {\n  border-style: none;\n  padding: 0;\n  outline: 0;\n}\n\n\nlegend {\n  color: inherit;\n  white-space: normal;\n\n  display: block;\n  border: 0;\n  max-width: 100%;\n  width: 100%;\n}\n\nfieldset {\n  min-width: 0;\n}\n\nbody:not(:-moz-handler-blocked) fieldset {\n  display: block;\n}\n\n\n/**\n * Add the correct vertical alignment in Chrome, Firefox, and Opera.\n */\nprogress {\n  vertical-align: baseline;\n}\n\n\n/**\n * Correct the cursor style of increment and decrement buttons in Chrome.\n */\n[type=\"number\"]::-webkit-inner-spin-button,\n[type=\"number\"]::-webkit-outer-spin-button {\n  height: auto;\n}\n\n\n/**\n * 1. Correct the odd appearance in Chrome and Safari.\n * 2. Correct the outline style in Safari.\n */\n[type=\"search\"] {\n  -webkit-appearance: textfield;\n  /* 1 */\n  outline-offset: -2px;\n  /* 2 */\n}\n\n/**\n * Remove the inner padding in Chrome and Safari on macOS.\n */\n[type=\"search\"]::-webkit-search-decoration {\n  -webkit-appearance: none;\n}\n\n/**\n * 1. Correct the inability to style clickable types in iOS and Safari.\n * 2. Change font properties to `inherit` in Safari.\n */\n::-webkit-file-upload-button {\n  -webkit-appearance: button;\n  /* 1 */\n  font: inherit;\n  /* 2 */\n}\n\n/* Interactive\n   ========================================================================== */\n\n/*\n * Add the correct display in all browsers.\n */\nsummary {\n  display: list-item;\n}\n\n/*\n * Misc\n * ========================================================================== */\n\n/**\n * Add the correct display in IE 10+.\n */\ntemplate {\n  display: none;\n}\n","@import 'scss-reset/_reset.scss';\r\n@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@1,500&display=swap');\r\n*::-webkit-scrollbar {\r\n  width: 8px;\r\n}\r\n*::-webkit-scrollbar-track {\r\n  background: rgb(203, 231, 255);\r\n}\r\n*::-webkit-scrollbar-thumb {\r\n  background-color: rgb(140, 140, 255);\r\n  border-radius: 20px;\r\n}\r\n.element-footer{\r\n  list-style-type: none;\r\n  margin: 0 50px;\r\n  margin-top: 15px;\r\n  display: inline-block;\r\n}\r\n\r\nhtml {\r\n  height: 100%;\r\n}\r\n\r\nbody {\r\n  height: 100%;\r\n}\r\n\r\n#root {\r\n  height: 100%;\r\n}\r\n\r\n.app {\r\n  display: flex;\r\n  flex-direction: column;\r\n  height: 100%;\r\n}\r\n\r\n.body {\r\n  flex: 1 0 auto;\r\n}\r\n\r\n.main {\r\n  &__container {\r\n    display: grid;\r\n    grid-template-columns: 1fr 3fr;\r\n    gap: 20px;\r\n  }\r\n}\r\n\r\n.container {\r\n  max-width: 1200px;\r\n  padding: 0 15px;\r\n\r\n  margin: 0 auto;\r\n}\r\n\r\n.footer {\r\n  content: 'footer';\r\n  height: 150px;\r\n  width: 100%;\r\n}\r\n.footer__container{\r\n  font-family: 'DM Sans', sans-serif;\r\n  display: flex;\r\n  flex-direction:row;\r\n  align-items: flex-start;\r\n  justify-content: center;\r\n  font-size: 30px;\r\n  width: 100%;\r\n  margin-top: 50px;\r\n}\r\n.validation-modal {\r\n  height: 50px;\r\n  width: 700px;\r\n  background-color: bisque;\r\n}\r\n\r\n.header {\r\n  &__container {\r\n    display: flex;\r\n    flex-direction: row;\r\n    align-items: center;\r\n    justify-content: space-between;\r\n  }\r\n  \r\n  &__logo {\r\n    cursor: pointer;\r\n    max-width: 150px;\r\n  }\r\n  \r\n  &__sum {\r\n    \r\n  }\r\n  \r\n  &__value {\r\n    color: #61dafb;\r\n  }\r\n  \r\n  &__basket {\r\n    cursor: pointer;\r\n    position: relative;\r\n    &-count {\r\n      position: absolute;\r\n      top: -10px;\r\n      right: 0;\r\n      text-align: center;\r\n      padding: 5px;\r\n    }\r\n    \r\n    &-image {\r\n      max-width: 40px;\r\n    }\r\n  }\r\n}\r\n\r\n.basket__main-container {\r\n  display: grid;\r\n  grid-template-columns: 1fr 1fr;\r\n  gap: 20px;\r\n  align-items: center;\r\n  justify-content: space-between;\r\n}\r\n\r\n.basket__header {\r\n  display: flex;\r\n  flex-direction: row;\r\n  justify-content: space-between;\r\n  align-items: center;\r\n}\r\n\r\n.error {\r\n  display: flex;\r\n  flex-direction: column;\r\n  align-items: center;\r\n  justify-content: center;\r\n  \r\n  margin: 0 auto;\r\n\r\n  text-align: center;\r\n  color: red;\r\n  text-transform: uppercase;\r\n\r\n  &__name {\r\n    font-size: 60px;  \r\n  }\r\n  \r\n  &__type {\r\n    font-size: 100px;  \r\n  }\r\n}\r\n\r\n/*catalog*/\r\n\r\n.catalog {\r\n  &__container {\r\n\r\n  }\r\n  \r\n  &__list {\r\n    grid-template-columns: repeat(4, 1fr);\r\n    gap: 20px;\r\n    display: grid;\r\n    \r\n    &_other {\r\n      display: grid;\r\n      grid-template-columns: repeat(2, 1fr);\r\n      gap: 40px;\r\n    }\r\n  }\r\n\r\n\r\n  &__item {\r\n    border: 1px solid rgb(212, 235, 255);\r\n    border-radius: 5px;\r\n    background-color: aliceblue;\r\n    background-size: cover;\r\n    background-position: center;\r\n  }\r\n\r\n  &__header {\r\n    display: flex;\r\n    flex-direction: row;\r\n    justify-content: space-between;\r\n  }\r\n}\r\n\r\n.product {\r\n  &__header {\r\n    background-color: #61dafb;\r\n    text-align: center;\r\n    \r\n    &_active {\r\n      background-color: #f84200;\r\n      text-align: center;\r\n    }\r\n  }\r\n\r\n  &__body {\r\n\r\n  }\r\n\r\n  &__btns {\r\n    display: flex;\r\n    flex-direction: row;\r\n    align-items: center;\r\n    justify-content: center;\r\n    gap: 10px;\r\n  }\r\n\r\n  &__description {\r\n    background-color: rgba(255, 255, 255, 0.76);\r\n    display: inline-block;\r\n    padding: 5px;\r\n    & p {\r\n      font-size: 14px;\r\n      font-weight: 500;\r\n      color: rgb(89, 0, 255);\r\n    }\r\n    \r\n    & span {\r\n      font-size: 12px;\r\n      font-weight: 400;\r\n      color: rgb(0, 0, 0);\r\n    }\r\n  }\r\n}\r\n\r\n/*filter*/\r\n\r\n.filter {\r\n  &__btns {\r\n    display: flex;\r\n    flex-direction: row;\r\n    justify-content: center;\r\n    align-items: center;\r\n  }\r\n\r\n  &__container {\r\n    display: flex;\r\n    flex-direction: column;\r\n    gap: 20px;\r\n  }\r\n}\r\n\r\n/*card*/\r\n\r\n.card {\r\n  &__container {\r\n    display: grid;\r\n    grid-template-columns: 1fr 1fr;\r\n    gap: 0;\r\n    align-items: center;\r\n  }\r\n\r\n  &__sliders {\r\n    display: flex;\r\n    flex-direction: row;\r\n    max-height: 400px;\r\n    overflow: hidden;\r\n  }\r\n  &__info {\r\n    width: 100%;\r\n  }\r\n}\r\n\r\n.info {\r\n  &__btns {\r\n    display: flex;\r\n    flex-direction: row;\r\n    justify-content: space-around;\r\n    gap: 20px;\r\n  }\r\n}\r\n\r\n"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, "/**\n * Reset Mixing\n * ================================================== */\n/**\n * Disable Animation\n */\n/**\n * Disable animation depends on Browser or Operation System configuration\n */\n/**\n * Accessability. Black and White Mode\n */\n/**\n * Accessability. Inverse Mode\n */\n/**\n * Meter reset\n */\n/**\n * Modern CSS Reset Tweaks\n * ================================================== */\nhtml {\n  -webkit-text-size-adjust: 100%;\n}\nhtml[focus-within] {\n  scroll-behavior: smooth;\n}\nhtml:focus-within {\n  scroll-behavior: smooth;\n}\n\nbody {\n  -webkit-text-size-adjust: 100%;\n     -moz-text-size-adjust: 100%;\n          text-size-adjust: 100%;\n  position: relative;\n  width: 100%;\n  min-height: 100vh;\n  -moz-osx-font-smoothing: grayscale;\n  -webkit-font-smoothing: antialiased;\n  text-rendering: optimizeSpeed;\n}\n\n/* Box sizing normalization */\n*,\n::after,\n::before {\n  box-sizing: border-box;\n}\n\n/* Elements that don't have a class get default styles */\na:not([class]) {\n  -webkit-text-decoration-skip: ink;\n          text-decoration-skip-ink: auto;\n}\n\n/**\n * CSS Reset Tweaks\n *\n * http://meyerweb.com/eric/tools/css/reset/\n * v2.0-modified | 20110126\n * License: none (public domain)\n */\nhtml,\nbody,\ndiv,\nspan,\napplet,\nobject,\niframe,\nh1,\nh2,\nh3,\nh4,\nh5,\nh6,\np,\nblockquote,\npre,\na,\nabbr,\nacronym,\naddress,\nbig,\ncite,\ncode,\ndel,\ndfn,\nem,\nimg,\nins,\nkbd,\nq,\ns,\nsamp,\nsmall,\nstrike,\nstrong,\nsub,\nsup,\ntt,\nvar,\nb,\nu,\ni,\ncenter,\ndl,\ndt,\ndd,\nol,\nul,\nli,\nfieldset,\nform,\nlabel,\nlegend,\ntable,\ncaption,\ntbody,\ntfoot,\nthead,\ntr,\nth,\ntd,\narticle,\naside,\ncanvas,\ndetails,\nembed,\nfigure,\nfigcaption,\nfooter,\nheader,\nhgroup,\nmenu,\nnav,\noutput,\nruby,\nsection,\nsummary,\ntime,\nmark,\naudio,\nvideo {\n  font-size: 100%;\n  font: inherit;\n  margin: 0;\n  padding: 0;\n  border: 0;\n  vertical-align: baseline;\n}\n\n/* make sure to set some focus styles for accessibility */\n:focus {\n  outline: 0;\n}\n\n/* HTML5 display-role reset for older browsers */\nmain,\narticle,\naside,\ndetails,\nfigcaption,\nfigure,\nfooter,\nheader,\nhgroup,\nmenu,\nnav,\nsection {\n  display: block;\n}\n\nol,\nul {\n  list-style: none;\n}\n\nblockquote,\nq {\n  quotes: none;\n}\nblockquote:before, blockquote:after,\nq:before,\nq:after {\n  content: \"\";\n  content: none;\n}\n\n/**\n * Input Reset\n */\ninput:required,\ninput {\n  box-shadow: none;\n}\n\ninput:-webkit-autofill,\ninput:-webkit-autofill:hover,\ninput:-webkit-autofill:focus,\ninput:-webkit-autofill:active {\n  -webkit-box-shadow: 0 0 0 30px white inset;\n}\n\ninput[type=search]::-webkit-search-cancel-button,\ninput[type=search]::-webkit-search-decoration,\ninput[type=search]::-webkit-search-results-button,\ninput[type=search]::-webkit-search-results-decoration {\n  -webkit-appearance: none;\n  -moz-appearance: none;\n}\n\ninput[type=search] {\n  -webkit-appearance: none;\n  -moz-appearance: none;\n  box-sizing: content-box;\n}\n\ntextarea {\n  overflow: auto;\n  vertical-align: top;\n  resize: vertical;\n}\n\ninput:focus {\n  outline: none;\n}\n\n/**\n * Correct `inline-block` display not defined in IE 6/7/8/9 and Firefox 3.\n */\naudio,\ncanvas,\nvideo {\n  display: inline-block;\n  max-width: 100%;\n}\n\n/**\n * Prevent modern browsers from displaying `audio` without controls.\n * Remove excess height in iOS 5 devices.\n */\naudio:not([controls]) {\n  display: none;\n  height: 0;\n}\n\n/**\n * Address styling not present in IE 7/8/9, Firefox 3, and Safari 4.\n */\n[hidden] {\n  display: none;\n}\n\n/**\n * Improve readability when focused and also mouse hovered in all browsers.\n */\na:active,\na:hover {\n  outline: none;\n}\n\n/* Make images easier to work with */\nimg {\n  max-width: 100%;\n  display: inline-block;\n  vertical-align: middle;\n  height: auto;\n}\n\n/* Make pictures easier to work with */\npicture {\n  display: inline-block;\n}\n\n/**\n * Address Firefox 3+ setting `line-height` on `input` using `!important` in\n * the UA stylesheet.\n */\nbutton,\ninput {\n  line-height: normal;\n}\n\n/**\n * Address inconsistent `text-transform` inheritance for `button` and `select`.\n * All other form control elements do not inherit `text-transform` values.\n * Correct `button` style inheritance in Chrome, Safari 5+, and IE 6+.\n * Correct `select` style inheritance in Firefox 4+ and Opera.\n */\nbutton,\nselect {\n  text-transform: none;\n}\n\nbutton,\nhtml input[type=button],\ninput[type=reset],\ninput[type=submit] {\n  -webkit-appearance: button;\n  cursor: pointer;\n  border: 0;\n  background: transparent;\n}\n\n/**\n * Re-set default cursor for disabled elements.\n */\nbutton[disabled],\nhtml input[disabled] {\n  cursor: default;\n}\n\n[disabled] {\n  pointer-events: none;\n}\n\n/**\n * 1. Address box sizing set to content-box in IE 8/9.\n */\ninput[type=checkbox],\ninput[type=radio] {\n  padding: 0;\n}\n\n/**\n * 1. Address `appearance` set to `searchfield` in Safari 5 and Chrome.\n * 2. Address `box-sizing` set to `border-box` in Safari 5 and Chrome\n *    (include `-moz` to future-proof).\n */\ninput[type=search] {\n  -webkit-appearance: textfield;\n  box-sizing: content-box;\n}\n\n/**\n * Remove inner padding and search cancel button in Safari 5 and Chrome\n * on OS X.\n */\ninput[type=search]::-webkit-search-cancel-button,\ninput[type=search]::-webkit-search-decoration {\n  -webkit-appearance: none;\n}\n\n/**\n * Remove inner padding and border in Firefox 3+.\n */\nbutton::-moz-focus-inner,\ninput::-moz-focus-inner {\n  border: 0;\n  padding: 0;\n}\n\nbutton {\n  border: 0;\n  background: transparent;\n}\n\ntextarea {\n  overflow: auto;\n  vertical-align: top;\n  resize: vertical;\n}\n\n/**\n * Remove most spacing between table cells.\n */\ntable {\n  border-collapse: collapse;\n  border-spacing: 0;\n  text-indent: 0;\n}\n\n/**\n * Based on normalize.css v8.0.1\n * github.com/necolas/normalize.css\n */\nhr {\n  box-sizing: content-box;\n  overflow: visible;\n  background: #000;\n  border: 0;\n  height: 1px;\n  line-height: 0;\n  margin: 0;\n  padding: 0;\n  page-break-after: always;\n  width: 100%;\n}\n\n/**\n * 1. Correct the inheritance and scaling of font size in all browsers.\n */\npre {\n  font-family: monospace, monospace;\n  font-size: 100%;\n}\n\n/**\n * Remove the gray background on active links in IE 10.\n */\na {\n  background-color: transparent;\n}\n\n/**\n * 1. Remove the bottom border in Chrome 57-\n * 2. Add the correct text decoration in Chrome, Edge, IE, Opera, and Safari.\n */\nabbr[title] {\n  border-bottom: none;\n  text-decoration: none;\n}\n\ncode,\nkbd,\npre,\nsamp {\n  font-family: monospace, monospace;\n}\n\n/**\n  * Add the correct font size in all browsers.\n  */\nsmall {\n  font-size: 75%;\n}\n\n/**\n * Prevent `sub` and `sup` elements from affecting the line height in\n * all browsers.\n */\nsub,\nsup {\n  font-size: 75%;\n  line-height: 0;\n  position: relative;\n  vertical-align: baseline;\n}\n\nsub {\n  bottom: -5px;\n}\n\nsup {\n  top: -5px;\n}\n\n/**\n * 1. Change the font styles in all browsers.\n * 2. Remove the margin in Firefox and Safari.\n */\nbutton,\ninput,\noptgroup,\nselect,\ntextarea {\n  font-family: inherit;\n  font-size: 100%;\n  line-height: 1;\n  margin: 0;\n  padding: 0;\n}\n\n/**\n * Show the overflow in IE.\n * 1. Show the overflow in Edge.\n */\nbutton,\ninput {\n  /* 1 */\n  overflow: visible;\n}\n\n/**\n * Remove the inheritance of text transform in Edge, Firefox, and IE.\n * 1. Remove the inheritance of text transform in Firefox.\n */\nbutton,\nselect {\n  /* 1 */\n  text-transform: none;\n}\n\n/**\n * Correct the inability to style clickable types in iOS and Safari.\n */\nbutton,\n[type=button],\n[type=reset],\n[type=submit] {\n  -webkit-appearance: button;\n}\n\n/**\n * Remove the inner border and padding in Firefox.\n */\nbutton::-moz-focus-inner,\n[type=button]::-moz-focus-inner,\n[type=reset]::-moz-focus-inner,\n[type=submit]::-moz-focus-inner {\n  border-style: none;\n  padding: 0;\n  outline: 0;\n}\n\nlegend {\n  color: inherit;\n  white-space: normal;\n  display: block;\n  border: 0;\n  max-width: 100%;\n  width: 100%;\n}\n\nfieldset {\n  min-width: 0;\n}\n\nbody:not(:-moz-handler-blocked) fieldset {\n  display: block;\n}\n\n/**\n * Add the correct vertical alignment in Chrome, Firefox, and Opera.\n */\nprogress {\n  vertical-align: baseline;\n}\n\n/**\n * Correct the cursor style of increment and decrement buttons in Chrome.\n */\n[type=number]::-webkit-inner-spin-button,\n[type=number]::-webkit-outer-spin-button {\n  height: auto;\n}\n\n/**\n * 1. Correct the odd appearance in Chrome and Safari.\n * 2. Correct the outline style in Safari.\n */\n[type=search] {\n  -webkit-appearance: textfield;\n  /* 1 */\n  outline-offset: -2px;\n  /* 2 */\n}\n\n/**\n * Remove the inner padding in Chrome and Safari on macOS.\n */\n[type=search]::-webkit-search-decoration {\n  -webkit-appearance: none;\n}\n\n/**\n * 1. Correct the inability to style clickable types in iOS and Safari.\n * 2. Change font properties to `inherit` in Safari.\n */\n::-webkit-file-upload-button {\n  -webkit-appearance: button;\n  /* 1 */\n  font: inherit;\n  /* 2 */\n}\n\n/* Interactive\n   ========================================================================== */\n/*\n * Add the correct display in all browsers.\n */\nsummary {\n  display: list-item;\n}\n\n/*\n * Misc\n * ========================================================================== */\n/**\n * Add the correct display in IE 10+.\n */\ntemplate {\n  display: none;\n}\n\n*::-webkit-scrollbar {\n  width: 8px;\n}\n\n*::-webkit-scrollbar-track {\n  background: rgb(203, 231, 255);\n}\n\n*::-webkit-scrollbar-thumb {\n  background-color: rgb(140, 140, 255);\n  border-radius: 20px;\n}\n\n.element-footer {\n  list-style-type: none;\n  margin: 0 50px;\n  margin-top: 15px;\n  display: inline-block;\n}\n\nhtml {\n  height: 100%;\n}\n\nbody {\n  height: 100%;\n}\n\n#root {\n  height: 100%;\n}\n\n.app {\n  display: flex;\n  flex-direction: column;\n  height: 100%;\n}\n\n.body {\n  flex: 1 0 auto;\n}\n\n.main__container {\n  display: grid;\n  grid-template-columns: 1fr 3fr;\n  grid-gap: 20px;\n  gap: 20px;\n}\n\n.container {\n  max-width: 1200px;\n  padding: 0 15px;\n  margin: 0 auto;\n}\n\n.footer {\n  content: \"footer\";\n  height: 150px;\n  width: 100%;\n}\n\n.footer__container {\n  font-family: \"DM Sans\", sans-serif;\n  display: flex;\n  flex-direction: row;\n  align-items: flex-start;\n  justify-content: center;\n  font-size: 30px;\n  width: 100%;\n  margin-top: 50px;\n}\n\n.validation-modal {\n  z-index: 10;\n  display: none;\n  position: fixed;\n  border-radius: 25px;\n  top: 50%;\n  left: 50%;\n  transform: translate(-50%, -50%);\n  background-color: bisque;\n  padding: 20px;\n}\n.validation-modal__container {\n  display: flex;\n  flex-direction: row;\n  align-items: center;\n  justify-content: space-between;\n}\n.validation-modal__container form {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: space-between;\n}\n.validation-modal.active {\n  display: block;\n}\n\n.header__container {\n  display: flex;\n  flex-direction: row;\n  align-items: center;\n  justify-content: space-between;\n}\n.header__logo {\n  cursor: pointer;\n  max-width: 150px;\n}\n.header__value {\n  color: #61dafb;\n}\n.header__basket {\n  cursor: pointer;\n  position: relative;\n}\n.header__basket-count {\n  position: absolute;\n  top: -10px;\n  right: 0;\n  text-align: center;\n  padding: 5px;\n}\n.header__basket-image {\n  max-width: 40px;\n}\n\n.basket__main-container {\n  display: grid;\n  grid-template-columns: 1fr 1fr;\n  grid-gap: 20px;\n  gap: 20px;\n  align-items: center;\n  justify-content: space-between;\n}\n\n.basket__header {\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n  align-items: center;\n}\n\n.error {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n  margin: 0 auto;\n  text-align: center;\n  color: red;\n  text-transform: uppercase;\n}\n.error__name {\n  font-size: 60px;\n}\n.error__type {\n  font-size: 100px;\n}\n\n/*catalog*/\n.catalog__list {\n  grid-template-columns: repeat(4, 1fr);\n  grid-gap: 20px;\n  gap: 20px;\n  display: grid;\n}\n.catalog__list_other {\n  display: grid;\n  grid-template-columns: repeat(2, 1fr);\n  grid-gap: 40px;\n  gap: 40px;\n}\n.catalog__item {\n  border: 1px solid rgb(212, 235, 255);\n  border-radius: 5px;\n  background-color: aliceblue;\n  background-size: cover;\n  background-position: center;\n}\n.catalog__header {\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n}\n\n.product__header {\n  background-color: #61dafb;\n  text-align: center;\n}\n.product__header_active {\n  background-color: #f84200;\n  text-align: center;\n}\n.product__btns {\n  display: flex;\n  flex-direction: row;\n  align-items: center;\n  justify-content: center;\n  gap: 10px;\n}\n.product__description {\n  background-color: rgba(255, 255, 255, 0.76);\n  display: inline-block;\n  padding: 5px;\n}\n.product__description p {\n  font-size: 14px;\n  font-weight: 500;\n  color: rgb(89, 0, 255);\n}\n.product__description span {\n  font-size: 12px;\n  font-weight: 400;\n  color: rgb(0, 0, 0);\n}\n\n/*filter*/\n.filter__btns {\n  display: flex;\n  flex-direction: row;\n  justify-content: center;\n  align-items: center;\n}\n.filter__container {\n  display: flex;\n  flex-direction: column;\n  gap: 20px;\n}\n\n/*card*/\n.card__container {\n  display: grid;\n  grid-template-columns: 1fr 1fr;\n  grid-gap: 0;\n  gap: 0;\n  align-items: center;\n}\n.card__sliders {\n  display: flex;\n  flex-direction: row;\n  max-height: 400px;\n  overflow: hidden;\n}\n.card__info {\n  width: 100%;\n}\n\n.info__btns {\n  display: flex;\n  flex-direction: row;\n  justify-content: space-around;\n  gap: 20px;\n}", "",{"version":3,"sources":["webpack://./node_modules/scss-reset/_reset.scss","webpack://./src/styles/App.scss"],"names":[],"mappings":"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","sourcesContent":["/**\n * Reset Mixing\n * ================================================== */\n\n/**\n * Disable Animation\n */\n@mixin disableAnimation {\n  transform: none !important;\n\n  transition: none !important;\n  transition-property: none !important;\n  transition-duration: 0s !important;\n  transition-delay: 0s !important;\n\n  animation: none !important;\n  animation-duration: 0s !important;\n  animation-delay: 0s !important;\n  animation-iteration-count: 1 !important;\n\n  scroll-behavior: auto !important;\n}\n\n/**\n * Disable animation depends on Browser or Operation System configuration\n */\n@mixin acDisableAnimation {\n  @media (prefers-reduced-motion: reduce) {\n    @include disableAnimation;\n  }\n}\n\n/**\n * Accessability. Black and White Mode\n */\n@mixin acModeBW {\n  filter: grayscale(100%);\n}\n\n/**\n * Accessability. Inverse Mode\n */\n@mixin acModeContrast {\n  filter: invert(100%);\n  background-color: $white !important;\n}\n\n/**\n * Meter reset\n */\n@mixin meterReset {\n  meter {\n    background: none;\n    -webkit-appearance: none;\n  }\n\n  ::-moz-meter-bar {\n    -moz-appearance: none\n  }\n\n  :-moz-meter-optimum::-moz-meter-bar,\n  :-moz-meter-sub-optimum::-moz-meter-bar,\n  :-moz-meter-sub-sub-optimum::-moz-meter-bar {\n    background: none\n  }\n\n\n  meter::-webkit-meter-bar,\n  meter::-webkit-meter-optimum-value,\n  meter::-webkit-meter-suboptimum-value,\n  meter::-webkit-meter-even-less-good-value,\n  meter::-webkit-meter-inner-element {\n    background: none;\n  }\n}\n\n@mixin progressReset {\n\n  /**\n   * Progress Bar Reset\n   *\n   */\n  progress,\n  progress[role] {\n    display: block;\n\n    overflow: hidden;\n\n    width: 100%;\n    height: 40px;\n    margin: 0;\n\n    /* Reset Defaults */\n    appearance: none;\n    border: none;\n\n    /* Needs to be in here for Safari polyfill so background images work as expected. */\n    background-size: auto;\n  }\n\n  /* Polyfill */\n  progress[role]:after {\n    background-image: none;\n    /* removes default background from polyfill */\n  }\n\n  /* Ensure fallback text doesn't appear in polyfill */\n  progress[role] strong {\n    display: none;\n  }\n}\n\n\n/**\n * Modern CSS Reset Tweaks\n * ================================================== */\n\nhtml {\n  -webkit-text-size-adjust: 100%;\n\n  &:focus-within {\n    scroll-behavior: smooth;\n  }\n}\n\nbody {\n  text-size-adjust: 100%;\n  position: relative;\n\n  width: 100%;\n  min-height: 100vh;\n\n  -moz-osx-font-smoothing: grayscale;\n  -webkit-font-smoothing: antialiased;\n  text-rendering: optimizeSpeed;\n}\n\n\n/* Box sizing normalization */\n*,\n::after,\n::before {\n  box-sizing: border-box;\n}\n\n\n/* Elements that don't have a class get default styles */\na:not([class]) {\n  text-decoration-skip-ink: auto;\n}\n\n\n/**\n * CSS Reset Tweaks\n *\n * http://meyerweb.com/eric/tools/css/reset/\n * v2.0-modified | 20110126\n * License: none (public domain)\n */\n\nhtml,\nbody,\ndiv,\nspan,\napplet,\nobject,\niframe,\nh1,\nh2,\nh3,\nh4,\nh5,\nh6,\np,\nblockquote,\npre,\na,\nabbr,\nacronym,\naddress,\nbig,\ncite,\ncode,\ndel,\ndfn,\nem,\nimg,\nins,\nkbd,\nq,\ns,\nsamp,\nsmall,\nstrike,\nstrong,\nsub,\nsup,\ntt,\nvar,\nb,\nu,\ni,\ncenter,\ndl,\ndt,\ndd,\nol,\nul,\nli,\nfieldset,\nform,\nlabel,\nlegend,\ntable,\ncaption,\ntbody,\ntfoot,\nthead,\ntr,\nth,\ntd,\narticle,\naside,\ncanvas,\ndetails,\nembed,\nfigure,\nfigcaption,\nfooter,\nheader,\nhgroup,\nmenu,\nnav,\noutput,\nruby,\nsection,\nsummary,\ntime,\nmark,\naudio,\nvideo {\n  font-size: 100%;\n  font: inherit;\n  margin: 0;\n  padding: 0;\n  border: 0;\n  vertical-align: baseline;\n}\n\n/* make sure to set some focus styles for accessibility */\n:focus {\n  outline: 0;\n}\n\n/* HTML5 display-role reset for older browsers */\nmain,\narticle,\naside,\ndetails,\nfigcaption,\nfigure,\nfooter,\nheader,\nhgroup,\nmenu,\nnav,\nsection {\n  display: block;\n}\n\nol,\nul {\n  list-style: none;\n}\n\nblockquote,\nq {\n  quotes: none;\n\n  &:before,\n  &:after {\n    content: '';\n    content: none;\n  }\n}\n\n/**\n * Input Reset\n */\ninput:required,\ninput {\n  box-shadow: none;\n}\n\ninput:-webkit-autofill,\ninput:-webkit-autofill:hover,\ninput:-webkit-autofill:focus,\ninput:-webkit-autofill:active {\n  -webkit-box-shadow: 0 0 0 30px white inset;\n}\n\ninput[type=search]::-webkit-search-cancel-button,\ninput[type=search]::-webkit-search-decoration,\ninput[type=search]::-webkit-search-results-button,\ninput[type=search]::-webkit-search-results-decoration {\n  -webkit-appearance: none;\n  -moz-appearance: none;\n}\n\ninput[type=search] {\n  -webkit-appearance: none;\n  -moz-appearance: none;\n  -webkit-box-sizing: content-box;\n  -moz-box-sizing: content-box;\n  box-sizing: content-box;\n}\n\ntextarea {\n  overflow: auto;\n  vertical-align: top;\n  resize: vertical;\n}\n\ninput {\n  &:focus {\n    outline: none;\n  }\n}\n\n/**\n * Correct `inline-block` display not defined in IE 6/7/8/9 and Firefox 3.\n */\naudio,\ncanvas,\nvideo {\n  display: inline-block;\n  max-width: 100%;\n}\n\n/**\n * Prevent modern browsers from displaying `audio` without controls.\n * Remove excess height in iOS 5 devices.\n */\n\naudio:not([controls]) {\n  display: none;\n  height: 0;\n}\n\n/**\n * Address styling not present in IE 7/8/9, Firefox 3, and Safari 4.\n */\n\n[hidden] {\n  display: none;\n}\n\n/**\n * Improve readability when focused and also mouse hovered in all browsers.\n */\na:active,\na:hover {\n  outline: none;\n}\n\n/* Make images easier to work with */\nimg {\n  max-width: 100%;\n  display: inline-block;\n  vertical-align: middle;\n  height: auto;\n}\n\n/* Make pictures easier to work with */\npicture {\n  display: inline-block;\n}\n\n/**\n * Address Firefox 3+ setting `line-height` on `input` using `!important` in\n * the UA stylesheet.\n */\n\nbutton,\ninput {\n  line-height: normal;\n}\n\n/**\n * Address inconsistent `text-transform` inheritance for `button` and `select`.\n * All other form control elements do not inherit `text-transform` values.\n * Correct `button` style inheritance in Chrome, Safari 5+, and IE 6+.\n * Correct `select` style inheritance in Firefox 4+ and Opera.\n */\n\nbutton,\nselect {\n  text-transform: none;\n}\n\nbutton,\nhtml input[type=\"button\"],\ninput[type=\"reset\"],\ninput[type=\"submit\"] {\n  -webkit-appearance: button;\n  cursor: pointer;\n  border: 0;\n  background: transparent;\n}\n\n/**\n * Re-set default cursor for disabled elements.\n */\n\nbutton[disabled],\nhtml input[disabled] {\n  cursor: default;\n}\n\n[disabled] {\n  pointer-events: none;\n}\n\n/**\n * 1. Address box sizing set to content-box in IE 8/9.\n */\ninput[type=\"checkbox\"],\ninput[type=\"radio\"] {\n  padding: 0;\n}\n\n/**\n * 1. Address `appearance` set to `searchfield` in Safari 5 and Chrome.\n * 2. Address `box-sizing` set to `border-box` in Safari 5 and Chrome\n *    (include `-moz` to future-proof).\n */\n\ninput[type=\"search\"] {\n  -webkit-appearance: textfield;\n  -moz-box-sizing: content-box;\n  -webkit-box-sizing: content-box;\n  box-sizing: content-box;\n}\n\n/**\n * Remove inner padding and search cancel button in Safari 5 and Chrome\n * on OS X.\n */\n\ninput[type=\"search\"]::-webkit-search-cancel-button,\ninput[type=\"search\"]::-webkit-search-decoration {\n  -webkit-appearance: none;\n}\n\n/**\n * Remove inner padding and border in Firefox 3+.\n */\n\nbutton::-moz-focus-inner,\ninput::-moz-focus-inner {\n  border: 0;\n  padding: 0;\n}\n\nbutton {\n  border: 0;\n  background: transparent;\n}\n\ntextarea {\n  overflow: auto;\n  vertical-align: top;\n  resize: vertical;\n}\n\n/**\n * Remove most spacing between table cells.\n */\ntable {\n  border-collapse: collapse;\n  border-spacing: 0;\n  text-indent: 0;\n}\n\n\n/**\n * Based on normalize.css v8.0.1\n * github.com/necolas/normalize.css\n */\nhr {\n  box-sizing: content-box;\n  overflow: visible;\n  background: #000;\n  border: 0;\n  height: 1px;\n  line-height: 0;\n  margin: 0;\n  padding: 0;\n  page-break-after: always;\n  width: 100%;\n}\n\n/**\n * 1. Correct the inheritance and scaling of font size in all browsers.\n */\npre {\n  font-family: monospace, monospace;\n  font-size: 100%;\n}\n\n/**\n * Remove the gray background on active links in IE 10.\n */\na {\n  background-color: transparent;\n}\n\n/**\n * 1. Remove the bottom border in Chrome 57-\n * 2. Add the correct text decoration in Chrome, Edge, IE, Opera, and Safari.\n */\nabbr[title] {\n  border-bottom: none;\n  text-decoration: none;\n}\n\ncode,\nkbd,\npre,\nsamp {\n  font-family: monospace, monospace;\n}\n\n/**\n  * Add the correct font size in all browsers.\n  */\nsmall {\n  font-size: 75%;\n}\n\n/**\n * Prevent `sub` and `sup` elements from affecting the line height in\n * all browsers.\n */\nsub,\nsup {\n  font-size: 75%;\n  line-height: 0;\n  position: relative;\n  vertical-align: baseline;\n}\n\nsub {\n  bottom: -5px;\n}\n\nsup {\n  top: -5px;\n}\n\n/**\n * 1. Change the font styles in all browsers.\n * 2. Remove the margin in Firefox and Safari.\n */\nbutton,\ninput,\noptgroup,\nselect,\ntextarea {\n  font-family: inherit;\n  font-size: 100%;\n  line-height: 1;\n  margin: 0;\n  padding: 0;\n}\n\n/**\n * Show the overflow in IE.\n * 1. Show the overflow in Edge.\n */\nbutton,\ninput {\n  /* 1 */\n  overflow: visible;\n}\n\n/**\n * Remove the inheritance of text transform in Edge, Firefox, and IE.\n * 1. Remove the inheritance of text transform in Firefox.\n */\n\nbutton,\nselect {\n  /* 1 */\n  text-transform: none;\n}\n\n/**\n * Correct the inability to style clickable types in iOS and Safari.\n */\n\nbutton,\n[type=\"button\"],\n[type=\"reset\"],\n[type=\"submit\"] {\n  -webkit-appearance: button;\n}\n\n/**\n * Remove the inner border and padding in Firefox.\n */\n\nbutton::-moz-focus-inner,\n[type=\"button\"]::-moz-focus-inner,\n[type=\"reset\"]::-moz-focus-inner,\n[type=\"submit\"]::-moz-focus-inner {\n  border-style: none;\n  padding: 0;\n  outline: 0;\n}\n\n\nlegend {\n  color: inherit;\n  white-space: normal;\n\n  display: block;\n  border: 0;\n  max-width: 100%;\n  width: 100%;\n}\n\nfieldset {\n  min-width: 0;\n}\n\nbody:not(:-moz-handler-blocked) fieldset {\n  display: block;\n}\n\n\n/**\n * Add the correct vertical alignment in Chrome, Firefox, and Opera.\n */\nprogress {\n  vertical-align: baseline;\n}\n\n\n/**\n * Correct the cursor style of increment and decrement buttons in Chrome.\n */\n[type=\"number\"]::-webkit-inner-spin-button,\n[type=\"number\"]::-webkit-outer-spin-button {\n  height: auto;\n}\n\n\n/**\n * 1. Correct the odd appearance in Chrome and Safari.\n * 2. Correct the outline style in Safari.\n */\n[type=\"search\"] {\n  -webkit-appearance: textfield;\n  /* 1 */\n  outline-offset: -2px;\n  /* 2 */\n}\n\n/**\n * Remove the inner padding in Chrome and Safari on macOS.\n */\n[type=\"search\"]::-webkit-search-decoration {\n  -webkit-appearance: none;\n}\n\n/**\n * 1. Correct the inability to style clickable types in iOS and Safari.\n * 2. Change font properties to `inherit` in Safari.\n */\n::-webkit-file-upload-button {\n  -webkit-appearance: button;\n  /* 1 */\n  font: inherit;\n  /* 2 */\n}\n\n/* Interactive\n   ========================================================================== */\n\n/*\n * Add the correct display in all browsers.\n */\nsummary {\n  display: list-item;\n}\n\n/*\n * Misc\n * ========================================================================== */\n\n/**\n * Add the correct display in IE 10+.\n */\ntemplate {\n  display: none;\n}\n","@import 'scss-reset/_reset.scss';\r\n@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@1,500&display=swap');\r\n*::-webkit-scrollbar {\r\n  width: 8px;\r\n}\r\n*::-webkit-scrollbar-track {\r\n  background: rgb(203, 231, 255);\r\n}\r\n*::-webkit-scrollbar-thumb {\r\n  background-color: rgb(140, 140, 255);\r\n  border-radius: 20px;\r\n}\r\n.element-footer{\r\n  list-style-type: none;\r\n  margin: 0 50px;\r\n  margin-top: 15px;\r\n  display: inline-block;\r\n}\r\n\r\nhtml {\r\n  height: 100%;\r\n}\r\n\r\nbody {\r\n  height: 100%;\r\n}\r\n\r\n#root {\r\n  height: 100%;\r\n}\r\n\r\n.app {\r\n  display: flex;\r\n  flex-direction: column;\r\n  height: 100%;\r\n}\r\n\r\n.body {\r\n  flex: 1 0 auto;\r\n}\r\n\r\n.main {\r\n  &__container {\r\n    display: grid;\r\n    grid-template-columns: 1fr 3fr;\r\n    gap: 20px;\r\n  }\r\n}\r\n\r\n.container {\r\n  max-width: 1200px;\r\n  padding: 0 15px;\r\n\r\n  margin: 0 auto;\r\n}\r\n\r\n.footer {\r\n  content: 'footer';\r\n  height: 150px;\r\n  width: 100%;\r\n}\r\n.footer__container{\r\n  font-family: 'DM Sans', sans-serif;\r\n  display: flex;\r\n  flex-direction:row;\r\n  align-items: flex-start;\r\n  justify-content: center;\r\n  font-size: 30px;\r\n  width: 100%;\r\n  margin-top: 50px;\r\n}\r\n.validation-modal {\r\n  z-index: 10;\r\n  display: none;\r\n  position: fixed;\r\n  border-radius: 25px;\r\n  top: 50%;\r\n  left: 50%;\r\n  transform: translate(-50%, -50%);\r\n  background-color: bisque;\r\n  padding: 20px;\r\n\r\n  &__container {\r\n    display: flex;\r\n    flex-direction: row;\r\n    align-items: center;\r\n    justify-content: space-between;\r\n\r\n    & form {\r\n      display: flex;\r\n      flex-direction: column;\r\n      align-items: center;\r\n      justify-content: space-between;\r\n    }\r\n  }\r\n\r\n  &.active {\r\n    display: block;\r\n  }\r\n}\r\n\r\n.header {\r\n  &__container {\r\n    display: flex;\r\n    flex-direction: row;\r\n    align-items: center;\r\n    justify-content: space-between;\r\n  }\r\n  \r\n  &__logo {\r\n    cursor: pointer;\r\n    max-width: 150px;\r\n  }\r\n  \r\n  &__sum {\r\n    \r\n  }\r\n  \r\n  &__value {\r\n    color: #61dafb;\r\n  }\r\n  \r\n  &__basket {\r\n    cursor: pointer;\r\n    position: relative;\r\n    &-count {\r\n      position: absolute;\r\n      top: -10px;\r\n      right: 0;\r\n      text-align: center;\r\n      padding: 5px;\r\n    }\r\n    \r\n    &-image {\r\n      max-width: 40px;\r\n    }\r\n  }\r\n}\r\n\r\n.basket__main-container {\r\n  display: grid;\r\n  grid-template-columns: 1fr 1fr;\r\n  gap: 20px;\r\n  align-items: center;\r\n  justify-content: space-between;\r\n}\r\n\r\n.basket__header {\r\n  display: flex;\r\n  flex-direction: row;\r\n  justify-content: space-between;\r\n  align-items: center;\r\n}\r\n\r\n.error {\r\n  display: flex;\r\n  flex-direction: column;\r\n  align-items: center;\r\n  justify-content: center;\r\n  \r\n  margin: 0 auto;\r\n\r\n  text-align: center;\r\n  color: red;\r\n  text-transform: uppercase;\r\n\r\n  &__name {\r\n    font-size: 60px;  \r\n  }\r\n  \r\n  &__type {\r\n    font-size: 100px;  \r\n  }\r\n}\r\n\r\n/*catalog*/\r\n\r\n.catalog {\r\n  &__container {\r\n\r\n  }\r\n  \r\n  &__list {\r\n    grid-template-columns: repeat(4, 1fr);\r\n    gap: 20px;\r\n    display: grid;\r\n    \r\n    &_other {\r\n      display: grid;\r\n      grid-template-columns: repeat(2, 1fr);\r\n      gap: 40px;\r\n    }\r\n  }\r\n\r\n\r\n  &__item {\r\n    border: 1px solid rgb(212, 235, 255);\r\n    border-radius: 5px;\r\n    background-color: aliceblue;\r\n    background-size: cover;\r\n    background-position: center;\r\n  }\r\n\r\n  &__header {\r\n    display: flex;\r\n    flex-direction: row;\r\n    justify-content: space-between;\r\n  }\r\n}\r\n\r\n.product {\r\n  &__header {\r\n    background-color: #61dafb;\r\n    text-align: center;\r\n    \r\n    &_active {\r\n      background-color: #f84200;\r\n      text-align: center;\r\n    }\r\n  }\r\n\r\n  &__body {\r\n\r\n  }\r\n\r\n  &__btns {\r\n    display: flex;\r\n    flex-direction: row;\r\n    align-items: center;\r\n    justify-content: center;\r\n    gap: 10px;\r\n  }\r\n\r\n  &__description {\r\n    background-color: rgba(255, 255, 255, 0.76);\r\n    display: inline-block;\r\n    padding: 5px;\r\n    & p {\r\n      font-size: 14px;\r\n      font-weight: 500;\r\n      color: rgb(89, 0, 255);\r\n    }\r\n    \r\n    & span {\r\n      font-size: 12px;\r\n      font-weight: 400;\r\n      color: rgb(0, 0, 0);\r\n    }\r\n  }\r\n}\r\n\r\n/*filter*/\r\n\r\n.filter {\r\n  &__btns {\r\n    display: flex;\r\n    flex-direction: row;\r\n    justify-content: center;\r\n    align-items: center;\r\n  }\r\n\r\n  &__container {\r\n    display: flex;\r\n    flex-direction: column;\r\n    gap: 20px;\r\n  }\r\n}\r\n\r\n/*card*/\r\n\r\n.card {\r\n  &__container {\r\n    display: grid;\r\n    grid-template-columns: 1fr 1fr;\r\n    gap: 0;\r\n    align-items: center;\r\n  }\r\n\r\n  &__sliders {\r\n    display: flex;\r\n    flex-direction: row;\r\n    max-height: 400px;\r\n    overflow: hidden;\r\n  }\r\n  &__info {\r\n    width: 100%;\r\n  }\r\n}\r\n\r\n.info {\r\n  &__btns {\r\n    display: flex;\r\n    flex-direction: row;\r\n    justify-content: space-around;\r\n    gap: 20px;\r\n  }\r\n}\r\n\r\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -57817,6 +57918,2366 @@ const scroll = shortcut('scroll');
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ($);
 
+
+
+/***/ }),
+
+/***/ "./node_modules/react-hook-form/dist/index.esm.mjs":
+/*!*********************************************************!*\
+  !*** ./node_modules/react-hook-form/dist/index.esm.mjs ***!
+  \*********************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Controller": () => (/* binding */ Controller),
+/* harmony export */   "FormProvider": () => (/* binding */ FormProvider),
+/* harmony export */   "appendErrors": () => (/* binding */ appendErrors),
+/* harmony export */   "get": () => (/* binding */ get),
+/* harmony export */   "set": () => (/* binding */ set),
+/* harmony export */   "useController": () => (/* binding */ useController),
+/* harmony export */   "useFieldArray": () => (/* binding */ useFieldArray),
+/* harmony export */   "useForm": () => (/* binding */ useForm),
+/* harmony export */   "useFormContext": () => (/* binding */ useFormContext),
+/* harmony export */   "useFormState": () => (/* binding */ useFormState),
+/* harmony export */   "useWatch": () => (/* binding */ useWatch)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+
+var isCheckBoxInput = (element) => element.type === 'checkbox';
+
+var isDateObject = (value) => value instanceof Date;
+
+var isNullOrUndefined = (value) => value == null;
+
+const isObjectType = (value) => typeof value === 'object';
+var isObject = (value) => !isNullOrUndefined(value) &&
+    !Array.isArray(value) &&
+    isObjectType(value) &&
+    !isDateObject(value);
+
+var getEventValue = (event) => isObject(event) && event.target
+    ? isCheckBoxInput(event.target)
+        ? event.target.checked
+        : event.target.value
+    : event;
+
+var getNodeParentName = (name) => name.substring(0, name.search(/\.\d+(\.|$)/)) || name;
+
+var isNameInFieldArray = (names, name) => names.has(getNodeParentName(name));
+
+var compact = (value) => Array.isArray(value) ? value.filter(Boolean) : [];
+
+var isUndefined = (val) => val === undefined;
+
+var get = (obj, path, defaultValue) => {
+    if (!path || !isObject(obj)) {
+        return defaultValue;
+    }
+    const result = compact(path.split(/[,[\].]+?/)).reduce((result, key) => isNullOrUndefined(result) ? result : result[key], obj);
+    return isUndefined(result) || result === obj
+        ? isUndefined(obj[path])
+            ? defaultValue
+            : obj[path]
+        : result;
+};
+
+const EVENTS = {
+    BLUR: 'blur',
+    FOCUS_OUT: 'focusout',
+    CHANGE: 'change',
+};
+const VALIDATION_MODE = {
+    onBlur: 'onBlur',
+    onChange: 'onChange',
+    onSubmit: 'onSubmit',
+    onTouched: 'onTouched',
+    all: 'all',
+};
+const INPUT_VALIDATION_RULES = {
+    max: 'max',
+    min: 'min',
+    maxLength: 'maxLength',
+    minLength: 'minLength',
+    pattern: 'pattern',
+    required: 'required',
+    validate: 'validate',
+};
+
+const HookFormContext = react__WEBPACK_IMPORTED_MODULE_0__.createContext(null);
+/**
+ * This custom hook allows you to access the form context. useFormContext is intended to be used in deeply nested structures, where it would become inconvenient to pass the context as a prop. To be used with {@link FormProvider}.
+ *
+ * @remarks
+ * [API](https://react-hook-form.com/api/useformcontext) • [Demo](https://codesandbox.io/s/react-hook-form-v7-form-context-ytudi)
+ *
+ * @returns return all useForm methods
+ *
+ * @example
+ * ```tsx
+ * function App() {
+ *   const methods = useForm();
+ *   const onSubmit = data => console.log(data);
+ *
+ *   return (
+ *     <FormProvider {...methods} >
+ *       <form onSubmit={methods.handleSubmit(onSubmit)}>
+ *         <NestedInput />
+ *         <input type="submit" />
+ *       </form>
+ *     </FormProvider>
+ *   );
+ * }
+ *
+ *  function NestedInput() {
+ *   const { register } = useFormContext(); // retrieve all hook methods
+ *   return <input {...register("test")} />;
+ * }
+ * ```
+ */
+const useFormContext = () => react__WEBPACK_IMPORTED_MODULE_0__.useContext(HookFormContext);
+/**
+ * A provider component that propagates the `useForm` methods to all children components via [React Context](https://reactjs.org/docs/context.html) API. To be used with {@link useFormContext}.
+ *
+ * @remarks
+ * [API](https://react-hook-form.com/api/useformcontext) • [Demo](https://codesandbox.io/s/react-hook-form-v7-form-context-ytudi)
+ *
+ * @param props - all useFrom methods
+ *
+ * @example
+ * ```tsx
+ * function App() {
+ *   const methods = useForm();
+ *   const onSubmit = data => console.log(data);
+ *
+ *   return (
+ *     <FormProvider {...methods} >
+ *       <form onSubmit={methods.handleSubmit(onSubmit)}>
+ *         <NestedInput />
+ *         <input type="submit" />
+ *       </form>
+ *     </FormProvider>
+ *   );
+ * }
+ *
+ *  function NestedInput() {
+ *   const { register } = useFormContext(); // retrieve all hook methods
+ *   return <input {...register("test")} />;
+ * }
+ * ```
+ */
+const FormProvider = (props) => {
+    const { children, ...data } = props;
+    return (react__WEBPACK_IMPORTED_MODULE_0__.createElement(HookFormContext.Provider, { value: data }, children));
+};
+
+var getProxyFormState = (formState, control, localProxyFormState, isRoot = true) => {
+    const result = {
+        defaultValues: control._defaultValues,
+    };
+    for (const key in formState) {
+        Object.defineProperty(result, key, {
+            get: () => {
+                const _key = key;
+                if (control._proxyFormState[_key] !== VALIDATION_MODE.all) {
+                    control._proxyFormState[_key] = !isRoot || VALIDATION_MODE.all;
+                }
+                localProxyFormState && (localProxyFormState[_key] = true);
+                return formState[_key];
+            },
+        });
+    }
+    return result;
+};
+
+var isEmptyObject = (value) => isObject(value) && !Object.keys(value).length;
+
+var shouldRenderFormState = (formStateData, _proxyFormState, isRoot) => {
+    const { name, ...formState } = formStateData;
+    return (isEmptyObject(formState) ||
+        Object.keys(formState).length >= Object.keys(_proxyFormState).length ||
+        Object.keys(formState).find((key) => _proxyFormState[key] ===
+            (!isRoot || VALIDATION_MODE.all)));
+};
+
+var convertToArrayPayload = (value) => (Array.isArray(value) ? value : [value]);
+
+var shouldSubscribeByName = (name, signalName, exact) => exact && signalName
+    ? name === signalName
+    : !name ||
+        !signalName ||
+        name === signalName ||
+        convertToArrayPayload(name).some((currentName) => currentName &&
+            (currentName.startsWith(signalName) ||
+                signalName.startsWith(currentName)));
+
+function useSubscribe(props) {
+    const _props = react__WEBPACK_IMPORTED_MODULE_0__.useRef(props);
+    _props.current = props;
+    react__WEBPACK_IMPORTED_MODULE_0__.useEffect(() => {
+        const subscription = !props.disabled &&
+            _props.current.subject.subscribe({
+                next: _props.current.next,
+            });
+        return () => {
+            subscription && subscription.unsubscribe();
+        };
+    }, [props.disabled]);
+}
+
+/**
+ * This custom hook allows you to subscribe to each form state, and isolate the re-render at the custom hook level. It has its scope in terms of form state subscription, so it would not affect other useFormState and useForm. Using this hook can reduce the re-render impact on large and complex form application.
+ *
+ * @remarks
+ * [API](https://react-hook-form.com/api/useformstate) • [Demo](https://codesandbox.io/s/useformstate-75xly)
+ *
+ * @param props - include options on specify fields to subscribe. {@link UseFormStateReturn}
+ *
+ * @example
+ * ```tsx
+ * function App() {
+ *   const { register, handleSubmit, control } = useForm({
+ *     defaultValues: {
+ *     firstName: "firstName"
+ *   }});
+ *   const { dirtyFields } = useFormState({
+ *     control
+ *   });
+ *   const onSubmit = (data) => console.log(data);
+ *
+ *   return (
+ *     <form onSubmit={handleSubmit(onSubmit)}>
+ *       <input {...register("firstName")} placeholder="First Name" />
+ *       {dirtyFields.firstName && <p>Field is dirty.</p>}
+ *       <input type="submit" />
+ *     </form>
+ *   );
+ * }
+ * ```
+ */
+function useFormState(props) {
+    const methods = useFormContext();
+    const { control = methods.control, disabled, name, exact } = props || {};
+    const [formState, updateFormState] = react__WEBPACK_IMPORTED_MODULE_0__.useState(control._formState);
+    const _mounted = react__WEBPACK_IMPORTED_MODULE_0__.useRef(true);
+    const _localProxyFormState = react__WEBPACK_IMPORTED_MODULE_0__.useRef({
+        isDirty: false,
+        isLoading: false,
+        dirtyFields: false,
+        touchedFields: false,
+        isValidating: false,
+        isValid: false,
+        errors: false,
+    });
+    const _name = react__WEBPACK_IMPORTED_MODULE_0__.useRef(name);
+    _name.current = name;
+    useSubscribe({
+        disabled,
+        next: (value) => _mounted.current &&
+            shouldSubscribeByName(_name.current, value.name, exact) &&
+            shouldRenderFormState(value, _localProxyFormState.current) &&
+            updateFormState({
+                ...control._formState,
+                ...value,
+            }),
+        subject: control._subjects.state,
+    });
+    react__WEBPACK_IMPORTED_MODULE_0__.useEffect(() => {
+        _mounted.current = true;
+        const isDirty = control._proxyFormState.isDirty && control._getDirty();
+        if (isDirty !== control._formState.isDirty) {
+            control._subjects.state.next({
+                isDirty,
+            });
+        }
+        control._updateValid();
+        return () => {
+            _mounted.current = false;
+        };
+    }, [control]);
+    return getProxyFormState(formState, control, _localProxyFormState.current, false);
+}
+
+var isString = (value) => typeof value === 'string';
+
+var generateWatchOutput = (names, _names, formValues, isGlobal, defaultValue) => {
+    if (isString(names)) {
+        isGlobal && _names.watch.add(names);
+        return get(formValues, names, defaultValue);
+    }
+    if (Array.isArray(names)) {
+        return names.map((fieldName) => (isGlobal && _names.watch.add(fieldName), get(formValues, fieldName)));
+    }
+    isGlobal && (_names.watchAll = true);
+    return formValues;
+};
+
+var isPlainObject = (tempObject) => {
+    const prototypeCopy = tempObject.constructor && tempObject.constructor.prototype;
+    return (isObject(prototypeCopy) && prototypeCopy.hasOwnProperty('isPrototypeOf'));
+};
+
+var isWeb = typeof window !== 'undefined' &&
+    typeof window.HTMLElement !== 'undefined' &&
+    typeof document !== 'undefined';
+
+function cloneObject(data) {
+    let copy;
+    const isArray = Array.isArray(data);
+    if (data instanceof Date) {
+        copy = new Date(data);
+    }
+    else if (data instanceof Set) {
+        copy = new Set(data);
+    }
+    else if (!(isWeb && (data instanceof Blob || data instanceof FileList)) &&
+        (isArray || isObject(data))) {
+        copy = isArray ? [] : {};
+        if (!Array.isArray(data) && !isPlainObject(data)) {
+            copy = data;
+        }
+        else {
+            for (const key in data) {
+                copy[key] = cloneObject(data[key]);
+            }
+        }
+    }
+    else {
+        return data;
+    }
+    return copy;
+}
+
+/**
+ * Custom hook to subscribe to field change and isolate re-rendering at the component level.
+ *
+ * @remarks
+ *
+ * [API](https://react-hook-form.com/api/usewatch) • [Demo](https://codesandbox.io/s/react-hook-form-v7-ts-usewatch-h9i5e)
+ *
+ * @example
+ * ```tsx
+ * const { watch } = useForm();
+ * const values = useWatch({
+ *   name: "fieldName"
+ *   control,
+ * })
+ * ```
+ */
+function useWatch(props) {
+    const methods = useFormContext();
+    const { control = methods.control, name, defaultValue, disabled, exact, } = props || {};
+    const _name = react__WEBPACK_IMPORTED_MODULE_0__.useRef(name);
+    _name.current = name;
+    useSubscribe({
+        disabled,
+        subject: control._subjects.watch,
+        next: (formState) => {
+            if (shouldSubscribeByName(_name.current, formState.name, exact)) {
+                updateValue(cloneObject(generateWatchOutput(_name.current, control._names, formState.values || control._formValues, false, defaultValue)));
+            }
+        },
+    });
+    const [value, updateValue] = react__WEBPACK_IMPORTED_MODULE_0__.useState(control._getWatch(name, defaultValue));
+    react__WEBPACK_IMPORTED_MODULE_0__.useEffect(() => control._removeUnmounted());
+    return value;
+}
+
+/**
+ * Custom hook to work with controlled component, this function provide you with both form and field level state. Re-render is isolated at the hook level.
+ *
+ * @remarks
+ * [API](https://react-hook-form.com/api/usecontroller) • [Demo](https://codesandbox.io/s/usecontroller-0o8px)
+ *
+ * @param props - the path name to the form field value, and validation rules.
+ *
+ * @returns field properties, field and form state. {@link UseControllerReturn}
+ *
+ * @example
+ * ```tsx
+ * function Input(props) {
+ *   const { field, fieldState, formState } = useController(props);
+ *   return (
+ *     <div>
+ *       <input {...field} placeholder={props.name} />
+ *       <p>{fieldState.isTouched && "Touched"}</p>
+ *       <p>{formState.isSubmitted ? "submitted" : ""}</p>
+ *     </div>
+ *   );
+ * }
+ * ```
+ */
+function useController(props) {
+    const methods = useFormContext();
+    const { name, control = methods.control, shouldUnregister } = props;
+    const isArrayField = isNameInFieldArray(control._names.array, name);
+    const value = useWatch({
+        control,
+        name,
+        defaultValue: get(control._formValues, name, get(control._defaultValues, name, props.defaultValue)),
+        exact: true,
+    });
+    const formState = useFormState({
+        control,
+        name,
+    });
+    const _registerProps = react__WEBPACK_IMPORTED_MODULE_0__.useRef(control.register(name, {
+        ...props.rules,
+        value,
+    }));
+    react__WEBPACK_IMPORTED_MODULE_0__.useEffect(() => {
+        const updateMounted = (name, value) => {
+            const field = get(control._fields, name);
+            if (field) {
+                field._f.mount = value;
+            }
+        };
+        updateMounted(name, true);
+        return () => {
+            const _shouldUnregisterField = control._options.shouldUnregister || shouldUnregister;
+            (isArrayField
+                ? _shouldUnregisterField && !control._stateFlags.action
+                : _shouldUnregisterField)
+                ? control.unregister(name)
+                : updateMounted(name, false);
+        };
+    }, [name, control, isArrayField, shouldUnregister]);
+    return {
+        field: {
+            name,
+            value,
+            onChange: react__WEBPACK_IMPORTED_MODULE_0__.useCallback((event) => _registerProps.current.onChange({
+                target: {
+                    value: getEventValue(event),
+                    name: name,
+                },
+                type: EVENTS.CHANGE,
+            }), [name]),
+            onBlur: react__WEBPACK_IMPORTED_MODULE_0__.useCallback(() => _registerProps.current.onBlur({
+                target: {
+                    value: get(control._formValues, name),
+                    name: name,
+                },
+                type: EVENTS.BLUR,
+            }), [name, control]),
+            ref: (elm) => {
+                const field = get(control._fields, name);
+                if (field && elm) {
+                    field._f.ref = {
+                        focus: () => elm.focus(),
+                        select: () => elm.select(),
+                        setCustomValidity: (message) => elm.setCustomValidity(message),
+                        reportValidity: () => elm.reportValidity(),
+                    };
+                }
+            },
+        },
+        formState,
+        fieldState: Object.defineProperties({}, {
+            invalid: {
+                enumerable: true,
+                get: () => !!get(formState.errors, name),
+            },
+            isDirty: {
+                enumerable: true,
+                get: () => !!get(formState.dirtyFields, name),
+            },
+            isTouched: {
+                enumerable: true,
+                get: () => !!get(formState.touchedFields, name),
+            },
+            error: {
+                enumerable: true,
+                get: () => get(formState.errors, name),
+            },
+        }),
+    };
+}
+
+/**
+ * Component based on `useController` hook to work with controlled component.
+ *
+ * @remarks
+ * [API](https://react-hook-form.com/api/usecontroller/controller) • [Demo](https://codesandbox.io/s/react-hook-form-v6-controller-ts-jwyzw) • [Video](https://www.youtube.com/watch?v=N2UNk_UCVyA)
+ *
+ * @param props - the path name to the form field value, and validation rules.
+ *
+ * @returns provide field handler functions, field and form state.
+ *
+ * @example
+ * ```tsx
+ * function App() {
+ *   const { control } = useForm<FormValues>({
+ *     defaultValues: {
+ *       test: ""
+ *     }
+ *   });
+ *
+ *   return (
+ *     <form>
+ *       <Controller
+ *         control={control}
+ *         name="test"
+ *         render={({ field: { onChange, onBlur, value, ref }, formState, fieldState }) => (
+ *           <>
+ *             <input
+ *               onChange={onChange} // send value to hook form
+ *               onBlur={onBlur} // notify when input is touched
+ *               value={value} // return updated value
+ *               ref={ref} // set ref for focus management
+ *             />
+ *             <p>{formState.isSubmitted ? "submitted" : ""}</p>
+ *             <p>{fieldState.isTouched ? "touched" : ""}</p>
+ *           </>
+ *         )}
+ *       />
+ *     </form>
+ *   );
+ * }
+ * ```
+ */
+const Controller = (props) => props.render(useController(props));
+
+var appendErrors = (name, validateAllFieldCriteria, errors, type, message) => validateAllFieldCriteria
+    ? {
+        ...errors[name],
+        types: {
+            ...(errors[name] && errors[name].types ? errors[name].types : {}),
+            [type]: message || true,
+        },
+    }
+    : {};
+
+var isKey = (value) => /^\w*$/.test(value);
+
+var stringToPath = (input) => compact(input.replace(/["|']|\]/g, '').split(/\.|\[/));
+
+function set(object, path, value) {
+    let index = -1;
+    const tempPath = isKey(path) ? [path] : stringToPath(path);
+    const length = tempPath.length;
+    const lastIndex = length - 1;
+    while (++index < length) {
+        const key = tempPath[index];
+        let newValue = value;
+        if (index !== lastIndex) {
+            const objValue = object[key];
+            newValue =
+                isObject(objValue) || Array.isArray(objValue)
+                    ? objValue
+                    : !isNaN(+tempPath[index + 1])
+                        ? []
+                        : {};
+        }
+        object[key] = newValue;
+        object = object[key];
+    }
+    return object;
+}
+
+const focusFieldBy = (fields, callback, fieldsNames) => {
+    for (const key of fieldsNames || Object.keys(fields)) {
+        const field = get(fields, key);
+        if (field) {
+            const { _f, ...currentField } = field;
+            if (_f && callback(_f.name)) {
+                if (_f.ref.focus) {
+                    _f.ref.focus();
+                    break;
+                }
+                else if (_f.refs && _f.refs[0].focus) {
+                    _f.refs[0].focus();
+                    break;
+                }
+            }
+            else if (isObject(currentField)) {
+                focusFieldBy(currentField, callback);
+            }
+        }
+    }
+};
+
+var generateId = () => {
+    const d = typeof performance === 'undefined' ? Date.now() : performance.now() * 1000;
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+        const r = (Math.random() * 16 + d) % 16 | 0;
+        return (c == 'x' ? r : (r & 0x3) | 0x8).toString(16);
+    });
+};
+
+var getFocusFieldName = (name, index, options = {}) => options.shouldFocus || isUndefined(options.shouldFocus)
+    ? options.focusName ||
+        `${name}.${isUndefined(options.focusIndex) ? index : options.focusIndex}.`
+    : '';
+
+var getValidationModes = (mode) => ({
+    isOnSubmit: !mode || mode === VALIDATION_MODE.onSubmit,
+    isOnBlur: mode === VALIDATION_MODE.onBlur,
+    isOnChange: mode === VALIDATION_MODE.onChange,
+    isOnAll: mode === VALIDATION_MODE.all,
+    isOnTouch: mode === VALIDATION_MODE.onTouched,
+});
+
+var isWatched = (name, _names, isBlurEvent) => !isBlurEvent &&
+    (_names.watchAll ||
+        _names.watch.has(name) ||
+        [..._names.watch].some((watchName) => name.startsWith(watchName) &&
+            /^\.\w+/.test(name.slice(watchName.length))));
+
+var updateFieldArrayRootError = (errors, error, name) => {
+    const fieldArrayErrors = compact(get(errors, name));
+    set(fieldArrayErrors, 'root', error[name]);
+    set(errors, name, fieldArrayErrors);
+    return errors;
+};
+
+var isBoolean = (value) => typeof value === 'boolean';
+
+var isFileInput = (element) => element.type === 'file';
+
+var isFunction = (value) => typeof value === 'function';
+
+var isHTMLElement = (value) => {
+    if (!isWeb) {
+        return false;
+    }
+    const owner = value ? value.ownerDocument : 0;
+    return (value instanceof
+        (owner && owner.defaultView ? owner.defaultView.HTMLElement : HTMLElement));
+};
+
+var isMessage = (value) => isString(value) || react__WEBPACK_IMPORTED_MODULE_0__.isValidElement(value);
+
+var isRadioInput = (element) => element.type === 'radio';
+
+var isRegex = (value) => value instanceof RegExp;
+
+const defaultResult = {
+    value: false,
+    isValid: false,
+};
+const validResult = { value: true, isValid: true };
+var getCheckboxValue = (options) => {
+    if (Array.isArray(options)) {
+        if (options.length > 1) {
+            const values = options
+                .filter((option) => option && option.checked && !option.disabled)
+                .map((option) => option.value);
+            return { value: values, isValid: !!values.length };
+        }
+        return options[0].checked && !options[0].disabled
+            ? // @ts-expect-error expected to work in the browser
+                options[0].attributes && !isUndefined(options[0].attributes.value)
+                    ? isUndefined(options[0].value) || options[0].value === ''
+                        ? validResult
+                        : { value: options[0].value, isValid: true }
+                    : validResult
+            : defaultResult;
+    }
+    return defaultResult;
+};
+
+const defaultReturn = {
+    isValid: false,
+    value: null,
+};
+var getRadioValue = (options) => Array.isArray(options)
+    ? options.reduce((previous, option) => option && option.checked && !option.disabled
+        ? {
+            isValid: true,
+            value: option.value,
+        }
+        : previous, defaultReturn)
+    : defaultReturn;
+
+function getValidateError(result, ref, type = 'validate') {
+    if (isMessage(result) ||
+        (Array.isArray(result) && result.every(isMessage)) ||
+        (isBoolean(result) && !result)) {
+        return {
+            type,
+            message: isMessage(result) ? result : '',
+            ref,
+        };
+    }
+}
+
+var getValueAndMessage = (validationData) => isObject(validationData) && !isRegex(validationData)
+    ? validationData
+    : {
+        value: validationData,
+        message: '',
+    };
+
+var validateField = async (field, inputValue, validateAllFieldCriteria, shouldUseNativeValidation, isFieldArray) => {
+    const { ref, refs, required, maxLength, minLength, min, max, pattern, validate, name, valueAsNumber, mount, disabled, } = field._f;
+    if (!mount || disabled) {
+        return {};
+    }
+    const inputRef = refs ? refs[0] : ref;
+    const setCustomValidity = (message) => {
+        if (shouldUseNativeValidation && inputRef.reportValidity) {
+            inputRef.setCustomValidity(isBoolean(message) ? '' : message || '');
+            inputRef.reportValidity();
+        }
+    };
+    const error = {};
+    const isRadio = isRadioInput(ref);
+    const isCheckBox = isCheckBoxInput(ref);
+    const isRadioOrCheckbox = isRadio || isCheckBox;
+    const isEmpty = ((valueAsNumber || isFileInput(ref)) &&
+        isUndefined(ref.value) &&
+        isUndefined(inputValue)) ||
+        (isHTMLElement(ref) && ref.value === '') ||
+        inputValue === '' ||
+        (Array.isArray(inputValue) && !inputValue.length);
+    const appendErrorsCurry = appendErrors.bind(null, name, validateAllFieldCriteria, error);
+    const getMinMaxMessage = (exceedMax, maxLengthMessage, minLengthMessage, maxType = INPUT_VALIDATION_RULES.maxLength, minType = INPUT_VALIDATION_RULES.minLength) => {
+        const message = exceedMax ? maxLengthMessage : minLengthMessage;
+        error[name] = {
+            type: exceedMax ? maxType : minType,
+            message,
+            ref,
+            ...appendErrorsCurry(exceedMax ? maxType : minType, message),
+        };
+    };
+    if (isFieldArray
+        ? !Array.isArray(inputValue) || !inputValue.length
+        : required &&
+            ((!isRadioOrCheckbox && (isEmpty || isNullOrUndefined(inputValue))) ||
+                (isBoolean(inputValue) && !inputValue) ||
+                (isCheckBox && !getCheckboxValue(refs).isValid) ||
+                (isRadio && !getRadioValue(refs).isValid))) {
+        const { value, message } = isMessage(required)
+            ? { value: !!required, message: required }
+            : getValueAndMessage(required);
+        if (value) {
+            error[name] = {
+                type: INPUT_VALIDATION_RULES.required,
+                message,
+                ref: inputRef,
+                ...appendErrorsCurry(INPUT_VALIDATION_RULES.required, message),
+            };
+            if (!validateAllFieldCriteria) {
+                setCustomValidity(message);
+                return error;
+            }
+        }
+    }
+    if (!isEmpty && (!isNullOrUndefined(min) || !isNullOrUndefined(max))) {
+        let exceedMax;
+        let exceedMin;
+        const maxOutput = getValueAndMessage(max);
+        const minOutput = getValueAndMessage(min);
+        if (!isNullOrUndefined(inputValue) && !isNaN(inputValue)) {
+            const valueNumber = ref.valueAsNumber ||
+                (inputValue ? +inputValue : inputValue);
+            if (!isNullOrUndefined(maxOutput.value)) {
+                exceedMax = valueNumber > maxOutput.value;
+            }
+            if (!isNullOrUndefined(minOutput.value)) {
+                exceedMin = valueNumber < minOutput.value;
+            }
+        }
+        else {
+            const valueDate = ref.valueAsDate || new Date(inputValue);
+            const convertTimeToDate = (time) => new Date(new Date().toDateString() + ' ' + time);
+            const isTime = ref.type == 'time';
+            const isWeek = ref.type == 'week';
+            if (isString(maxOutput.value) && inputValue) {
+                exceedMax = isTime
+                    ? convertTimeToDate(inputValue) > convertTimeToDate(maxOutput.value)
+                    : isWeek
+                        ? inputValue > maxOutput.value
+                        : valueDate > new Date(maxOutput.value);
+            }
+            if (isString(minOutput.value) && inputValue) {
+                exceedMin = isTime
+                    ? convertTimeToDate(inputValue) < convertTimeToDate(minOutput.value)
+                    : isWeek
+                        ? inputValue < minOutput.value
+                        : valueDate < new Date(minOutput.value);
+            }
+        }
+        if (exceedMax || exceedMin) {
+            getMinMaxMessage(!!exceedMax, maxOutput.message, minOutput.message, INPUT_VALIDATION_RULES.max, INPUT_VALIDATION_RULES.min);
+            if (!validateAllFieldCriteria) {
+                setCustomValidity(error[name].message);
+                return error;
+            }
+        }
+    }
+    if ((maxLength || minLength) &&
+        !isEmpty &&
+        (isString(inputValue) || (isFieldArray && Array.isArray(inputValue)))) {
+        const maxLengthOutput = getValueAndMessage(maxLength);
+        const minLengthOutput = getValueAndMessage(minLength);
+        const exceedMax = !isNullOrUndefined(maxLengthOutput.value) &&
+            inputValue.length > maxLengthOutput.value;
+        const exceedMin = !isNullOrUndefined(minLengthOutput.value) &&
+            inputValue.length < minLengthOutput.value;
+        if (exceedMax || exceedMin) {
+            getMinMaxMessage(exceedMax, maxLengthOutput.message, minLengthOutput.message);
+            if (!validateAllFieldCriteria) {
+                setCustomValidity(error[name].message);
+                return error;
+            }
+        }
+    }
+    if (pattern && !isEmpty && isString(inputValue)) {
+        const { value: patternValue, message } = getValueAndMessage(pattern);
+        if (isRegex(patternValue) && !inputValue.match(patternValue)) {
+            error[name] = {
+                type: INPUT_VALIDATION_RULES.pattern,
+                message,
+                ref,
+                ...appendErrorsCurry(INPUT_VALIDATION_RULES.pattern, message),
+            };
+            if (!validateAllFieldCriteria) {
+                setCustomValidity(message);
+                return error;
+            }
+        }
+    }
+    if (validate) {
+        if (isFunction(validate)) {
+            const result = await validate(inputValue);
+            const validateError = getValidateError(result, inputRef);
+            if (validateError) {
+                error[name] = {
+                    ...validateError,
+                    ...appendErrorsCurry(INPUT_VALIDATION_RULES.validate, validateError.message),
+                };
+                if (!validateAllFieldCriteria) {
+                    setCustomValidity(validateError.message);
+                    return error;
+                }
+            }
+        }
+        else if (isObject(validate)) {
+            let validationResult = {};
+            for (const key in validate) {
+                if (!isEmptyObject(validationResult) && !validateAllFieldCriteria) {
+                    break;
+                }
+                const validateError = getValidateError(await validate[key](inputValue), inputRef, key);
+                if (validateError) {
+                    validationResult = {
+                        ...validateError,
+                        ...appendErrorsCurry(key, validateError.message),
+                    };
+                    setCustomValidity(validateError.message);
+                    if (validateAllFieldCriteria) {
+                        error[name] = validationResult;
+                    }
+                }
+            }
+            if (!isEmptyObject(validationResult)) {
+                error[name] = {
+                    ref: inputRef,
+                    ...validationResult,
+                };
+                if (!validateAllFieldCriteria) {
+                    return error;
+                }
+            }
+        }
+    }
+    setCustomValidity(true);
+    return error;
+};
+
+function append(data, value) {
+    return [...data, ...convertToArrayPayload(value)];
+}
+
+var fillEmptyArray = (value) => Array.isArray(value) ? value.map(() => undefined) : undefined;
+
+function insert(data, index, value) {
+    return [
+        ...data.slice(0, index),
+        ...convertToArrayPayload(value),
+        ...data.slice(index),
+    ];
+}
+
+var moveArrayAt = (data, from, to) => {
+    if (!Array.isArray(data)) {
+        return [];
+    }
+    if (isUndefined(data[to])) {
+        data[to] = undefined;
+    }
+    data.splice(to, 0, data.splice(from, 1)[0]);
+    return data;
+};
+
+function prepend(data, value) {
+    return [...convertToArrayPayload(value), ...convertToArrayPayload(data)];
+}
+
+function removeAtIndexes(data, indexes) {
+    let i = 0;
+    const temp = [...data];
+    for (const index of indexes) {
+        temp.splice(index - i, 1);
+        i++;
+    }
+    return compact(temp).length ? temp : [];
+}
+var removeArrayAt = (data, index) => isUndefined(index)
+    ? []
+    : removeAtIndexes(data, convertToArrayPayload(index).sort((a, b) => a - b));
+
+var swapArrayAt = (data, indexA, indexB) => {
+    data[indexA] = [data[indexB], (data[indexB] = data[indexA])][0];
+};
+
+function baseGet(object, updatePath) {
+    const length = updatePath.slice(0, -1).length;
+    let index = 0;
+    while (index < length) {
+        object = isUndefined(object) ? index++ : object[updatePath[index++]];
+    }
+    return object;
+}
+function isEmptyArray(obj) {
+    for (const key in obj) {
+        if (!isUndefined(obj[key])) {
+            return false;
+        }
+    }
+    return true;
+}
+function unset(object, path) {
+    const updatePath = isKey(path) ? [path] : stringToPath(path);
+    const childObject = updatePath.length == 1 ? object : baseGet(object, updatePath);
+    const key = updatePath[updatePath.length - 1];
+    let previousObjRef;
+    if (childObject) {
+        delete childObject[key];
+    }
+    for (let k = 0; k < updatePath.slice(0, -1).length; k++) {
+        let index = -1;
+        let objectRef;
+        const currentPaths = updatePath.slice(0, -(k + 1));
+        const currentPathsLength = currentPaths.length - 1;
+        if (k > 0) {
+            previousObjRef = object;
+        }
+        while (++index < currentPaths.length) {
+            const item = currentPaths[index];
+            objectRef = objectRef ? objectRef[item] : object[item];
+            if (currentPathsLength === index &&
+                ((isObject(objectRef) && isEmptyObject(objectRef)) ||
+                    (Array.isArray(objectRef) && isEmptyArray(objectRef)))) {
+                previousObjRef ? delete previousObjRef[item] : delete object[item];
+            }
+            previousObjRef = objectRef;
+        }
+    }
+    return object;
+}
+
+var updateAt = (fieldValues, index, value) => {
+    fieldValues[index] = value;
+    return fieldValues;
+};
+
+/**
+ * A custom hook that exposes convenient methods to perform operations with a list of dynamic inputs that need to be appended, updated, removed etc. • [Demo](https://codesandbox.io/s/react-hook-form-usefieldarray-ssugn) • [Video](https://youtu.be/4MrbfGSFY2A)
+ *
+ * @remarks
+ * [API](https://react-hook-form.com/api/usefieldarray) • [Demo](https://codesandbox.io/s/react-hook-form-usefieldarray-ssugn)
+ *
+ * @param props - useFieldArray props
+ *
+ * @returns methods - functions to manipulate with the Field Arrays (dynamic inputs) {@link UseFieldArrayReturn}
+ *
+ * @example
+ * ```tsx
+ * function App() {
+ *   const { register, control, handleSubmit, reset, trigger, setError } = useForm({
+ *     defaultValues: {
+ *       test: []
+ *     }
+ *   });
+ *   const { fields, append } = useFieldArray({
+ *     control,
+ *     name: "test"
+ *   });
+ *
+ *   return (
+ *     <form onSubmit={handleSubmit(data => console.log(data))}>
+ *       {fields.map((item, index) => (
+ *          <input key={item.id} {...register(`test.${index}.firstName`)}  />
+ *       ))}
+ *       <button type="button" onClick={() => append({ firstName: "bill" })}>
+ *         append
+ *       </button>
+ *       <input type="submit" />
+ *     </form>
+ *   );
+ * }
+ * ```
+ */
+function useFieldArray(props) {
+    const methods = useFormContext();
+    const { control = methods.control, name, keyName = 'id', shouldUnregister, } = props;
+    const [fields, setFields] = react__WEBPACK_IMPORTED_MODULE_0__.useState(control._getFieldArray(name));
+    const ids = react__WEBPACK_IMPORTED_MODULE_0__.useRef(control._getFieldArray(name).map(generateId));
+    const _fieldIds = react__WEBPACK_IMPORTED_MODULE_0__.useRef(fields);
+    const _name = react__WEBPACK_IMPORTED_MODULE_0__.useRef(name);
+    const _actioned = react__WEBPACK_IMPORTED_MODULE_0__.useRef(false);
+    _name.current = name;
+    _fieldIds.current = fields;
+    control._names.array.add(name);
+    props.rules &&
+        control.register(name, props.rules);
+    useSubscribe({
+        next: ({ values, name: fieldArrayName, }) => {
+            if (fieldArrayName === _name.current || !fieldArrayName) {
+                const fieldValues = get(values, _name.current);
+                if (Array.isArray(fieldValues)) {
+                    setFields(fieldValues);
+                    ids.current = fieldValues.map(generateId);
+                }
+            }
+        },
+        subject: control._subjects.array,
+    });
+    const updateValues = react__WEBPACK_IMPORTED_MODULE_0__.useCallback((updatedFieldArrayValues) => {
+        _actioned.current = true;
+        control._updateFieldArray(name, updatedFieldArrayValues);
+    }, [control, name]);
+    const append$1 = (value, options) => {
+        const appendValue = convertToArrayPayload(cloneObject(value));
+        const updatedFieldArrayValues = append(control._getFieldArray(name), appendValue);
+        control._names.focus = getFocusFieldName(name, updatedFieldArrayValues.length - 1, options);
+        ids.current = append(ids.current, appendValue.map(generateId));
+        updateValues(updatedFieldArrayValues);
+        setFields(updatedFieldArrayValues);
+        control._updateFieldArray(name, updatedFieldArrayValues, append, {
+            argA: fillEmptyArray(value),
+        });
+    };
+    const prepend$1 = (value, options) => {
+        const prependValue = convertToArrayPayload(cloneObject(value));
+        const updatedFieldArrayValues = prepend(control._getFieldArray(name), prependValue);
+        control._names.focus = getFocusFieldName(name, 0, options);
+        ids.current = prepend(ids.current, prependValue.map(generateId));
+        updateValues(updatedFieldArrayValues);
+        setFields(updatedFieldArrayValues);
+        control._updateFieldArray(name, updatedFieldArrayValues, prepend, {
+            argA: fillEmptyArray(value),
+        });
+    };
+    const remove = (index) => {
+        const updatedFieldArrayValues = removeArrayAt(control._getFieldArray(name), index);
+        ids.current = removeArrayAt(ids.current, index);
+        updateValues(updatedFieldArrayValues);
+        setFields(updatedFieldArrayValues);
+        control._updateFieldArray(name, updatedFieldArrayValues, removeArrayAt, {
+            argA: index,
+        });
+    };
+    const insert$1 = (index, value, options) => {
+        const insertValue = convertToArrayPayload(cloneObject(value));
+        const updatedFieldArrayValues = insert(control._getFieldArray(name), index, insertValue);
+        control._names.focus = getFocusFieldName(name, index, options);
+        ids.current = insert(ids.current, index, insertValue.map(generateId));
+        updateValues(updatedFieldArrayValues);
+        setFields(updatedFieldArrayValues);
+        control._updateFieldArray(name, updatedFieldArrayValues, insert, {
+            argA: index,
+            argB: fillEmptyArray(value),
+        });
+    };
+    const swap = (indexA, indexB) => {
+        const updatedFieldArrayValues = control._getFieldArray(name);
+        swapArrayAt(updatedFieldArrayValues, indexA, indexB);
+        swapArrayAt(ids.current, indexA, indexB);
+        updateValues(updatedFieldArrayValues);
+        setFields(updatedFieldArrayValues);
+        control._updateFieldArray(name, updatedFieldArrayValues, swapArrayAt, {
+            argA: indexA,
+            argB: indexB,
+        }, false);
+    };
+    const move = (from, to) => {
+        const updatedFieldArrayValues = control._getFieldArray(name);
+        moveArrayAt(updatedFieldArrayValues, from, to);
+        moveArrayAt(ids.current, from, to);
+        updateValues(updatedFieldArrayValues);
+        setFields(updatedFieldArrayValues);
+        control._updateFieldArray(name, updatedFieldArrayValues, moveArrayAt, {
+            argA: from,
+            argB: to,
+        }, false);
+    };
+    const update = (index, value) => {
+        const updateValue = cloneObject(value);
+        const updatedFieldArrayValues = updateAt(control._getFieldArray(name), index, updateValue);
+        ids.current = [...updatedFieldArrayValues].map((item, i) => !item || i === index ? generateId() : ids.current[i]);
+        updateValues(updatedFieldArrayValues);
+        setFields([...updatedFieldArrayValues]);
+        control._updateFieldArray(name, updatedFieldArrayValues, updateAt, {
+            argA: index,
+            argB: updateValue,
+        }, true, false);
+    };
+    const replace = (value) => {
+        const updatedFieldArrayValues = convertToArrayPayload(cloneObject(value));
+        ids.current = updatedFieldArrayValues.map(generateId);
+        updateValues([...updatedFieldArrayValues]);
+        setFields([...updatedFieldArrayValues]);
+        control._updateFieldArray(name, [...updatedFieldArrayValues], (data) => data, {}, true, false);
+    };
+    react__WEBPACK_IMPORTED_MODULE_0__.useEffect(() => {
+        control._stateFlags.action = false;
+        isWatched(name, control._names) && control._subjects.state.next({});
+        if (_actioned.current &&
+            (!getValidationModes(control._options.mode).isOnSubmit ||
+                control._formState.isSubmitted)) {
+            if (control._options.resolver) {
+                control._executeSchema([name]).then((result) => {
+                    const error = get(result.errors, name);
+                    const existingError = get(control._formState.errors, name);
+                    if (existingError ? !error && existingError.type : error && error.type) {
+                        error
+                            ? set(control._formState.errors, name, error)
+                            : unset(control._formState.errors, name);
+                        control._subjects.state.next({
+                            errors: control._formState.errors,
+                        });
+                    }
+                });
+            }
+            else {
+                const field = get(control._fields, name);
+                if (field && field._f) {
+                    validateField(field, get(control._formValues, name), control._options.criteriaMode === VALIDATION_MODE.all, control._options.shouldUseNativeValidation, true).then((error) => !isEmptyObject(error) &&
+                        control._subjects.state.next({
+                            errors: updateFieldArrayRootError(control._formState.errors, error, name),
+                        }));
+                }
+            }
+        }
+        control._subjects.watch.next({
+            name,
+            values: control._formValues,
+        });
+        control._names.focus &&
+            focusFieldBy(control._fields, (key) => !!key && key.startsWith(control._names.focus || ''));
+        control._names.focus = '';
+        control._proxyFormState.isValid && control._updateValid();
+    }, [fields, name, control]);
+    react__WEBPACK_IMPORTED_MODULE_0__.useEffect(() => {
+        !get(control._formValues, name) && control._updateFieldArray(name);
+        return () => {
+            (control._options.shouldUnregister || shouldUnregister) &&
+                control.unregister(name);
+        };
+    }, [name, control, keyName, shouldUnregister]);
+    return {
+        swap: react__WEBPACK_IMPORTED_MODULE_0__.useCallback(swap, [updateValues, name, control]),
+        move: react__WEBPACK_IMPORTED_MODULE_0__.useCallback(move, [updateValues, name, control]),
+        prepend: react__WEBPACK_IMPORTED_MODULE_0__.useCallback(prepend$1, [updateValues, name, control]),
+        append: react__WEBPACK_IMPORTED_MODULE_0__.useCallback(append$1, [updateValues, name, control]),
+        remove: react__WEBPACK_IMPORTED_MODULE_0__.useCallback(remove, [updateValues, name, control]),
+        insert: react__WEBPACK_IMPORTED_MODULE_0__.useCallback(insert$1, [updateValues, name, control]),
+        update: react__WEBPACK_IMPORTED_MODULE_0__.useCallback(update, [updateValues, name, control]),
+        replace: react__WEBPACK_IMPORTED_MODULE_0__.useCallback(replace, [updateValues, name, control]),
+        fields: react__WEBPACK_IMPORTED_MODULE_0__.useMemo(() => fields.map((field, index) => ({
+            ...field,
+            [keyName]: ids.current[index] || generateId(),
+        })), [fields, keyName]),
+    };
+}
+
+function createSubject() {
+    let _observers = [];
+    const next = (value) => {
+        for (const observer of _observers) {
+            observer.next(value);
+        }
+    };
+    const subscribe = (observer) => {
+        _observers.push(observer);
+        return {
+            unsubscribe: () => {
+                _observers = _observers.filter((o) => o !== observer);
+            },
+        };
+    };
+    const unsubscribe = () => {
+        _observers = [];
+    };
+    return {
+        get observers() {
+            return _observers;
+        },
+        next,
+        subscribe,
+        unsubscribe,
+    };
+}
+
+var isPrimitive = (value) => isNullOrUndefined(value) || !isObjectType(value);
+
+function deepEqual(object1, object2) {
+    if (isPrimitive(object1) || isPrimitive(object2)) {
+        return object1 === object2;
+    }
+    if (isDateObject(object1) && isDateObject(object2)) {
+        return object1.getTime() === object2.getTime();
+    }
+    const keys1 = Object.keys(object1);
+    const keys2 = Object.keys(object2);
+    if (keys1.length !== keys2.length) {
+        return false;
+    }
+    for (const key of keys1) {
+        const val1 = object1[key];
+        if (!keys2.includes(key)) {
+            return false;
+        }
+        if (key !== 'ref') {
+            const val2 = object2[key];
+            if ((isDateObject(val1) && isDateObject(val2)) ||
+                (isObject(val1) && isObject(val2)) ||
+                (Array.isArray(val1) && Array.isArray(val2))
+                ? !deepEqual(val1, val2)
+                : val1 !== val2) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+var isMultipleSelect = (element) => element.type === `select-multiple`;
+
+var isRadioOrCheckbox = (ref) => isRadioInput(ref) || isCheckBoxInput(ref);
+
+var live = (ref) => isHTMLElement(ref) && ref.isConnected;
+
+var objectHasFunction = (data) => {
+    for (const key in data) {
+        if (isFunction(data[key])) {
+            return true;
+        }
+    }
+    return false;
+};
+
+function markFieldsDirty(data, fields = {}) {
+    const isParentNodeArray = Array.isArray(data);
+    if (isObject(data) || isParentNodeArray) {
+        for (const key in data) {
+            if (Array.isArray(data[key]) ||
+                (isObject(data[key]) && !objectHasFunction(data[key]))) {
+                fields[key] = Array.isArray(data[key]) ? [] : {};
+                markFieldsDirty(data[key], fields[key]);
+            }
+            else if (!isNullOrUndefined(data[key])) {
+                fields[key] = true;
+            }
+        }
+    }
+    return fields;
+}
+function getDirtyFieldsFromDefaultValues(data, formValues, dirtyFieldsFromValues) {
+    const isParentNodeArray = Array.isArray(data);
+    if (isObject(data) || isParentNodeArray) {
+        for (const key in data) {
+            if (Array.isArray(data[key]) ||
+                (isObject(data[key]) && !objectHasFunction(data[key]))) {
+                if (isUndefined(formValues) ||
+                    isPrimitive(dirtyFieldsFromValues[key])) {
+                    dirtyFieldsFromValues[key] = Array.isArray(data[key])
+                        ? markFieldsDirty(data[key], [])
+                        : { ...markFieldsDirty(data[key]) };
+                }
+                else {
+                    getDirtyFieldsFromDefaultValues(data[key], isNullOrUndefined(formValues) ? {} : formValues[key], dirtyFieldsFromValues[key]);
+                }
+            }
+            else {
+                deepEqual(data[key], formValues[key])
+                    ? delete dirtyFieldsFromValues[key]
+                    : (dirtyFieldsFromValues[key] = true);
+            }
+        }
+    }
+    return dirtyFieldsFromValues;
+}
+var getDirtyFields = (defaultValues, formValues) => getDirtyFieldsFromDefaultValues(defaultValues, formValues, markFieldsDirty(formValues));
+
+var getFieldValueAs = (value, { valueAsNumber, valueAsDate, setValueAs }) => isUndefined(value)
+    ? value
+    : valueAsNumber
+        ? value === ''
+            ? NaN
+            : value
+                ? +value
+                : value
+        : valueAsDate && isString(value)
+            ? new Date(value)
+            : setValueAs
+                ? setValueAs(value)
+                : value;
+
+function getFieldValue(_f) {
+    const ref = _f.ref;
+    if (_f.refs ? _f.refs.every((ref) => ref.disabled) : ref.disabled) {
+        return;
+    }
+    if (isFileInput(ref)) {
+        return ref.files;
+    }
+    if (isRadioInput(ref)) {
+        return getRadioValue(_f.refs).value;
+    }
+    if (isMultipleSelect(ref)) {
+        return [...ref.selectedOptions].map(({ value }) => value);
+    }
+    if (isCheckBoxInput(ref)) {
+        return getCheckboxValue(_f.refs).value;
+    }
+    return getFieldValueAs(isUndefined(ref.value) ? _f.ref.value : ref.value, _f);
+}
+
+var getResolverOptions = (fieldsNames, _fields, criteriaMode, shouldUseNativeValidation) => {
+    const fields = {};
+    for (const name of fieldsNames) {
+        const field = get(_fields, name);
+        field && set(fields, name, field._f);
+    }
+    return {
+        criteriaMode,
+        names: [...fieldsNames],
+        fields,
+        shouldUseNativeValidation,
+    };
+};
+
+var getRuleValue = (rule) => isUndefined(rule)
+    ? rule
+    : isRegex(rule)
+        ? rule.source
+        : isObject(rule)
+            ? isRegex(rule.value)
+                ? rule.value.source
+                : rule.value
+            : rule;
+
+var hasValidation = (options) => options.mount &&
+    (options.required ||
+        options.min ||
+        options.max ||
+        options.maxLength ||
+        options.minLength ||
+        options.pattern ||
+        options.validate);
+
+function schemaErrorLookup(errors, _fields, name) {
+    const error = get(errors, name);
+    if (error || isKey(name)) {
+        return {
+            error,
+            name,
+        };
+    }
+    const names = name.split('.');
+    while (names.length) {
+        const fieldName = names.join('.');
+        const field = get(_fields, fieldName);
+        const foundError = get(errors, fieldName);
+        if (field && !Array.isArray(field) && name !== fieldName) {
+            return { name };
+        }
+        if (foundError && foundError.type) {
+            return {
+                name: fieldName,
+                error: foundError,
+            };
+        }
+        names.pop();
+    }
+    return {
+        name,
+    };
+}
+
+var skipValidation = (isBlurEvent, isTouched, isSubmitted, reValidateMode, mode) => {
+    if (mode.isOnAll) {
+        return false;
+    }
+    else if (!isSubmitted && mode.isOnTouch) {
+        return !(isTouched || isBlurEvent);
+    }
+    else if (isSubmitted ? reValidateMode.isOnBlur : mode.isOnBlur) {
+        return !isBlurEvent;
+    }
+    else if (isSubmitted ? reValidateMode.isOnChange : mode.isOnChange) {
+        return isBlurEvent;
+    }
+    return true;
+};
+
+var unsetEmptyArray = (ref, name) => !compact(get(ref, name)).length && unset(ref, name);
+
+const defaultOptions = {
+    mode: VALIDATION_MODE.onSubmit,
+    reValidateMode: VALIDATION_MODE.onChange,
+    shouldFocusError: true,
+};
+function createFormControl(props = {}, flushRootRender) {
+    let _options = {
+        ...defaultOptions,
+        ...props,
+    };
+    const shouldCaptureDirtyFields = props.resetOptions && props.resetOptions.keepDirtyValues;
+    let _formState = {
+        submitCount: 0,
+        isDirty: false,
+        isLoading: true,
+        isValidating: false,
+        isSubmitted: false,
+        isSubmitting: false,
+        isSubmitSuccessful: false,
+        isValid: false,
+        touchedFields: {},
+        dirtyFields: {},
+        errors: {},
+    };
+    let _fields = {};
+    let _defaultValues = isObject(_options.defaultValues)
+        ? cloneObject(_options.defaultValues) || {}
+        : {};
+    let _formValues = _options.shouldUnregister
+        ? {}
+        : cloneObject(_defaultValues);
+    let _stateFlags = {
+        action: false,
+        mount: false,
+        watch: false,
+    };
+    let _names = {
+        mount: new Set(),
+        unMount: new Set(),
+        array: new Set(),
+        watch: new Set(),
+    };
+    let delayErrorCallback;
+    let timer = 0;
+    const _proxyFormState = {
+        isDirty: false,
+        dirtyFields: false,
+        touchedFields: false,
+        isValidating: false,
+        isValid: false,
+        errors: false,
+    };
+    const _subjects = {
+        watch: createSubject(),
+        array: createSubject(),
+        state: createSubject(),
+    };
+    const validationModeBeforeSubmit = getValidationModes(_options.mode);
+    const validationModeAfterSubmit = getValidationModes(_options.reValidateMode);
+    const shouldDisplayAllAssociatedErrors = _options.criteriaMode === VALIDATION_MODE.all;
+    const debounce = (callback) => (wait) => {
+        clearTimeout(timer);
+        timer = window.setTimeout(callback, wait);
+    };
+    const _updateValid = async () => {
+        if (_proxyFormState.isValid) {
+            const isValid = _options.resolver
+                ? isEmptyObject((await _executeSchema()).errors)
+                : await executeBuiltInValidation(_fields, true);
+            if (isValid !== _formState.isValid) {
+                _formState.isValid = isValid;
+                _subjects.state.next({
+                    isValid,
+                });
+            }
+        }
+    };
+    const _updateIsValidating = (value) => _proxyFormState.isValidating &&
+        _subjects.state.next({
+            isValidating: value,
+        });
+    const _updateFieldArray = (name, values = [], method, args, shouldSetValues = true, shouldUpdateFieldsAndState = true) => {
+        if (args && method) {
+            _stateFlags.action = true;
+            if (shouldUpdateFieldsAndState && Array.isArray(get(_fields, name))) {
+                const fieldValues = method(get(_fields, name), args.argA, args.argB);
+                shouldSetValues && set(_fields, name, fieldValues);
+            }
+            if (shouldUpdateFieldsAndState &&
+                Array.isArray(get(_formState.errors, name))) {
+                const errors = method(get(_formState.errors, name), args.argA, args.argB);
+                shouldSetValues && set(_formState.errors, name, errors);
+                unsetEmptyArray(_formState.errors, name);
+            }
+            if (_proxyFormState.touchedFields &&
+                shouldUpdateFieldsAndState &&
+                Array.isArray(get(_formState.touchedFields, name))) {
+                const touchedFields = method(get(_formState.touchedFields, name), args.argA, args.argB);
+                shouldSetValues && set(_formState.touchedFields, name, touchedFields);
+            }
+            if (_proxyFormState.dirtyFields) {
+                _formState.dirtyFields = getDirtyFields(_defaultValues, _formValues);
+            }
+            _subjects.state.next({
+                name,
+                isDirty: _getDirty(name, values),
+                dirtyFields: _formState.dirtyFields,
+                errors: _formState.errors,
+                isValid: _formState.isValid,
+            });
+        }
+        else {
+            set(_formValues, name, values);
+        }
+    };
+    const updateErrors = (name, error) => {
+        set(_formState.errors, name, error);
+        _subjects.state.next({
+            errors: _formState.errors,
+        });
+    };
+    const updateValidAndValue = (name, shouldSkipSetValueAs, value, ref) => {
+        const field = get(_fields, name);
+        if (field) {
+            const defaultValue = get(_formValues, name, isUndefined(value) ? get(_defaultValues, name) : value);
+            isUndefined(defaultValue) ||
+                (ref && ref.defaultChecked) ||
+                shouldSkipSetValueAs
+                ? set(_formValues, name, shouldSkipSetValueAs ? defaultValue : getFieldValue(field._f))
+                : setFieldValue(name, defaultValue);
+            _stateFlags.mount && _updateValid();
+        }
+    };
+    const updateTouchAndDirty = (name, fieldValue, isBlurEvent, shouldDirty, shouldRender) => {
+        let shouldUpdateField = false;
+        let isPreviousDirty = false;
+        const output = {
+            name,
+        };
+        if (!isBlurEvent || shouldDirty) {
+            if (_proxyFormState.isDirty) {
+                isPreviousDirty = _formState.isDirty;
+                _formState.isDirty = output.isDirty = _getDirty();
+                shouldUpdateField = isPreviousDirty !== output.isDirty;
+            }
+            const isCurrentFieldPristine = deepEqual(get(_defaultValues, name), fieldValue);
+            isPreviousDirty = get(_formState.dirtyFields, name);
+            isCurrentFieldPristine
+                ? unset(_formState.dirtyFields, name)
+                : set(_formState.dirtyFields, name, true);
+            output.dirtyFields = _formState.dirtyFields;
+            shouldUpdateField =
+                shouldUpdateField ||
+                    (_proxyFormState.dirtyFields &&
+                        isPreviousDirty !== !isCurrentFieldPristine);
+        }
+        if (isBlurEvent) {
+            const isPreviousFieldTouched = get(_formState.touchedFields, name);
+            if (!isPreviousFieldTouched) {
+                set(_formState.touchedFields, name, isBlurEvent);
+                output.touchedFields = _formState.touchedFields;
+                shouldUpdateField =
+                    shouldUpdateField ||
+                        (_proxyFormState.touchedFields &&
+                            isPreviousFieldTouched !== isBlurEvent);
+            }
+        }
+        shouldUpdateField && shouldRender && _subjects.state.next(output);
+        return shouldUpdateField ? output : {};
+    };
+    const shouldRenderByError = (name, isValid, error, fieldState) => {
+        const previousFieldError = get(_formState.errors, name);
+        const shouldUpdateValid = _proxyFormState.isValid &&
+            isBoolean(isValid) &&
+            _formState.isValid !== isValid;
+        if (props.delayError && error) {
+            delayErrorCallback = debounce(() => updateErrors(name, error));
+            delayErrorCallback(props.delayError);
+        }
+        else {
+            clearTimeout(timer);
+            delayErrorCallback = null;
+            error
+                ? set(_formState.errors, name, error)
+                : unset(_formState.errors, name);
+        }
+        if ((error ? !deepEqual(previousFieldError, error) : previousFieldError) ||
+            !isEmptyObject(fieldState) ||
+            shouldUpdateValid) {
+            const updatedFormState = {
+                ...fieldState,
+                ...(shouldUpdateValid && isBoolean(isValid) ? { isValid } : {}),
+                errors: _formState.errors,
+                name,
+            };
+            _formState = {
+                ..._formState,
+                ...updatedFormState,
+            };
+            _subjects.state.next(updatedFormState);
+        }
+        _updateIsValidating(false);
+    };
+    const _executeSchema = async (name) => await _options.resolver(_formValues, _options.context, getResolverOptions(name || _names.mount, _fields, _options.criteriaMode, _options.shouldUseNativeValidation));
+    const executeSchemaAndUpdateState = async (names) => {
+        const { errors } = await _executeSchema();
+        if (names) {
+            for (const name of names) {
+                const error = get(errors, name);
+                error
+                    ? set(_formState.errors, name, error)
+                    : unset(_formState.errors, name);
+            }
+        }
+        else {
+            _formState.errors = errors;
+        }
+        return errors;
+    };
+    const executeBuiltInValidation = async (fields, shouldOnlyCheckValid, context = {
+        valid: true,
+    }) => {
+        for (const name in fields) {
+            const field = fields[name];
+            if (field) {
+                const { _f, ...fieldValue } = field;
+                if (_f) {
+                    const isFieldArrayRoot = _names.array.has(_f.name);
+                    const fieldError = await validateField(field, get(_formValues, _f.name), shouldDisplayAllAssociatedErrors, _options.shouldUseNativeValidation, isFieldArrayRoot);
+                    if (fieldError[_f.name]) {
+                        context.valid = false;
+                        if (shouldOnlyCheckValid) {
+                            break;
+                        }
+                    }
+                    !shouldOnlyCheckValid &&
+                        (get(fieldError, _f.name)
+                            ? isFieldArrayRoot
+                                ? updateFieldArrayRootError(_formState.errors, fieldError, _f.name)
+                                : set(_formState.errors, _f.name, fieldError[_f.name])
+                            : unset(_formState.errors, _f.name));
+                }
+                fieldValue &&
+                    (await executeBuiltInValidation(fieldValue, shouldOnlyCheckValid, context));
+            }
+        }
+        return context.valid;
+    };
+    const _removeUnmounted = () => {
+        for (const name of _names.unMount) {
+            const field = get(_fields, name);
+            field &&
+                (field._f.refs
+                    ? field._f.refs.every((ref) => !live(ref))
+                    : !live(field._f.ref)) &&
+                unregister(name);
+        }
+        _names.unMount = new Set();
+    };
+    const _getDirty = (name, data) => (name && data && set(_formValues, name, data),
+        !deepEqual(getValues(), _defaultValues));
+    const _getWatch = (names, defaultValue, isGlobal) => generateWatchOutput(names, _names, {
+        ...(_stateFlags.mount
+            ? _formValues
+            : isUndefined(defaultValue)
+                ? _defaultValues
+                : isString(names)
+                    ? { [names]: defaultValue }
+                    : defaultValue),
+    }, isGlobal, defaultValue);
+    const _getFieldArray = (name) => compact(get(_stateFlags.mount ? _formValues : _defaultValues, name, props.shouldUnregister ? get(_defaultValues, name, []) : []));
+    const setFieldValue = (name, value, options = {}) => {
+        const field = get(_fields, name);
+        let fieldValue = value;
+        if (field) {
+            const fieldReference = field._f;
+            if (fieldReference) {
+                !fieldReference.disabled &&
+                    set(_formValues, name, getFieldValueAs(value, fieldReference));
+                fieldValue =
+                    isHTMLElement(fieldReference.ref) && isNullOrUndefined(value)
+                        ? ''
+                        : value;
+                if (isMultipleSelect(fieldReference.ref)) {
+                    [...fieldReference.ref.options].forEach((optionRef) => (optionRef.selected = fieldValue.includes(optionRef.value)));
+                }
+                else if (fieldReference.refs) {
+                    if (isCheckBoxInput(fieldReference.ref)) {
+                        fieldReference.refs.length > 1
+                            ? fieldReference.refs.forEach((checkboxRef) => (!checkboxRef.defaultChecked || !checkboxRef.disabled) &&
+                                (checkboxRef.checked = Array.isArray(fieldValue)
+                                    ? !!fieldValue.find((data) => data === checkboxRef.value)
+                                    : fieldValue === checkboxRef.value))
+                            : fieldReference.refs[0] &&
+                                (fieldReference.refs[0].checked = !!fieldValue);
+                    }
+                    else {
+                        fieldReference.refs.forEach((radioRef) => (radioRef.checked = radioRef.value === fieldValue));
+                    }
+                }
+                else if (isFileInput(fieldReference.ref)) {
+                    fieldReference.ref.value = '';
+                }
+                else {
+                    fieldReference.ref.value = fieldValue;
+                    if (!fieldReference.ref.type) {
+                        _subjects.watch.next({
+                            name,
+                        });
+                    }
+                }
+            }
+        }
+        (options.shouldDirty || options.shouldTouch) &&
+            updateTouchAndDirty(name, fieldValue, options.shouldTouch, options.shouldDirty, true);
+        options.shouldValidate && trigger(name);
+    };
+    const setValues = (name, value, options) => {
+        for (const fieldKey in value) {
+            const fieldValue = value[fieldKey];
+            const fieldName = `${name}.${fieldKey}`;
+            const field = get(_fields, fieldName);
+            (_names.array.has(name) ||
+                !isPrimitive(fieldValue) ||
+                (field && !field._f)) &&
+                !isDateObject(fieldValue)
+                ? setValues(fieldName, fieldValue, options)
+                : setFieldValue(fieldName, fieldValue, options);
+        }
+    };
+    const setValue = (name, value, options = {}) => {
+        const field = get(_fields, name);
+        const isFieldArray = _names.array.has(name);
+        const cloneValue = cloneObject(value);
+        set(_formValues, name, cloneValue);
+        if (isFieldArray) {
+            _subjects.array.next({
+                name,
+                values: _formValues,
+            });
+            if ((_proxyFormState.isDirty || _proxyFormState.dirtyFields) &&
+                options.shouldDirty) {
+                _formState.dirtyFields = getDirtyFields(_defaultValues, _formValues);
+                _subjects.state.next({
+                    name,
+                    dirtyFields: _formState.dirtyFields,
+                    isDirty: _getDirty(name, cloneValue),
+                });
+            }
+        }
+        else {
+            field && !field._f && !isNullOrUndefined(cloneValue)
+                ? setValues(name, cloneValue, options)
+                : setFieldValue(name, cloneValue, options);
+        }
+        isWatched(name, _names) && _subjects.state.next({});
+        _subjects.watch.next({
+            name,
+        });
+        !_stateFlags.mount && flushRootRender();
+    };
+    const onChange = async (event) => {
+        const target = event.target;
+        let name = target.name;
+        const field = get(_fields, name);
+        const getCurrentFieldValue = () => target.type ? getFieldValue(field._f) : getEventValue(event);
+        if (field) {
+            let error;
+            let isValid;
+            const fieldValue = getCurrentFieldValue();
+            const isBlurEvent = event.type === EVENTS.BLUR || event.type === EVENTS.FOCUS_OUT;
+            const shouldSkipValidation = (!hasValidation(field._f) &&
+                !_options.resolver &&
+                !get(_formState.errors, name) &&
+                !field._f.deps) ||
+                skipValidation(isBlurEvent, get(_formState.touchedFields, name), _formState.isSubmitted, validationModeAfterSubmit, validationModeBeforeSubmit);
+            const watched = isWatched(name, _names, isBlurEvent);
+            set(_formValues, name, fieldValue);
+            if (isBlurEvent) {
+                field._f.onBlur && field._f.onBlur(event);
+                delayErrorCallback && delayErrorCallback(0);
+            }
+            else if (field._f.onChange) {
+                field._f.onChange(event);
+            }
+            const fieldState = updateTouchAndDirty(name, fieldValue, isBlurEvent, false);
+            const shouldRender = !isEmptyObject(fieldState) || watched;
+            !isBlurEvent &&
+                _subjects.watch.next({
+                    name,
+                    type: event.type,
+                });
+            if (shouldSkipValidation) {
+                _proxyFormState.isValid && _updateValid();
+                return (shouldRender &&
+                    _subjects.state.next({ name, ...(watched ? {} : fieldState) }));
+            }
+            !isBlurEvent && watched && _subjects.state.next({});
+            _updateIsValidating(true);
+            if (_options.resolver) {
+                const { errors } = await _executeSchema([name]);
+                const previousErrorLookupResult = schemaErrorLookup(_formState.errors, _fields, name);
+                const errorLookupResult = schemaErrorLookup(errors, _fields, previousErrorLookupResult.name || name);
+                error = errorLookupResult.error;
+                name = errorLookupResult.name;
+                isValid = isEmptyObject(errors);
+            }
+            else {
+                error = (await validateField(field, get(_formValues, name), shouldDisplayAllAssociatedErrors, _options.shouldUseNativeValidation))[name];
+                if (error) {
+                    isValid = false;
+                }
+                else if (_proxyFormState.isValid) {
+                    isValid = await executeBuiltInValidation(_fields, true);
+                }
+            }
+            field._f.deps &&
+                trigger(field._f.deps);
+            shouldRenderByError(name, isValid, error, fieldState);
+        }
+    };
+    const trigger = async (name, options = {}) => {
+        let isValid;
+        let validationResult;
+        const fieldNames = convertToArrayPayload(name);
+        _updateIsValidating(true);
+        if (_options.resolver) {
+            const errors = await executeSchemaAndUpdateState(isUndefined(name) ? name : fieldNames);
+            isValid = isEmptyObject(errors);
+            validationResult = name
+                ? !fieldNames.some((name) => get(errors, name))
+                : isValid;
+        }
+        else if (name) {
+            validationResult = (await Promise.all(fieldNames.map(async (fieldName) => {
+                const field = get(_fields, fieldName);
+                return await executeBuiltInValidation(field && field._f ? { [fieldName]: field } : field);
+            }))).every(Boolean);
+            !(!validationResult && !_formState.isValid) && _updateValid();
+        }
+        else {
+            validationResult = isValid = await executeBuiltInValidation(_fields);
+        }
+        _subjects.state.next({
+            ...(!isString(name) ||
+                (_proxyFormState.isValid && isValid !== _formState.isValid)
+                ? {}
+                : { name }),
+            ...(_options.resolver || !name ? { isValid } : {}),
+            errors: _formState.errors,
+            isValidating: false,
+        });
+        options.shouldFocus &&
+            !validationResult &&
+            focusFieldBy(_fields, (key) => key && get(_formState.errors, key), name ? fieldNames : _names.mount);
+        return validationResult;
+    };
+    const getValues = (fieldNames) => {
+        const values = {
+            ..._defaultValues,
+            ...(_stateFlags.mount ? _formValues : {}),
+        };
+        return isUndefined(fieldNames)
+            ? values
+            : isString(fieldNames)
+                ? get(values, fieldNames)
+                : fieldNames.map((name) => get(values, name));
+    };
+    const getFieldState = (name, formState) => ({
+        invalid: !!get((formState || _formState).errors, name),
+        isDirty: !!get((formState || _formState).dirtyFields, name),
+        isTouched: !!get((formState || _formState).touchedFields, name),
+        error: get((formState || _formState).errors, name),
+    });
+    const clearErrors = (name) => {
+        name
+            ? convertToArrayPayload(name).forEach((inputName) => unset(_formState.errors, inputName))
+            : (_formState.errors = {});
+        _subjects.state.next({
+            errors: _formState.errors,
+        });
+    };
+    const setError = (name, error, options) => {
+        const ref = (get(_fields, name, { _f: {} })._f || {}).ref;
+        set(_formState.errors, name, {
+            ...error,
+            ref,
+        });
+        _subjects.state.next({
+            name,
+            errors: _formState.errors,
+            isValid: false,
+        });
+        options && options.shouldFocus && ref && ref.focus && ref.focus();
+    };
+    const watch = (name, defaultValue) => isFunction(name)
+        ? _subjects.watch.subscribe({
+            next: (payload) => name(_getWatch(undefined, defaultValue), payload),
+        })
+        : _getWatch(name, defaultValue, true);
+    const unregister = (name, options = {}) => {
+        for (const fieldName of name ? convertToArrayPayload(name) : _names.mount) {
+            _names.mount.delete(fieldName);
+            _names.array.delete(fieldName);
+            if (get(_fields, fieldName)) {
+                if (!options.keepValue) {
+                    unset(_fields, fieldName);
+                    unset(_formValues, fieldName);
+                }
+                !options.keepError && unset(_formState.errors, fieldName);
+                !options.keepDirty && unset(_formState.dirtyFields, fieldName);
+                !options.keepTouched && unset(_formState.touchedFields, fieldName);
+                !_options.shouldUnregister &&
+                    !options.keepDefaultValue &&
+                    unset(_defaultValues, fieldName);
+            }
+        }
+        _subjects.watch.next({});
+        _subjects.state.next({
+            ..._formState,
+            ...(!options.keepDirty ? {} : { isDirty: _getDirty() }),
+        });
+        !options.keepIsValid && _updateValid();
+    };
+    const register = (name, options = {}) => {
+        let field = get(_fields, name);
+        const disabledIsDefined = isBoolean(options.disabled);
+        set(_fields, name, {
+            ...(field || {}),
+            _f: {
+                ...(field && field._f ? field._f : { ref: { name } }),
+                name,
+                mount: true,
+                ...options,
+            },
+        });
+        _names.mount.add(name);
+        field
+            ? disabledIsDefined &&
+                set(_formValues, name, options.disabled
+                    ? undefined
+                    : get(_formValues, name, getFieldValue(field._f)))
+            : updateValidAndValue(name, true, options.value);
+        return {
+            ...(disabledIsDefined ? { disabled: options.disabled } : {}),
+            ...(_options.shouldUseNativeValidation
+                ? {
+                    required: !!options.required,
+                    min: getRuleValue(options.min),
+                    max: getRuleValue(options.max),
+                    minLength: getRuleValue(options.minLength),
+                    maxLength: getRuleValue(options.maxLength),
+                    pattern: getRuleValue(options.pattern),
+                }
+                : {}),
+            name,
+            onChange,
+            onBlur: onChange,
+            ref: (ref) => {
+                if (ref) {
+                    register(name, options);
+                    field = get(_fields, name);
+                    const fieldRef = isUndefined(ref.value)
+                        ? ref.querySelectorAll
+                            ? ref.querySelectorAll('input,select,textarea')[0] || ref
+                            : ref
+                        : ref;
+                    const radioOrCheckbox = isRadioOrCheckbox(fieldRef);
+                    const refs = field._f.refs || [];
+                    if (radioOrCheckbox
+                        ? refs.find((option) => option === fieldRef)
+                        : fieldRef === field._f.ref) {
+                        return;
+                    }
+                    set(_fields, name, {
+                        _f: {
+                            ...field._f,
+                            ...(radioOrCheckbox
+                                ? {
+                                    refs: [
+                                        ...refs.filter(live),
+                                        fieldRef,
+                                        ...(Array.isArray(get(_defaultValues, name)) ? [{}] : []),
+                                    ],
+                                    ref: { type: fieldRef.type, name },
+                                }
+                                : { ref: fieldRef }),
+                        },
+                    });
+                    updateValidAndValue(name, false, undefined, fieldRef);
+                }
+                else {
+                    field = get(_fields, name, {});
+                    if (field._f) {
+                        field._f.mount = false;
+                    }
+                    (_options.shouldUnregister || options.shouldUnregister) &&
+                        !(isNameInFieldArray(_names.array, name) && _stateFlags.action) &&
+                        _names.unMount.add(name);
+                }
+            },
+        };
+    };
+    const _focusError = () => _options.shouldFocusError &&
+        focusFieldBy(_fields, (key) => key && get(_formState.errors, key), _names.mount);
+    const handleSubmit = (onValid, onInvalid) => async (e) => {
+        if (e) {
+            e.preventDefault && e.preventDefault();
+            e.persist && e.persist();
+        }
+        let hasNoPromiseError = true;
+        let fieldValues = cloneObject(_formValues);
+        _subjects.state.next({
+            isSubmitting: true,
+        });
+        try {
+            if (_options.resolver) {
+                const { errors, values } = await _executeSchema();
+                _formState.errors = errors;
+                fieldValues = values;
+            }
+            else {
+                await executeBuiltInValidation(_fields);
+            }
+            if (isEmptyObject(_formState.errors)) {
+                _subjects.state.next({
+                    errors: {},
+                    isSubmitting: true,
+                });
+                await onValid(fieldValues, e);
+            }
+            else {
+                if (onInvalid) {
+                    await onInvalid({ ..._formState.errors }, e);
+                }
+                _focusError();
+            }
+        }
+        catch (err) {
+            hasNoPromiseError = false;
+            throw err;
+        }
+        finally {
+            _formState.isSubmitted = true;
+            _subjects.state.next({
+                isSubmitted: true,
+                isSubmitting: false,
+                isSubmitSuccessful: isEmptyObject(_formState.errors) && hasNoPromiseError,
+                submitCount: _formState.submitCount + 1,
+                errors: _formState.errors,
+            });
+        }
+    };
+    const resetField = (name, options = {}) => {
+        if (get(_fields, name)) {
+            if (isUndefined(options.defaultValue)) {
+                setValue(name, get(_defaultValues, name));
+            }
+            else {
+                setValue(name, options.defaultValue);
+                set(_defaultValues, name, options.defaultValue);
+            }
+            if (!options.keepTouched) {
+                unset(_formState.touchedFields, name);
+            }
+            if (!options.keepDirty) {
+                unset(_formState.dirtyFields, name);
+                _formState.isDirty = options.defaultValue
+                    ? _getDirty(name, get(_defaultValues, name))
+                    : _getDirty();
+            }
+            if (!options.keepError) {
+                unset(_formState.errors, name);
+                _proxyFormState.isValid && _updateValid();
+            }
+            _subjects.state.next({ ..._formState });
+        }
+    };
+    const _reset = (formValues, keepStateOptions = {}) => {
+        const updatedValues = formValues || _defaultValues;
+        const cloneUpdatedValues = cloneObject(updatedValues);
+        const values = formValues && !isEmptyObject(formValues)
+            ? cloneUpdatedValues
+            : _defaultValues;
+        if (!keepStateOptions.keepDefaultValues) {
+            _defaultValues = updatedValues;
+        }
+        if (!keepStateOptions.keepValues) {
+            if (keepStateOptions.keepDirtyValues || shouldCaptureDirtyFields) {
+                for (const fieldName of _names.mount) {
+                    get(_formState.dirtyFields, fieldName)
+                        ? set(values, fieldName, get(_formValues, fieldName))
+                        : setValue(fieldName, get(values, fieldName));
+                }
+            }
+            else {
+                if (isWeb && isUndefined(formValues)) {
+                    for (const name of _names.mount) {
+                        const field = get(_fields, name);
+                        if (field && field._f) {
+                            const fieldReference = Array.isArray(field._f.refs)
+                                ? field._f.refs[0]
+                                : field._f.ref;
+                            if (isHTMLElement(fieldReference)) {
+                                const form = fieldReference.closest('form');
+                                if (form) {
+                                    form.reset();
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+                _fields = {};
+            }
+            _formValues = props.shouldUnregister
+                ? keepStateOptions.keepDefaultValues
+                    ? cloneObject(_defaultValues)
+                    : {}
+                : cloneUpdatedValues;
+            _subjects.array.next({
+                values,
+            });
+            _subjects.watch.next({
+                values,
+            });
+        }
+        _names = {
+            mount: new Set(),
+            unMount: new Set(),
+            array: new Set(),
+            watch: new Set(),
+            watchAll: false,
+            focus: '',
+        };
+        !_stateFlags.mount && flushRootRender();
+        _stateFlags.mount =
+            !_proxyFormState.isValid || !!keepStateOptions.keepIsValid;
+        _stateFlags.watch = !!props.shouldUnregister;
+        _subjects.state.next({
+            submitCount: keepStateOptions.keepSubmitCount
+                ? _formState.submitCount
+                : 0,
+            isDirty: keepStateOptions.keepDirty || keepStateOptions.keepDirtyValues
+                ? _formState.isDirty
+                : !!(keepStateOptions.keepDefaultValues &&
+                    !deepEqual(formValues, _defaultValues)),
+            isSubmitted: keepStateOptions.keepIsSubmitted
+                ? _formState.isSubmitted
+                : false,
+            dirtyFields: keepStateOptions.keepDirty || keepStateOptions.keepDirtyValues
+                ? _formState.dirtyFields
+                : keepStateOptions.keepDefaultValues && formValues
+                    ? getDirtyFields(_defaultValues, formValues)
+                    : {},
+            touchedFields: keepStateOptions.keepTouched
+                ? _formState.touchedFields
+                : {},
+            errors: keepStateOptions.keepErrors ? _formState.errors : {},
+            isSubmitting: false,
+            isSubmitSuccessful: false,
+        });
+    };
+    const reset = (formValues, keepStateOptions) => _reset(isFunction(formValues)
+        ? formValues(_formValues)
+        : formValues, keepStateOptions);
+    const setFocus = (name, options = {}) => {
+        const field = get(_fields, name);
+        const fieldReference = field && field._f;
+        if (fieldReference) {
+            const fieldRef = fieldReference.refs
+                ? fieldReference.refs[0]
+                : fieldReference.ref;
+            if (fieldRef.focus) {
+                fieldRef.focus();
+                options.shouldSelect && fieldRef.select();
+            }
+        }
+    };
+    if (isFunction(_options.defaultValues)) {
+        _options.defaultValues().then((values) => {
+            reset(values, _options.resetOptions);
+            _subjects.state.next({
+                isLoading: false,
+            });
+        });
+    }
+    return {
+        control: {
+            register,
+            unregister,
+            getFieldState,
+            _executeSchema,
+            _focusError,
+            _getWatch,
+            _getDirty,
+            _updateValid,
+            _removeUnmounted,
+            _updateFieldArray,
+            _getFieldArray,
+            _reset,
+            _subjects,
+            _proxyFormState,
+            get _fields() {
+                return _fields;
+            },
+            get _formValues() {
+                return _formValues;
+            },
+            get _stateFlags() {
+                return _stateFlags;
+            },
+            set _stateFlags(value) {
+                _stateFlags = value;
+            },
+            get _defaultValues() {
+                return _defaultValues;
+            },
+            get _names() {
+                return _names;
+            },
+            set _names(value) {
+                _names = value;
+            },
+            get _formState() {
+                return _formState;
+            },
+            set _formState(value) {
+                _formState = value;
+            },
+            get _options() {
+                return _options;
+            },
+            set _options(value) {
+                _options = {
+                    ..._options,
+                    ...value,
+                };
+            },
+        },
+        trigger,
+        register,
+        handleSubmit,
+        watch,
+        setValue,
+        getValues,
+        reset,
+        resetField,
+        clearErrors,
+        unregister,
+        setError,
+        setFocus,
+        getFieldState,
+    };
+}
+
+/**
+ * Custom hook to manage the entire form.
+ *
+ * @remarks
+ * [API](https://react-hook-form.com/api/useform) • [Demo](https://codesandbox.io/s/react-hook-form-get-started-ts-5ksmm) • [Video](https://www.youtube.com/watch?v=RkXv4AXXC_4)
+ *
+ * @param props - form configuration and validation parameters.
+ *
+ * @returns methods - individual functions to manage the form state. {@link UseFormReturn}
+ *
+ * @example
+ * ```tsx
+ * function App() {
+ *   const { register, handleSubmit, watch, formState: { errors } } = useForm();
+ *   const onSubmit = data => console.log(data);
+ *
+ *   console.log(watch("example"));
+ *
+ *   return (
+ *     <form onSubmit={handleSubmit(onSubmit)}>
+ *       <input defaultValue="test" {...register("example")} />
+ *       <input {...register("exampleRequired", { required: true })} />
+ *       {errors.exampleRequired && <span>This field is required</span>}
+ *       <input type="submit" />
+ *     </form>
+ *   );
+ * }
+ * ```
+ */
+function useForm(props = {}) {
+    const _formControl = react__WEBPACK_IMPORTED_MODULE_0__.useRef();
+    const [formState, updateFormState] = react__WEBPACK_IMPORTED_MODULE_0__.useState({
+        isDirty: false,
+        isValidating: false,
+        isLoading: true,
+        isSubmitted: false,
+        isSubmitting: false,
+        isSubmitSuccessful: false,
+        isValid: false,
+        submitCount: 0,
+        dirtyFields: {},
+        touchedFields: {},
+        errors: {},
+        defaultValues: isFunction(props.defaultValues)
+            ? undefined
+            : props.defaultValues,
+    });
+    if (!_formControl.current) {
+        _formControl.current = {
+            ...createFormControl(props, () => updateFormState((formState) => ({ ...formState }))),
+            formState,
+        };
+    }
+    const control = _formControl.current.control;
+    control._options = props;
+    useSubscribe({
+        subject: control._subjects.state,
+        next: (value) => {
+            if (shouldRenderFormState(value, control._proxyFormState, true)) {
+                control._formState = {
+                    ...control._formState,
+                    ...value,
+                };
+                updateFormState({ ...control._formState });
+            }
+        },
+    });
+    react__WEBPACK_IMPORTED_MODULE_0__.useEffect(() => {
+        if (!control._stateFlags.mount) {
+            control._proxyFormState.isValid && control._updateValid();
+            control._stateFlags.mount = true;
+        }
+        if (control._stateFlags.watch) {
+            control._stateFlags.watch = false;
+            control._subjects.state.next({});
+        }
+        control._removeUnmounted();
+    });
+    react__WEBPACK_IMPORTED_MODULE_0__.useEffect(() => {
+        if (props.values && !deepEqual(props.values, control._defaultValues)) {
+            control._reset(props.values, control._options.resetOptions);
+        }
+    }, [props.values, control]);
+    react__WEBPACK_IMPORTED_MODULE_0__.useEffect(() => {
+        formState.submitCount && control._focusError();
+    }, [control, formState.submitCount]);
+    _formControl.current.formState = getProxyFormState(formState, control);
+    return _formControl.current;
+}
+
+
+//# sourceMappingURL=index.esm.mjs.map
 
 
 /***/ }),
