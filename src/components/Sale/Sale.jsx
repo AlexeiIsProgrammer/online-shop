@@ -30,7 +30,7 @@ function Sale({totalPrice, setBasketItems}) {
     useEffect(() => {
         if(localStorage.getItem('isBought')) {
             setIsOpen(true)
-            localstorage.removeItem('isBought')
+            localStorage.removeItem('isBought')
         }
     })
 
