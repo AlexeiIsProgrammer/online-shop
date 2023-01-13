@@ -37,7 +37,7 @@ import { useNavigate } from 'react-router-dom';
             <form onSubmit={handleSubmit(onSubmit)}>
                 <input {...register("name_surname",{required: true, pattern: /^[A-Za-zA-Яа-я]+$/i, pattern: /^\S\w{3,10} \S\w{3,10}$/i})} type="text" placeholder='name&surname'/>
                 {errors.name_surname && <p>Please check the name_surname</p>}
-                <input type="number" {...register("telephone", {required: true,pattern:/^(\+)[\d\-\(\)]{9}\d$/g})} placeholder='telephone'/>
+                <input type="text" {...register("telephone", {required: true,pattern:/^(\+)\w{9}\d$/g})} placeholder='telephone'/>
                 {errors.telephone && <p>Please check the telephone</p>}
                 <input {...register("adress",{required: true, pattern: /^[A-Za-zA-Яа-я]+$/i, pattern: /^\S\w{5,10} \S\w{4,10} \S\w{4,10}$/i})} type="text" placeholder='adress'/>
                 {errors.adress && <p>Please check the adress</p>}
