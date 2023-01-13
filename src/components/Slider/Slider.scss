@@ -1,0 +1,19 @@
+.main-swiper {
+    width: 100%;
+    overflow: hidden;
+    & .swiper-slide{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+.sub-swiper {
+    width: 30%;
+    overflow: hidden;
+    & .swiper-slide {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}

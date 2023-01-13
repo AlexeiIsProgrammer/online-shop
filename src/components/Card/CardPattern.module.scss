@@ -1,0 +1,20 @@
+
+.info {
+    &__block {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        border: 1px solid #61dafb;
+        text-align: center;
+    }
+    &__name {
+        width: 100%;
+        background-color: #61dafb;
+    }
+    &__description {
+        width: 100%;
+        background-color: #92e7ffb9;
+    }
+}
