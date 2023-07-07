@@ -1,3 +1,3 @@
 # online-shop task
 
-# [Demo](https://alexeiisprogrammer.github.io/online-shop/)
+# [Demo](https://wonderful-meerkat-e888c3.netlify.app/)
